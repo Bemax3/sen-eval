@@ -19,7 +19,7 @@
 	})
 	let form;
 
-	watch(() => props.mobility, () => {
+	const setForm = () => {
 		form = useForm((isEmpty(props.mobility)) ?
 				{
 					mobility_type_name: '',
@@ -30,17 +30,18 @@
 					mobility_type_desc: props.mobility.mobility_type_desc || ''
 				}
 		);
-	}, {immediate: true})
+	}
 
+	setForm();
 
 	const submit = () => {
 		if (isEmpty(props.mobility))
 			form.post(route('mobilityTypes.store'),{
-				onSuccess: () => form.reset()
+				onSuccess: () => setForm()
 			});
 		else
 			form.put(route('mobilityTypes.update',{mobilityType:props.mobility.mobility_type_id}),{
-				onSuccess: () => form.reset()
+				onSuccess: () => setForm()
 			});
 	}
 

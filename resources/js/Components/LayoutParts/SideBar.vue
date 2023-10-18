@@ -4,7 +4,8 @@ import {
     Cog6ToothIcon,
     HomeIcon,
     XMarkIcon,
-    ChevronRightIcon
+    ChevronRightIcon,
+	CalendarDaysIcon,
 } from "@heroicons/vue/24/outline/index.js";
 import {
 	Dialog,
@@ -38,18 +39,26 @@ let navigation = [
     { name: 'Dashboard', href: route('home'), icon: HomeIcon, current: currentRoute === 'home' },
 ]
 if ([1,2].includes(user.value.role_id)) {
-    navigation.push({
-        name: 'Paramètres Généraux',
-        icon: Cog6ToothIcon,
-        current: ['skillTypes','trainingTypes','sanctionTypes','mobilityTypes','claimTypes'].includes(currentRoute),
-        children: [
-            { name: 'Formations', href: route('trainingTypes.index'), current: currentRoute === 'trainingTypes' },
-            { name: 'Types de Compétence', href: route('skillTypes.index'), current: currentRoute === 'skillTypes' },
-            { name: 'Compétence', href: route('skills.index'), current: currentRoute === 'skills' },
-            { name: 'Sanctions', href: route('sanctionTypes.index'), current: currentRoute === 'sanctionTypes' },
-            { name: 'Mobilités', href: route('mobilityTypes.index'), current: currentRoute === 'mobilityTypes' },
-            { name: 'Réclamation', href: route('claimTypes.index'), current: currentRoute === 'claimTypes' },
-        ],
+    navigation.push(
+		{
+			name: 'Phases d\'évaluation',
+			icon: CalendarDaysIcon,
+			current: currentRoute === 'phases',
+			href: route('phases.index')
+
+	    },
+	    {
+	        name: 'Paramètres Généraux',
+	        icon: Cog6ToothIcon,
+	        current: ['skillTypes','trainingTypes','sanctionTypes','mobilityTypes','claimTypes'].includes(currentRoute),
+	        children: [
+	            { name: 'Formations', href: route('trainingTypes.index'), current: currentRoute === 'trainingTypes' },
+	            { name: 'Types de Compétence', href: route('skillTypes.index'), current: currentRoute === 'skillTypes' },
+	            { name: 'Compétence', href: route('skills.index'), current: currentRoute === 'skills' },
+	            { name: 'Sanctions', href: route('sanctionTypes.index'), current: currentRoute === 'sanctionTypes' },
+	            { name: 'Mobilités', href: route('mobilityTypes.index'), current: currentRoute === 'mobilityTypes' },
+	            { name: 'Réclamation', href: route('claimTypes.index'), current: currentRoute === 'claimTypes' },
+	        ],
     })
 }
 watch(

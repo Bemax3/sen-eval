@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Phase\PhaseController;
 use App\Http\Controllers\Settings\ClaimTypeController;
 use App\Http\Controllers\Settings\MobilityTypeController;
 use App\Http\Controllers\Settings\SanctionTypeController;
 use App\Http\Controllers\Settings\SkillController;
 use App\Http\Controllers\Settings\SkillTypeController;
 use App\Http\Controllers\Settings\TrainingTypeController;
-use App\Http\Controllers\Utilities\SearchController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -33,13 +33,15 @@ Route::group(['middleware' => ['auth', 'root']], function () {
     Route::post('/skillTypes/search', [SkillTypeController::class, 'search'])->name('skillTypes.search');
     Route::post('/trainingTypes/search', [TrainingTypeController::class, 'search'])->name('trainingTypes.search');
     Route::post('/skills/search', [SkillController::class, 'search'])->name('skills.search');
+    Route::post('/phases/search', [PhaseController::class, 'search'])->name('phases.search');
     Route::resources([
         'claimTypes' => ClaimTypeController::class,
         'mobilityTypes' => MobilityTypeController::class,
         'sanctionTypes' => SanctionTypeController::class,
         'skillTypes' => SkillTypeController::class,
         'trainingTypes' => TrainingTypeController::class,
-        'skills' => SkillController::class
+        'skills' => SkillController::class,
+        'phases' => PhaseController::class
     ]);
 });
 

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\Phase\PhaseSeeder;
 use Database\Seeders\Settings\ClaimTypeSeeder;
 use Database\Seeders\Settings\MobilityTypeSeeder;
 use Database\Seeders\Settings\SanctionTypeSeeder;
@@ -28,7 +29,8 @@ class DatabaseSeeder extends Seeder
              SanctionTypeSeeder::class,
              SkillTypeSeeder::class,
              SkillSeeder::class,
-             TrainingTypeSeeder::class
+             TrainingTypeSeeder::class,
+             PhaseSeeder::class
          ]);
          User::factory()->create([
              'user_name' => 'Root',

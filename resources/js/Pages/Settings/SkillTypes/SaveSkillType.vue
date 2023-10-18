@@ -19,7 +19,7 @@
 	})
 	let form;
 
-	watch(() => props.skill, () => {
+	const setForm =  () => {
 		form = useForm((isEmpty(props.skill)) ?
 				{
 					skill_type_name: '',
@@ -30,17 +30,18 @@
 					skill_type_desc: props.skill.skill_type_desc || ''
 				}
 		);
-	}, {immediate: true})
+	}
+	setForm()
 
 
 	const submit = () => {
 		if (isEmpty(props.skill))
 			form.post(route('skillTypes.store'),{
-				onSuccess: () => form.reset()
+				onSuccess: () => setForm()
 			});
 		else
 			form.put(route('skillTypes.update',{skillType:props.skill.skill_type_id}),{
-				onSuccess: () => form.reset()
+				onSuccess: () => setForm()
 			});
 	}
 

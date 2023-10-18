@@ -19,7 +19,7 @@
 	})
 	let form;
 
-	watch(() => props.training, () => {
+	const setForm = () => {
 	    form = useForm((isEmpty(props.training)) ?
 	        {
 				training_type_name: '',
@@ -30,17 +30,16 @@
 				training_type_desc: props.training.training_type_desc || ''
 	        }
 	    );
-	}, {immediate: true})
-
-
+	}
+	setForm()
 	const submit = () => {
 		if (isEmpty(props.training))
 	        form.post(route('trainingTypes.store'),{
-	            onSuccess: () => form.reset()
+	            onSuccess: () => setForm()
 	        });
 		else
 			form.put(route('trainingTypes.update',{trainingType:props.training.training_type_id}),{
-				onSuccess: () => form.reset()
+				onSuccess: () => setForm()
 			});
 	}
 

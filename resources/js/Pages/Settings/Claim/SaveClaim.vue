@@ -17,34 +17,31 @@
 			default: {},
 		},
 	});
+
 	let form;
+	const setForm = () => {
+		form = useForm(
+	isEmpty(props.claim)
+			? {
+				claim_type_name: '',
+				claim_type_desc: '',
+			}
+			: {
+				claim_type_name: props.claim.claim_type_name || '',
+				claim_type_desc: props.claim.claim_type_desc || '',
+			}
+		);
+	}
 
-	watch(
-		() => props.claim,
-		() => {
-			form = useForm(
-				isEmpty(props.claim)
-					? {
-							claim_type_name: '',
-							claim_type_desc: '',
-					  }
-					: {
-							claim_type_name: props.claim.claim_type_name || '',
-							claim_type_desc: props.claim.claim_type_desc || '',
-					  }
-			);
-		},
-		{immediate: true}
-	);
-
+	setForm();
 	const submit = () => {
 		if (isEmpty(props.claim))
 			form.post(route('claimTypes.store'), {
-				onSuccess: () => form.reset(),
+				onSuccess: () => setForm(),
 			});
 		else
 			form.put(route('claimTypes.update', {claimType: props.claim.claim_type_id}), {
-				onSuccess: () => form.reset(),
+				onSuccess: () => setForm(),
 			});
 	};
 

@@ -19,7 +19,7 @@
 	})
 	let form;
 
-	watch(() => props.sanction, () => {
+	const setForm = () => {
 		form = useForm((isEmpty(props.sanction)) ?
 				{
 					sanction_type_name: '',
@@ -30,17 +30,17 @@
 					sanction_type_desc: props.sanction.sanction_type_desc || ''
 				}
 		);
-	}, {immediate: true})
+	}
 
-
+	setForm();
 	const submit = () => {
 		if (isEmpty(props.sanction))
 			form.post(route('sanctionTypes.store'),{
-				onSuccess: () => form.reset()
+				onSuccess: () => setForm()
 			});
 		else
 			form.put(route('sanctionTypes.update',{sanctionType:props.sanction.sanction_type_id}),{
-				onSuccess: () => form.reset()
+				onSuccess: () => setForm()
 			});
 	}
 

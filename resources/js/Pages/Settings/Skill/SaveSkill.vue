@@ -24,7 +24,7 @@
 	})
 	let form;
 
-	watch(() => props.skill, () => {
+	const setForm = () => {
 	    form = useForm((isEmpty(props.skill)) ?
 	        {
 	            skill_name: '',
@@ -37,17 +37,18 @@
 	            skill_type_id: props.skill.skill_type_id || props.types[0].skill_type_id
 	        }
 	    );
-	}, {immediate: true})
+	}
 
+	setForm();
 
 	const submit = () => {
 	    if (isEmpty(props.skill))
 	        form.post(route('skills.store'),{
-	            onSuccess: () => form.reset()
+	            onSuccess: () => setForm()
 	        });
 	    else
 	        form.put(route('skills.update',{skill : props.skill.skill_id}),{
-	            onSuccess: () => form.reset()
+	            onSuccess: () => setForm()
 	        });
 	}
 

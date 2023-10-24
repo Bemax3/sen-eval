@@ -5,14 +5,16 @@ namespace App\Models\Settings;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Eloquent;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
 class SanctionType extends Model implements Searchable
 {
+    use SoftDeletes;
     protected $table = 'sanction_types';
     protected $primaryKey = 'sanction_type_id';
-    protected $fillable = ['sanction_type_name', 'sanction_type_desc'];
+    protected $fillable = ['sanction_type_name', 'sanction_type_desc','sanction_type_is_active'];
 
     public function getForeignKey()
     {

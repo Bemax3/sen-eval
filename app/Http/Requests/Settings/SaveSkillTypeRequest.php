@@ -24,13 +24,15 @@ class SaveSkillTypeRequest extends FormRequest
     {
         return [
             'skill_type_name' => ['required','string'],
-            'skill_type_desc' => ['nullable']
+            'skill_type_marking' => ['required','integer','gt:0'],
+            'skill_type_desc' => ['nullable'],
         ];
     }
     public function messages(): array
     {
         return [
             'skill_type_name.required' => 'Ce champ est obligatoire.',
+            'skill_type_marking.gt' => "Veuillez fournir un nombre supérieur à 0."
         ];
     }
 }

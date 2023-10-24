@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {useForm} from '@inertiajs/vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import InputLabel from '@/Components/Forms/InputLabel.vue';
 import TextInput from '@/Components/Forms/TextInput.vue';
 import SubmitButton from '@/Components/Forms/SubmitButton.vue';
@@ -10,12 +10,18 @@ import InputError from "@/Components/Forms/InputError.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import RangePicker from "@/Components/Forms/RangePicker.vue";
+import NumberInput from "@/Components/Forms/NumberInput.vue";
+import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
+import {CheckIcon, ChevronUpDownIcon} from "@heroicons/vue/20/solid/index.js";
 
 const props = defineProps({
 	phase: {
 		type: Object,
 		default: {},
 	},
+    types: {
+        type: Array
+    }
 });
 
 let form;
@@ -24,13 +30,13 @@ const setForm = () => {
 		isEmpty(props.phase)
 			? {
 				phase_name: '',
-				phase1: [new Date(),new Date()],
-				phase2: [new Date(),new Date()],
+                phase_year: new Date().getFullYear(),
+                period_type_id: props.types[0].period_type_id
 			}
 			: {
 				phase_name: props.phase.phase_name || '',
-				phase1: [new Date(props.phase.phase_first_eval_start),new Date(props.phase.phase_first_eval_end)] || [new Date(),new Date()],
-				phase2: [new Date(props.phase.phase_second_eval_start),new Date(props.phase.phase_second_eval_end)] || [new Date(),new Date()],
+                phase_year: parseInt(props.phase.phase_year) || new Date().getFullYear(),
+                period_type_id: props.phase.period_type_id || props.types[0].period_type_id
 			}
 		);
 }
@@ -53,12 +59,13 @@ const title = computed(() => {
 });
 
 const pages = [
-	{ name: 'Phases d\'évaluation', href: route('phases.index'), current: false },
+	{ name: 'Phase d\'évaluation', href: route('phases.index'), current: false },
 	{ name: 'Nouveau', href: '#', current: true },
 ]
 </script>
 <template>
 	<AuthenticatedLayout>
+        <Head title="Nouvelle Phase d'évaluation"/>
 		<div class="px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs :pages="pages"/>
 			<div class="sm:flex sm:items-center">
@@ -85,28 +92,43 @@ const pages = [
 							</div>
 
 							<div class="col-span-full">
-								<InputLabel for="start_date" required>Période d'évaluation du premier semestre</InputLabel>
+								<InputLabel for="start_date" required>Année</InputLabel>
 								<div class="mt-2">
-									<RangePicker v-model="form.phase1" :invalid="form.errors.phase1 !== undefined || form.errors.phase_first_eval_end !== undefined" placeholder="01-06-20** au 30-06-20**"/>
+									<NumberInput v-model="form.phase_year" />
 								</div>
 								<div class="flex flex-col space-y-2">
-									<InputError :message="form.errors.phase1" />
-									<InputError :message="form.errors.phase_first_eval_start" />
-									<InputError :message="form.errors.phase_first_eval_end" />
+									<InputError :message="form.errors.phase_year" />
 								</div>
 							</div>
 
-							<div class="col-span-full">
-								<InputLabel for="end_date" required>Période d'évaluation du second semestre</InputLabel>
-								<div class="mt-2">
-									<RangePicker v-model="form.phase2" :invalid="form.errors.phase2 !== undefined || form.errors.phase_second_eval_end !== undefined" placeholder="01-12-20** au 31-12-20**"/>
-								</div>
-								<div class="flex flex-col space-y-2">
-									<InputError :message="form.errors.phase2"/>
-									<InputError :message="form.errors.phase_second_eval_start" />
-									<InputError :message="form.errors.phase_second_eval_end" />
-								</div>
-							</div>
+                            <div class="sm:col-span-4">
+                                <InputLabel>Fréquence des évaluations</InputLabel>
+                                <div class="mt-2">
+                                    <Listbox as="div" v-model="form.period_type_id">
+                                        <div class="relative mt-2">
+                                            <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 sm:text-sm sm:leading-6">
+                                                <span class="block truncate">{{ types.filter((type) => type.period_type_id === form.period_type_id)[0].period_type_name }}</span>
+                                                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </span>
+                                            </ListboxButton>
+                                            <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+                                                <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    <ListboxOption as="template" v-for="type in types" :key="type.period_type_id" :value="type.period_type_id" v-slot="{ active, selected }">
+                                                        <li :class="[active ? 'bg-purple-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                            <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.period_type_name }}</span>
+                                                            <span v-if="selected" :class="[active ? 'text-white' : 'text-purple-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                            <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                                                        </span>
+                                                        </li>
+                                                    </ListboxOption>
+                                                </ListboxOptions>
+                                            </transition>
+                                        </div>
+                                    </Listbox>
+                                </div>
+                            </div>
+
 						</div>
 					</div>
 					<div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">

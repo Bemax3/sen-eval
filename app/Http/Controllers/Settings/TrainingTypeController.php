@@ -68,7 +68,7 @@ class TrainingTypeController extends Controller
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
         } finally {
-            return redirect()->route('trainingTypes.edit', ['trainingType' => $id]);
+            return redirect()->back();
         }
     }
 

@@ -40,14 +40,14 @@
 									<Link
 										v-if="link.label === 'p'"
 										:href="link.url ? link.url : '#'"
-										class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-cyan-600 hover:text-white"
+										class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-purple-600 hover:text-white"
 										:key="link.label"
 										>Précedent</Link
 									>
 									<Link
 										v-if="link.label === 'n'"
 										:href="link.url ? link.url : '#'"
-										class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-cyan-600 hover:text-white"
+										class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-purple-600 hover:text-white"
 										:key="link.label"
 										>Suivant</Link
 									>
@@ -77,27 +77,27 @@
 											<Link
 												v-if="link.label === 'p'"
 												:href="link.url ? link.url : '#'"
-												class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-cyan-600 hover:text-white focus:z-20 focus:outline-offset-0"
+												class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-purple-600 hover:text-white focus:z-20 focus:outline-offset-0"
 												:key="link.label">
 												<span class="sr-only">Previous</span>
 												<ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
 											</Link>
-											<!-- Current: "z-10 bg-cyan-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600", Default: "" -->
+											<!-- Current: "z-10 bg-purple-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600", Default: "" -->
 											<Link
 												v-if="link.label !== 'p' && link.label !== 'n'"
-												:href="link.url"
+												:href="link.url ? link.url : '#'"
 												:key="link.label"
-												class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-cyan-600 hover:text-white focus:z-20 focus:outline-offset-0"
+												class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-purple-600 hover:text-white focus:z-20 focus:outline-offset-0"
 												:class="
 													link.active
-														? 'z-10 bg-cyan-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600'
+														? 'z-10 bg-purple-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600'
 														: ''
 												"
 												>{{ link.label }}</Link>
 											<Link
 												v-if="link.label === 'n'"
 												:href="link.url ? link.url : '#'"
-												class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-cyan-600 hover:text-white focus:z-20 focus:outline-offset-0"
+												class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-purple-600 hover:text-white focus:z-20 focus:outline-offset-0"
 												:key="link.label">
 												<span class="sr-only">Next</span>
 												<ChevronRightIcon class="h-5 w-5" aria-hidden="true" />

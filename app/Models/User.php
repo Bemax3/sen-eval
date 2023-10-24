@@ -5,15 +5,18 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements LdapAuthenticatable
+class User extends Authenticatable implements LdapAuthenticatable,Searchable
 {
-    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap;
+    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap,SoftDeletes;
 
     protected $table = 'users';
     protected $primaryKey = 'user_id';
@@ -23,8 +26,15 @@ class User extends Authenticatable implements LdapAuthenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_name',
+        'user_display_name',
         'user_login',
+        'user_matricule',
+        'user_first_name',
+        'user_last_name',
+        'user_title',
+        'user_gf',
+        'user_nr',
+        'user_image',
         'role_id',
         'email',
         'password',
@@ -58,7 +68,7 @@ class User extends Authenticatable implements LdapAuthenticatable
 
     public function role(): BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class,'role_id','role_id');
     }
 
     public function isRoot(): bool
@@ -74,5 +84,13 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function isUser(): bool
     {
         return $this->role_id === Role::USER;
+    }
+
+    public function getSearchResult(): SearchResult
+    {
+        return new SearchResult(
+            $this,
+            $this->user_id,
+        );
     }
 }

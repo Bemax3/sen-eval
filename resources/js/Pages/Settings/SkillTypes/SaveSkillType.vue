@@ -1,6 +1,6 @@
 <script setup>
 	import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-	import {useForm} from "@inertiajs/vue3";
+    import {Head, useForm} from "@inertiajs/vue3";
 	import InputLabel from "@/Components/Forms/InputLabel.vue";
 	import TextInput from "@/Components/Forms/TextInput.vue";
 	import TextArea from "@/Components/Forms/TextArea.vue";
@@ -10,6 +10,7 @@
 	import InputError from "@/Components/Forms/InputError.vue";
 	import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 	import FormIndications from "@/Components/Forms/FormIndications.vue";
+    import NumberInput from "@/Components/Forms/NumberInput.vue";
 
 	const props = defineProps({
 		skill: {
@@ -23,10 +24,12 @@
 		form = useForm((isEmpty(props.skill)) ?
 				{
 					skill_type_name: '',
+                    skill_type_marking: 10,
 					skill_type_desc: ''
 				} :
 				{
 					skill_type_name: props.skill.skill_type_name || '',
+					skill_type_marking: props.skill.skill_type_marking || 10,
 					skill_type_desc: props.skill.skill_type_desc || ''
 				}
 		);
@@ -56,6 +59,7 @@
 </script>
 <template>
 	<AuthenticatedLayout>
+        <Head title="Nouveau type de Compétence"/>
 		<div class="px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs :pages="pages"/>
 			<div class="sm:flex sm:items-center">
@@ -78,6 +82,18 @@
 										placeholder="Nom" autofocus/>
 							</div>
                             <InputError :message="form.errors.skill_type_name"/>
+						</div>
+
+                        <div class="sm:col-span-4">
+							<InputLabel for="marking" required>Barème</InputLabel>
+							<div class="mt-2">
+								<NumberInput
+										v-model="form.skill_type_marking"
+										:invalid="form.errors.skill_type_marking !== undefined"
+										id="marking"
+										placeholder="Barème"/>
+							</div>
+                            <InputError :message="form.errors.skill_type_marking"/>
 						</div>
 
 						<div class="col-span-full">

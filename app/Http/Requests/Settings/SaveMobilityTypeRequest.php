@@ -4,6 +4,7 @@ namespace App\Http\Requests\Settings;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SaveMobilityTypeRequest extends FormRequest
 {
@@ -23,7 +24,8 @@ class SaveMobilityTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mobility_type_name' => ['required','string'],
+            'mobility_type_name' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes'),'required','string'],
+            'mobility_type_is_active' => ['nullable'],
             'mobility_type_desc' => ['nullable']
         ];
     }

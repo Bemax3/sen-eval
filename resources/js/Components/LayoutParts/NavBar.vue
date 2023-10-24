@@ -27,11 +27,9 @@ const user = computed(() => usePage().props.auth.user);
         <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
 
         <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <form class="relative flex flex-1" action="#" method="GET">
-                <label for="search-field" class="sr-only">Search</label>
-                <MagnifyingGlassIcon class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400" aria-hidden="true" />
-                <input id="search-field" class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." type="search" name="search" />
-            </form>
+            <div class="relative flex flex-1 items-center justify-center">
+<!--                <h1 class="text-3xl text-purple-700 font-bold">Sen Évaluation</h1>-->
+            </div>
             <div class="flex items-center gap-x-4 lg:gap-x-6">
                 <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
                     <span class="sr-only">View notifications</span>
@@ -47,7 +45,7 @@ const user = computed(() => usePage().props.auth.user);
                         <span class="sr-only">Open user menu</span>
 <!--                        <img class="h-8 w-8 rounded-full bg-gray-50" src="" alt="" />-->
                         <span class="hidden lg:flex lg:items-center">
-                  <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{user.user_name}}</span>
+                  <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{user.user_display_name}}</span>
                   <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </span>
                     </MenuButton>

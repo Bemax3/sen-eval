@@ -15,7 +15,7 @@ const closeSidebar = () => {
 	sidebarOpen.value = false;
 }
 
-const notify = computed(() => usePage().props.flash.notify);
+const notification = computed(() => usePage().props.flash.notify);
 
 </script>
 
@@ -27,7 +27,7 @@ const notify = computed(() => usePage().props.flash.notify);
             <main class="py-10">
                 <div class="px-4 sm:px-6 lg:px-8">
                     <slot />
-					<Alert :notify="notify"/>
+					<Alert :notification="notification"/>
                 </div>
             </main>
         </div>

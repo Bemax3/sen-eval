@@ -67,7 +67,7 @@ class ClaimTypeController extends Controller
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
         } finally {
-            return redirect()->route('claimTypes.edit', ['claimType' => $id]);
+            return redirect()->back();
         }
     }
 

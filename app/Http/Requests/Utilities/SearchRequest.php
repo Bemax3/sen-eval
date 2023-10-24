@@ -23,7 +23,8 @@ class SearchRequest extends FormRequest
     {
         return [
             'keyword' => ['string', 'required'],
-            'fields' => ['array', 'required']
+            'fields' => ['array', 'required'],
+            'phase_id' => ['nullable']
         ];
     }
 }

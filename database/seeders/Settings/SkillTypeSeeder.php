@@ -14,8 +14,8 @@ class SkillTypeSeeder extends Seeder
     public function run(): void
     {
         $skill_types = [
-            ['skill_type_name' => 'Compétences Spécifiques'],
-            ['skill_type_name' => 'Compétences Générales'],
+            ['skill_type_name' => 'Compétences Spécifiques','skill_type_marking' => 30],
+            ['skill_type_name' => 'Compétences Générales','skill_type_marking' => 30],
         ];
 
         foreach ($skill_types as $skill_type) {

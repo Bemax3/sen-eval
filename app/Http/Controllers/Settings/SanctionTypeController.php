@@ -67,7 +67,7 @@ class SanctionTypeController extends Controller
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
         } finally {
-            return redirect()->route('sanctionTypes.edit', ['sanctionType' => $id]);
+            return redirect()->back();
         }
     }
 

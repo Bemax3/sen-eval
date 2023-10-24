@@ -67,7 +67,7 @@ class MobilityTypeController extends Controller
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
         } finally {
-            return redirect()->route('mobilityTypes.edit', ['mobilityType' => $id]);
+            return redirect()->back();
         }
     }
 

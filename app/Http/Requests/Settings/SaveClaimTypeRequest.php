@@ -4,6 +4,7 @@ namespace App\Http\Requests\Settings;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SaveClaimTypeRequest extends FormRequest
 {
@@ -23,7 +24,8 @@ class SaveClaimTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'claim_type_name' => ['required', 'string'],
+            'claim_type_name' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes') ,'required', 'string'],
+            'claim_type_is_active' => ['nullable'],
             'claim_type_desc' => ['nullable']
         ];
     }

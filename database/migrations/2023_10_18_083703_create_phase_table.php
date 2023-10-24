@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Settings\PeriodType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +16,9 @@ return new class extends Migration
             $table->increments('phase_id');
             $table->string('phase_name');
             $table->year('phase_year');
-            $table->datetime('phase_first_eval_start');
-            $table->datetime('phase_first_eval_end');
-            $table->datetime('phase_second_eval_start');
-            $table->datetime('phase_second_eval_end');
+            $table->unsignedInteger('period_type_id')->default(PeriodType::SEMIYEARLY);
+            $table->foreign('period_type_id')->references('period_type_id')->on('period_types');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

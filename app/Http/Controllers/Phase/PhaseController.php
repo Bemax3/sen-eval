@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Phase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Phase\SavePhaseRequest;
 use App\Http\Requests\Utilities\SearchRequest;
-use App\Models\Phase;
+use App\Models\Phase\Phase;
+use App\Models\Settings\PeriodType;
+use App\Services\Phase\PhaseService;
 use Carbon\Carbon;
 use Exception;
 use Inertia\Inertia;
@@ -13,6 +15,9 @@ use Spatie\Searchable\Search;
 
 class PhaseController extends Controller
 {
+
+    public function __construct(private readonly PhaseService $phaseService){}
+
     /**
      * Display a listing of the resource.
      */
@@ -23,12 +28,22 @@ class PhaseController extends Controller
         ]);
     }
 
+    public function show(string $id)
+    {
+        $phase = Phase::findOrFail($id);
+        return Inertia::render('Phase/PhaseSettings',[
+            'phase' => $phase,
+            'skills' => $phase->skills()->with('type')->paginate(10),
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return Inertia::render('Phase/SavePhase');
+        return Inertia::render('Phase/SavePhase',[
+            'types' => PeriodType::all()
+        ]);
     }
 
     /**
@@ -37,15 +52,7 @@ class PhaseController extends Controller
     public function store(SavePhaseRequest $request)
     {
         try {
-            $data = $request->validated();
-            Phase::create([
-                'phase_name' => $data['phase_name'],
-                'phase_year' => strval(Carbon::createFromDate($data['phase1'][0])->year),
-                'phase_first_eval_start' => Carbon::createFromDate($data['phase1'][0])->toDateTimeString(),
-                'phase_first_eval_end' => Carbon::createFromDate($data['phase1'][1])->toDateTimeString(),
-                'phase_second_eval_start' => Carbon::createFromDate($data['phase2'][0])->toDateTimeString(),
-                'phase_second_eval_end' => Carbon::createFromDate($data['phase2'][1])->toDateTimeString(),
-            ]);
+            $this->phaseService->create($request->validated());
             alert_success('Phase crée avec succès.');
         } catch (Exception $e) {
             alert_error('Erreur lors de la création de cette phase.');
@@ -60,7 +67,8 @@ class PhaseController extends Controller
     public function edit(string $id)
     {
         return Inertia::render('Phase/SavePhase', [
-            'phase' => Phase::findOrFail($id)
+            'phase' => Phase::findOrFail($id),
+            'types' => PeriodType::all()
         ]);
     }
 
@@ -70,16 +78,7 @@ class PhaseController extends Controller
     public function update(SavePhaseRequest $request, string $id)
     {
         try {
-            $phase = Phase::findOrFail($id);
-            $data = $request->validated();
-            $phase->update([
-                'phase_name' => $data['phase_name'],
-                'phase_year' => strval(Carbon::createFromDate($data['phase1'][0])->year),
-                'phase_first_eval_start' => Carbon::createFromDate($data['phase1'][0])->toDateTimeString(),
-                'phase_first_eval_end' => Carbon::createFromDate($data['phase1'][1])->toDateTimeString(),
-                'phase_second_eval_start' => Carbon::createFromDate($data['phase2'][0])->toDateTimeString(),
-                'phase_second_eval_end' => Carbon::createFromDate($data['phase2'][1])->toDateTimeString()
-            ]);
+            $this->phaseService->update(intval($id),$request->validated());
             alert_success('Phase modifié avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la modification de cette phase.');
@@ -94,7 +93,7 @@ class PhaseController extends Controller
     public function destroy(string $id)
     {
         try {
-            Phase::findOrFail(intval($id))->delete();
+            $this->phaseService->destroy(intval($id));
             alert_success('Phase supprimée avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la suppression de cette phase.');

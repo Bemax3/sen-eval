@@ -1,6 +1,6 @@
 <script setup>
 	import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-	import { useForm} from "@inertiajs/vue3";
+    import {Head, useForm} from "@inertiajs/vue3";
 	import InputLabel from "@/Components/Forms/InputLabel.vue";
 	import TextInput from "@/Components/Forms/TextInput.vue";
 	import TextArea from "@/Components/Forms/TextArea.vue";
@@ -57,6 +57,7 @@
 </script>
 <template>
 	<AuthenticatedLayout>
+        <Head title="Nouveau type de Mobilité"/>
 		<div class="px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs :pages="pages"/>
 			<div class="sm:flex sm:items-center">

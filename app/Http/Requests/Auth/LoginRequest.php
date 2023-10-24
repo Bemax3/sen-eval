@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
+use Hash;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -49,17 +51,42 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
+        if(!$this->authenticateFromDb()) {
+            $credentials = [
+                'samaccountname' => $this->get('user_login'),
+                'password' => $this->get('password'),
+            ];
 
-        if (! Auth::attempt($this->only('user_login', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-            throw ValidationException::withMessages([
-                'user_login' => trans('auth.failed'),
-            ]);
+            if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+                $this->throwLoginError();
+            }
         }
-
         RateLimiter::clear($this->throttleKey());
     }
 
+    public function authenticateFromDb(): bool
+    {
+        try {
+            $user = User::where('user_login',$this->get('user_login'))->firstOrFail();
+            if(Hash::check($this->get('password'),$user->password)) {
+                Auth::login($user);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }catch (\Exception) {
+            return false;
+        }
+    }
+
+    private function throwLoginError()
+    {
+        RateLimiter::hit($this->throttleKey());
+        throw ValidationException::withMessages([
+            'user_login' => trans('auth.failed'),
+        ]);
+    }
     /**
      * Ensure the login request is not rate limited.
      *
@@ -88,6 +115,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('user_login')).'|'.$this->ip());
     }
 }

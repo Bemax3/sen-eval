@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Models\Settings;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
+
+class PeriodType extends Model implements Searchable
+{
+    use SoftDeletes;
+    public const SEMIYEARLY = 1;
+    public const TRIMONTHLY = 2;
+    public const MONTHLY = 3;
+
+    protected $table = 'period_types';
+
+    protected $primaryKey = 'period_type_id';
+
+    protected $fillable = ['period_type_name','period_type_code','period_type_desc'];
+
+    public function getForeignKey()
+    {
+        return $this->primaryKey;
+    }
+    public function getSearchResult(): SearchResult
+    {
+        return new SearchResult(
+            $this,
+            $this->phase_name,
+        );
+    }
+
+    public static final function getIdByCode($code) {
+            return PeriodType::where('period_type_code',$code)->first()->period_type_id;
+    }
+}

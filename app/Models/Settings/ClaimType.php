@@ -4,14 +4,16 @@ namespace App\Models\Settings;
 
 use Illuminate\Database\Eloquent\Model;
 use Eloquent;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
 class ClaimType extends Model implements Searchable
 {
+    use SoftDeletes;
     protected $table = 'claim_types';
     protected $primaryKey = 'claim_type_id';
-    protected $fillable = ['claim_type_name', 'claim_type_desc'];
+    protected $fillable = ['claim_type_name', 'claim_type_desc','claim_type_is_active'];
 
     public function getForeignKey()
     {

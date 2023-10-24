@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Rating\SaveSkillRequest;
+use App\Http\Requests\Settings\SaveSkillRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Settings\Skill;
 use App\Models\Settings\SkillType;
@@ -72,7 +72,7 @@ class SkillController extends Controller
         } catch (Exception) {
             alert_error('Erreur lors de la modification de cette compétence.');
         } finally {
-            return redirect()->route('skills.edit', ['skill' => $id]);
+            return redirect()->back();
         }
     }
 

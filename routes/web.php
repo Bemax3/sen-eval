@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
+use App\Http\Controllers\Phase\PhaseSkillController;
+use App\Http\Controllers\Security\RoleController;
+use App\Http\Controllers\Security\UserController;
 use App\Http\Controllers\Settings\ClaimTypeController;
 use App\Http\Controllers\Settings\MobilityTypeController;
 use App\Http\Controllers\Settings\SanctionTypeController;
@@ -34,6 +38,9 @@ Route::group(['middleware' => ['auth', 'root']], function () {
     Route::post('/trainingTypes/search', [TrainingTypeController::class, 'search'])->name('trainingTypes.search');
     Route::post('/skills/search', [SkillController::class, 'search'])->name('skills.search');
     Route::post('/phases/search', [PhaseController::class, 'search'])->name('phases.search');
+    Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
+    Route::post('/roles/search', [RoleController::class, 'search'])->name('roles.search');
+    Route::post('/phaseSkills/search', [PhaseSkillController::class, 'search'])->name('phaseSkills.search');
     Route::resources([
         'claimTypes' => ClaimTypeController::class,
         'mobilityTypes' => MobilityTypeController::class,
@@ -41,9 +48,12 @@ Route::group(['middleware' => ['auth', 'root']], function () {
         'skillTypes' => SkillTypeController::class,
         'trainingTypes' => TrainingTypeController::class,
         'skills' => SkillController::class,
-        'phases' => PhaseController::class
+        'phases' => PhaseController::class,
+        'users' => UserController::class,
+        'roles' => RoleController::class,
+        'phaseSkills' => PhaseSkillController::class,
+        'periods' => PeriodsController::class
     ]);
 });
-
 
 require __DIR__ . '/auth.php';

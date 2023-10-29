@@ -13,6 +13,7 @@
 	import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 	import FormIndications from "@/Components/Forms/FormIndications.vue";
     import NumberInput from "@/Components/Forms/NumberInput.vue";
+    import Switch from "@/Components/Forms/Switch.vue";
 
 	const props = defineProps({
 	    skill: {
@@ -31,13 +32,15 @@
 	            skill_name: '',
 	            skill_marking: 5,
 	            skill_desc: '',
-	            skill_type_id: props.types[0].skill_type_id
+	            skill_type_id: props.types[0].skill_type_id,
+                skill_is_active: 1
 	        } :
 	        {
 	            skill_name: props.skill.skill_name || '',
                 skill_marking: props.skill.skill_marking || 5,
 	            skill_desc: props.skill.skill_desc || '',
-	            skill_type_id: props.skill.skill_type_id || props.types[0].skill_type_id
+	            skill_type_id: props.skill.skill_type_id || props.types[0].skill_type_id,
+                skill_is_active: props.skill.skill_is_active
 	        }
 	    );
 	}
@@ -61,7 +64,7 @@
 
 	const pages = [
 		{ name: 'Compétences', href: route('skills.index'), current: false },
-		{ name: 'Nouveau', href: '#', current: true },
+		{ name: isEmpty(props.skill) ? 'Nouveau' : 'Modifier', href: '#', current: true },
 	]
 
 </script>
@@ -123,7 +126,7 @@
                             <div class="mt-2">
                                 <Listbox as="div" v-model="form.skill_type_id">
                                     <div class="relative mt-2">
-                                        <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 sm:text-sm sm:leading-6">
+                                        <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6">
                                             <span class="block truncate">{{ types.filter((type) => type.skill_type_id === form.skill_type_id)[0].skill_type_name }}</span>
                                             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                                 <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -132,9 +135,9 @@
                                         <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                             <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 <ListboxOption as="template" v-for="type in types" :key="type.skill_type_id" :value="type.skill_type_id" v-slot="{ active, selected }">
-                                                    <li :class="[active ? 'bg-purple-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                    <li :class="[active ? 'bg-cyan-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                         <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.skill_type_name }}</span>
-                                                        <span v-if="selected" :class="[active ? 'text-white' : 'text-purple-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                        <span v-if="selected" :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                                             <CheckIcon class="h-5 w-5" aria-hidden="true" />
                                                         </span>
                                                     </li>
@@ -143,6 +146,12 @@
                                         </transition>
                                     </div>
                                 </Listbox>
+                            </div>
+                        </div>
+
+                        <div class="col-span-full">
+                            <div class="mt-2">
+                                <Switch v-model="form.skill_is_active" label="Actif" desc="Sera t-il possible de proposer ou demander ce type de formation lors des évaluations"/>
                             </div>
                         </div>
                     </div>

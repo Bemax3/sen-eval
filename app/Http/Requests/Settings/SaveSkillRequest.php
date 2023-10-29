@@ -15,7 +15,12 @@ class SaveSkillRequest extends FormRequest
     {
         return true;
     }
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,7 +33,8 @@ class SaveSkillRequest extends FormRequest
             'skill_desc' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes') ,'required','string'],
             'skill_marking' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes') ,'required','integer','gt:0'],
             'skill_type_id' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes') ,'required'],
-            'skill_is_active' => ['nullable']
+            'skill_is_active' => ['nullable'],
+            'updated_by' => ['sometimes']
         ];
     }
 

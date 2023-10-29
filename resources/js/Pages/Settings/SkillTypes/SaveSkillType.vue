@@ -54,7 +54,7 @@
 
 	const pages = [
 		{ name: 'Types de Compétence', href: route('skillTypes.index'), current: false },
-		{ name: 'Nouveau', href: '#', current: true },
+		{ name: isEmpty(props.skill) ? 'Nouveau' : 'Modifier', href: '#', current: true },
 	]
 </script>
 <template>

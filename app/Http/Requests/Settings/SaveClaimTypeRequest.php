@@ -16,6 +16,13 @@ class SaveClaimTypeRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +33,8 @@ class SaveClaimTypeRequest extends FormRequest
         return [
             'claim_type_name' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes') ,'required', 'string'],
             'claim_type_is_active' => ['nullable'],
-            'claim_type_desc' => ['nullable']
+            'claim_type_desc' => ['nullable'],
+            'updated_by' => ['sometimes']
         ];
     }
     public function messages(): array

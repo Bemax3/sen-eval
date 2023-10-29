@@ -10,6 +10,7 @@
 	import InputError from "@/Components/Forms/InputError.vue";
 	import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 	import FormIndications from "@/Components/Forms/FormIndications.vue";
+    import Switch from "@/Components/Forms/Switch.vue";
 
 	const props = defineProps({
 	    training: {
@@ -23,11 +24,13 @@
 	    form = useForm((isEmpty(props.training)) ?
 	        {
 				training_type_name: '',
-				training_type_desc: ''
+				training_type_desc: '',
+				training_type_is_active: 1,
 	        } :
 	        {
 				training_type_name: props.training.training_type_name || '',
-				training_type_desc: props.training.training_type_desc || ''
+				training_type_desc: props.training.training_type_desc || '',
+                training_type_is_active: props.training.training_type_is_active,
 	        }
 	    );
 	}
@@ -48,7 +51,7 @@
 	})
 	const pages = [
 		{ name: 'Types de Formation', href: route('trainingTypes.index'), current: false },
-		{ name: 'Nouveau', href: '#', current: true },
+		{ name: isEmpty(props.training) ? 'Nouveau' : 'Modifier', href: '#', current: true },
 	]
 </script>
 <template>
@@ -89,6 +92,11 @@
                                 />
                             </div>
 <!--                            <p class="mt-3 text-sm leading-6 text-gray-600">Optionnel</p>-->
+                        </div>
+                        <div class="col-span-full">
+                            <div class="mt-2">
+                                <Switch v-model="form.training_type_is_active" label="Actif" desc="Sera t-il possible de proposer ou demander ce type de formation lors des évaluations"/>
+                            </div>
                         </div>
                     </div>
                 </div>

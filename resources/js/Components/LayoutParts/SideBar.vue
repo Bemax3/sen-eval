@@ -6,7 +6,7 @@ import {
     XMarkIcon,
     ChevronRightIcon,
     CalendarDaysIcon,
-    UsersIcon, LockClosedIcon
+    UsersIcon, LockClosedIcon, BuildingOfficeIcon, DocumentCheckIcon, UserGroupIcon, ChartBarIcon, IdentificationIcon
 } from "@heroicons/vue/24/outline/index.js";
 import {
 	Dialog,
@@ -38,9 +38,19 @@ const currentRoute = getCurrentRoute();
 
 let navigation = [
     { name: 'Dashboard', href: route('home'), icon: HomeIcon, current: currentRoute === 'home' },
+    { name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents','agent-goals'].includes(currentRoute) },
+    { name: 'Mes Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals' },
+    { name: 'Mes Evaluations', href: route('home'), icon: ChartBarIcon, current: currentRoute === 'home' },
+    { name: 'Mon Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile' },
 ]
 if ([1,2].includes(user.value.role_id)) {
     navigation.push(
+        {
+            name: 'Organisations',
+            icon: BuildingOfficeIcon,
+            current: ['orgs'].includes(currentRoute),
+            href: route('orgs.index')
+        },
 		{
 			name: 'Phase d\'évaluation',
 			icon: CalendarDaysIcon,
@@ -107,7 +117,7 @@ defineEmits(['closeSidebar'])
                             </div>
                         </TransitionChild>
                         <!-- Sidebar component, swap this element with another sidebar if you like -->
-                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-purple-800 px-6 pb-4">
+                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-800 px-6 pb-4">
                             <div class="flex h-16 shrink-0 items-center">
                                 <img class="h-8 w-auto" src="../../assets/logo1637145113.png" alt="Your Company" />
                             </div>
@@ -116,12 +126,12 @@ defineEmits(['closeSidebar'])
                                     <li>
                                         <ul role="list" class="-mx-2 space-y-1">
                                             <li v-for="item in navigation" :key="item.name">
-                                                <Link v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-purple-500 text-white' : 'text-white hover:text-white hover:bg-purple-500', 'group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']">
+                                                <Link v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']">
                                                     <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                                                     {{ item.name }}
                                                 </Link>
 	                                            <Disclosure as="div" v-else v-slot="{ open }">
-		                                            <DisclosureButton :class="[item.current ? 'bg-purple-500 text-white' : 'text-white hover:text-white hover:bg-purple-500', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
+		                                            <DisclosureButton :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
 			                                            <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
 			                                            {{ item.name }}
 			                                            <ChevronRightIcon :class="[open ? 'rotate-90 text-white' : 'text-gray-300', 'ml-auto h-5 w-5 shrink-0']" aria-hidden="true" />
@@ -129,7 +139,7 @@ defineEmits(['closeSidebar'])
 		                                            <DisclosurePanel as="ul" class="mt-1 px-2">
 			                                            <li v-for="subItem in item.children" :key="subItem.name">
 				                                            <!-- 44px -->
-				                                            <DisclosureButton as="a" :href="subItem.href" :class="[subItem.current ? 'bg-purple-500 text-white' : 'text-white hover:text-white hover:bg-purple-500', 'block rounded-md py-2 pr-2 pl-9 font-semibold text-base leading-6 text-gray-700']">{{ subItem.name }}</DisclosureButton>
+				                                            <DisclosureButton as="a" :href="subItem.href" :class="[subItem.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'block rounded-md py-2 pr-2 pl-9 font-semibold text-base leading-6 text-gray-700']">{{ subItem.name }}</DisclosureButton>
 			                                            </li>
 		                                            </DisclosurePanel>
 	                                            </Disclosure>
@@ -149,7 +159,7 @@ defineEmits(['closeSidebar'])
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-purple-700 px-3 pb-4">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-800 px-3 pb-4">
             <div class="flex h-24 shrink-0 items-center justify-center">
 	            <img class="h-24 w-auto" src="../../assets/logo1637145113.png" alt="Your Company" />
             </div>
@@ -158,12 +168,12 @@ defineEmits(['closeSidebar'])
                     <li>
                         <ul role="list" class="-mx-2 space-y-1">
                             <li v-for="item in navigation" :key="item.name">
-                                <Link v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-purple-500 text-white' : 'text-white hover:text-white hover:bg-purple-500', ' group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']">
+                                <Link v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', ' group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']">
                                     <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                                     {{ item.name }}
                                 </Link>
 	                            <Disclosure as="div" v-else v-slot="{ open }">
-		                            <DisclosureButton :class="[item.current ? 'bg-purple-500 text-white' : 'text-white hover:text-white hover:bg-purple-500', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
+		                            <DisclosureButton :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
 			                            <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
 			                            {{ item.name }}
 			                            <ChevronRightIcon :class="[open ? 'rotate-90 text-white' : 'text-gray-300', 'ml-auto h-5 w-5 shrink-0']" aria-hidden="true" />
@@ -171,7 +181,7 @@ defineEmits(['closeSidebar'])
 		                            <DisclosurePanel as="ul" class="mt-1 px-2 space-y-1">
 			                            <li v-for="subItem in item.children" :key="subItem.name">
 				                            <!-- 44px -->
-				                            <DisclosureButton as="a" :href="subItem.href" :class="[subItem.current ? 'bg-purple-500 text-white' : 'text-white hover:text-white hover:bg-purple-500', 'block rounded-md py-2 pr-2 pl-9 text-base font-semibold leading-6 text-gray-700']">{{ subItem.name }}</DisclosureButton>
+				                            <DisclosureButton as="a" :href="subItem.href" :class="[subItem.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'block rounded-md py-2 pr-2 pl-9 text-base font-semibold leading-6 text-gray-700']">{{ subItem.name }}</DisclosureButton>
 			                            </li>
 		                            </DisclosurePanel>
 	                            </Disclosure>

@@ -11,7 +11,7 @@ use Spatie\Searchable\SearchResult;
 
 class Role extends Model implements Searchable
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
 
     public const ROOT = 1;
     public const ADMIN = 2;
@@ -19,7 +19,7 @@ class Role extends Model implements Searchable
 
     protected $table = 'roles';
     protected $primaryKey = 'role_id';
-    protected $fillable = ['role_code', 'role_desc', 'role_name'];
+    protected $fillable = ['role_code', 'role_desc', 'role_name','updated_by'];
 
     public function getForeignKey()
     {

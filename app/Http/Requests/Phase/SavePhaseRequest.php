@@ -14,6 +14,12 @@ class SavePhaseRequest extends FormRequest
     {
         return true;
     }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +30,8 @@ class SavePhaseRequest extends FormRequest
         return [
             'phase_name' => ['required'],
             'phase_year' => ['required','digits:4','integer','min:' . date('Y')],
-            'period_type_id' => ['required']
+            'period_type_id' => ['required'],
+            'updated_by' => ['sometimes']
         ];
     }
 

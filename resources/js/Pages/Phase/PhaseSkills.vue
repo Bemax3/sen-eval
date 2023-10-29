@@ -24,6 +24,8 @@ const props = defineProps({
     },
 
 })
+
+
 const pagination = computed(() => getPagination(props.skills));
 const displayedData = ref(props.skills.data);
 
@@ -82,8 +84,7 @@ watch(()=> props.skills,
 );
 
 const pages = [
-    { name: 'Phase d\'évaluation', href: route('phases.index'), current: false },
-    { name: 'Paramètres de Phase', href: '#', current: false },
+    { name: 'Phases d\'évaluation', href: route('phases.index'), current: false },
     { name: 'Compétences', href: '#', current: true },
 ]
 
@@ -104,14 +105,14 @@ onBeforeUpdate(()=> inputs.value = [])
             </div>
             <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                 <Link
-                    :href="route('phases.show',{phase: phase.phase_id})"
-                    class="inline-flex gap-x-1.5 rounded-md bg-purple-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                    :href="route('phaseSkills.show',{phaseSkill: phase.phase_id})"
+                    class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                     as="button">
                     Compétences
                 </Link>
                 <Link
                     :href="route('periods.show',{period: phase.phase_id})"
-                    class="inline-flex gap-x-1.5 rounded-md bg-purple-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                    class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                     as="button">
                     Périodes d'évaluation
                 </Link>
@@ -157,18 +158,18 @@ onBeforeUpdate(()=> inputs.value = [])
                                 {{ skill.pivot.phase_skill_marking }}
                             </template>
                             <template v-else>
-                                <input :ref="el => {inputs[skill.skill_id] = el}" type="text" :value="skill.pivot.phase_skill_marking" class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                                <input :ref="el => {inputs[skill.skill_id] = el}" type="text" :value="skill.pivot.phase_skill_marking" class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" />
                             </template>
                             <p class="ml-0.5">
                                 points
                             </p>
                             <template v-if="!editMark(skill.skill_id)">
-                                <button @click="edits.find(s => s.id === skill.skill_id).edit = true" type="button" class="rounded-full bg-purple-600 p-2 text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600">
+                                <button @click="edits.find(s => s.id === skill.skill_id).edit = true" type="button" class="rounded-full bg-cyan-600 p-2 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                                     <PencilSquareIcon class="h-5 w-5" aria-hidden="true" />
                                 </button>
                             </template>
                             <template v-else>
-                                <button @click="updateMark(skill.skill_id)" type="button" class="rounded-full bg-purple-600 p-2 text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600">
+                                <button @click="updateMark(skill.skill_id)" type="button" class="rounded-full bg-cyan-600 p-2 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                                     <CheckIcon class="h-5 w-5" aria-hidden="true"/>
                                 </button>
                             </template>

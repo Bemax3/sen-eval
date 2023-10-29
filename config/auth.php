@@ -71,12 +71,10 @@ return [
             'scopes' => [],
             'database' => [
                 'model' => App\Models\User::class,
-                'sync_passwords' => false,
-                'sync_attributes' => \App\Ldap\AttributeHandler::class
-//                'sync_existing' => [
-//                    'user_login' => 'uid',
-//                ],
-//                'password_column' => 'password'
+                'sync_passwords' => true,
+                'sync_attributes' => \App\Ldap\AttributeHandler::class,
+                'sync_existing' => \App\Ldap\ExistingAttributeHandler::class,
+                'password_column' => 'password'
             ],
         ],
         // 'users' => [

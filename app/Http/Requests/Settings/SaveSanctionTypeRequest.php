@@ -15,7 +15,12 @@ class SaveSanctionTypeRequest extends FormRequest
     {
         return true;
     }
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +31,8 @@ class SaveSanctionTypeRequest extends FormRequest
         return [
             'sanction_type_name' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes'),'required','string'],
             'sanction_type_is_active' => ['nullable'],
-            'sanction_type_desc' => ['nullable']
+            'sanction_type_desc' => ['nullable'],
+            'updated_by' => ['sometimes']
         ];
     }
     public function messages(): array

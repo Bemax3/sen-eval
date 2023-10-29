@@ -15,7 +15,12 @@ class SavePhaseSkillRequest extends FormRequest
     {
         return true;
     }
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +31,8 @@ class SavePhaseSkillRequest extends FormRequest
         return [
             'skill_id' => ['required'],
             'phase_skill_marking' => [Rule::when($this->method() === $this::METHOD_PUT,'sometimes'),'required','integer','gt:0'],
-            'phase_skill_is_active' => ['nullable']
+            'phase_skill_is_active' => ['nullable'],
+            'updated_by' => ['sometimes']
         ];
     }
 

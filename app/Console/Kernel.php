@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\User;
+use App\Oracle\ImportOrgsFromOracle;
 use App\Oracle\ImportUsersFromOracle;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -17,7 +18,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->call(new ImportUsersFromOracle())->weekly();
+         $schedule->call(new ImportOrgsFromOracle())->everyMinute();
+         $schedule->call(new ImportUsersFromOracle())->everyMinute();
     }
 
     /**

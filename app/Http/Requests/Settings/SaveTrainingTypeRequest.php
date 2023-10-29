@@ -15,7 +15,12 @@ class SaveTrainingTypeRequest extends FormRequest
     {
         return true;
     }
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +31,8 @@ class SaveTrainingTypeRequest extends FormRequest
         return [
             'training_type_name' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes'),'required','string'],
             'training_type_is_active' => ['nullable'],
-            'training_type_desc' => ['nullable']
+            'training_type_desc' => ['nullable'],
+            'updated_by' => ['sometimes']
         ];
     }
     public function messages(): array

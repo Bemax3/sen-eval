@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Evaluation\Goal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +18,7 @@ use Spatie\Searchable\SearchResult;
 
 class User extends Authenticatable implements LdapAuthenticatable,Searchable
 {
-    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap;
 
     protected $table = 'users';
     protected $primaryKey = 'user_id';
@@ -26,6 +28,7 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'user_display_name',
         'user_login',
         'user_matricule',
@@ -33,11 +36,18 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
         'user_last_name',
         'user_title',
         'user_gf',
+        'user_gf_prom_date',
         'user_nr',
+        'user_nr_prom_date',
         'user_image',
+        'n1_id',
+        'group_id',
+        'user_responsibility_center',
         'role_id',
+        'org_id',
         'email',
         'password',
+        'deleted_by'
     ];
 
     /**
@@ -70,6 +80,33 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
     {
         return $this->belongsTo(Role::class,'role_id','role_id');
     }
+
+    public function org(): BelongsTo {
+        return $this->belongsTo(Organisation::class,'org_id','org_id');
+    }
+    public function group(): BelongsTo {
+        return $this->belongsTo(Group::class,'group_id','group_id');
+    }
+
+    public function n1(): BelongsTo {
+        return $this->belongsTo(User::class,'n1_id','user_id');
+    }
+    public function agents(): HasMany
+    {
+        return $this->hasMany(User::class,'n1_id','user_id');
+    }
+
+    public function goals(): HasMany
+    {
+        return $this->hasMany(Goal::class,'evaluated_id','user_id');
+    }
+
+    public function agents_goals(): HasMany
+    {
+        return $this->hasMany(Goal::class,'evaluator_id','user_id');
+    }
+
+//    public function parent_org: Belongs
 
     public function isRoot(): bool
     {

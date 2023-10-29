@@ -10,10 +10,9 @@ use Spatie\Searchable\SearchResult;
 
 class ClaimType extends Model implements Searchable
 {
-    use SoftDeletes;
     protected $table = 'claim_types';
     protected $primaryKey = 'claim_type_id';
-    protected $fillable = ['claim_type_name', 'claim_type_desc','claim_type_is_active'];
+    protected $fillable = ['claim_type_name', 'claim_type_desc','claim_type_is_active','updated_by'];
 
     public function getForeignKey()
     {

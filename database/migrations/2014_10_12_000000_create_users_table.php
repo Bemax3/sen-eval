@@ -22,18 +22,23 @@ return new class extends Migration
             $table->string('user_responsibility_center')->nullable();
             $table->string('user_title')->nullable();
             $table->string('user_gf')->nullable();
+            $table->dateTime('user_gf_prom_date')->nullable();
             $table->string('user_nr')->nullable();
+            $table->dateTime('user_nr_prom_date')->nullable();
             $table->string('password')->nullable();
 //            $table->binary('user_image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedInteger('n1_id')->nullable();
             $table->unsignedInteger('group_id')->nullable();
             $table->unsignedInteger('org_id')->nullable();
             $table->unsignedInteger('role_id')->default(\App\Models\Role::USER);
-            $table->foreign('group_id')->references('group_id')->on('groups');
-            $table->foreign('org_id')->references('org_id')->on('organisations');
-            $table->foreign('role_id')->references('role_id')->on('roles');
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('n1_id')->references('user_id')->on('users')->restrictOnDelete();
+            $table->foreign('group_id')->references('group_id')->on('groups')->restrictOnDelete();
+            $table->foreign('org_id')->references('org_id')->on('organisations')->restrictOnDelete();
+            $table->foreign('role_id')->references('role_id')->on('roles')->restrictOnDelete();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

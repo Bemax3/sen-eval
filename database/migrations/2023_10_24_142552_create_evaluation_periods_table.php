@@ -16,8 +16,9 @@ return new class extends Migration
             $table->datetime('evaluation_period_start');
             $table->datetime('evaluation_period_end');
             $table->unsignedInteger('phase_id');
-            $table->foreign('phase_id')->references('phase_id')->on('phases');
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('phase_id')->references('phase_id')->on('phases')->restrictOnDelete();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
     }

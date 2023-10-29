@@ -11,10 +11,9 @@ use Spatie\Searchable\SearchResult;
 
 class SkillType extends Model implements Searchable
 {
-    use SoftDeletes;
     protected $table = 'skill_types';
     protected $primaryKey = 'skill_type_id';
-    protected $fillable = ['skill_type_name', 'skill_type_desc','skill_type_marking'];
+    protected $fillable = ['skill_type_name', 'skill_type_desc','skill_type_marking','updated_by'];
 
     public function getForeignKey()
     {

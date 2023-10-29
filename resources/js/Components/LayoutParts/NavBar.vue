@@ -9,11 +9,11 @@ import {computed} from "vue";
 defineEmits(['openSidebar']);
 
 
-const userNavigation = [
-    { name: 'Mon profile', href: '#' },
-]
-
 const user = computed(() => usePage().props.auth.user);
+
+const userNavigation = [
+    { name: 'Mon profil', href: route('profile.index') },
+]
 
 </script>
 
@@ -27,8 +27,8 @@ const user = computed(() => usePage().props.auth.user);
         <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
 
         <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <div class="relative flex flex-1 items-center justify-center">
-<!--                <h1 class="text-3xl text-purple-700 font-bold">Sen Évaluation</h1>-->
+            <div class="relative flex flex-1 items-center">
+                <h1 class="text-xl text-cyan-700 font-bold">Sen Evaluation</h1>
             </div>
             <div class="flex items-center gap-x-4 lg:gap-x-6">
                 <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
@@ -45,7 +45,7 @@ const user = computed(() => usePage().props.auth.user);
                         <span class="sr-only">Open user menu</span>
 <!--                        <img class="h-8 w-8 rounded-full bg-gray-50" src="" alt="" />-->
                         <span class="hidden lg:flex lg:items-center">
-                  <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{user.user_display_name}}</span>
+                  <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{user.user_first_name + ' ' + user.user_last_name}}</span>
                   <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </span>
                     </MenuButton>

@@ -10,7 +10,6 @@ use Spatie\Searchable\SearchResult;
 
 class PeriodType extends Model implements Searchable
 {
-    use SoftDeletes;
     public const SEMIYEARLY = 1;
     public const TRIMONTHLY = 2;
     public const MONTHLY = 3;
@@ -19,7 +18,7 @@ class PeriodType extends Model implements Searchable
 
     protected $primaryKey = 'period_type_id';
 
-    protected $fillable = ['period_type_name','period_type_code','period_type_desc'];
+    protected $fillable = ['period_type_name','period_type_code','period_type_desc','updated_by'];
 
     public function getForeignKey()
     {

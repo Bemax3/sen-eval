@@ -10,10 +10,9 @@ use Spatie\Searchable\SearchResult;
 
 class TrainingType extends Model implements Searchable
 {
-    use SoftDeletes;
     protected $table = 'training_types';
     protected $primaryKey = 'training_type_id';
-    protected $fillable = ['training_type_name', 'training_type_desc','training_type_is_active'];
+    protected $fillable = ['training_type_name', 'training_type_desc','training_type_is_active','updated_by'];
 
     public function getForeignKey()
     {

@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('phase_name');
             $table->year('phase_year');
             $table->unsignedInteger('period_type_id')->default(PeriodType::SEMIYEARLY);
-            $table->foreign('period_type_id')->references('period_type_id')->on('period_types');
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('period_type_id')->references('period_type_id')->on('period_types')->restrictOnDelete();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@ const props = defineProps({
 		type: String
 	}
 })
+
 const open = ref(false);
 
 watch(() => props.opened, (next) => {

@@ -10,13 +10,11 @@ use Spatie\Searchable\SearchResult;
 
 class EvaluationPeriod extends Model implements Searchable
 {
-    use SoftDeletes;
-
     protected $table = 'evaluation_periods';
 
     protected $primaryKey = 'evaluation_period_id';
 
-    protected $fillable = ['evaluation_period_end','evaluation_period_start','phase_id'];
+    protected $fillable = ['evaluation_period_end','evaluation_period_start','phase_id','updated_by'];
 
     public function getForeignKey()
     {

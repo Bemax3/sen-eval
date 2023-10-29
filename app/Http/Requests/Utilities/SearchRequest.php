@@ -24,7 +24,8 @@ class SearchRequest extends FormRequest
         return [
             'keyword' => ['string', 'required'],
             'fields' => ['array', 'required'],
-            'phase_id' => ['nullable']
+            'phase_id' => ['sometimes','nullable'],
+            'org_id' => ['sometimes','nullable']
         ];
     }
 }

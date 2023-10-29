@@ -14,7 +14,12 @@ class SaveSkillTypeRequest extends FormRequest
     {
         return true;
     }
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,6 +31,7 @@ class SaveSkillTypeRequest extends FormRequest
             'skill_type_name' => ['required','string'],
             'skill_type_marking' => ['required','integer','gt:0'],
             'skill_type_desc' => ['nullable'],
+            'updated_by' => ['sometimes']
         ];
     }
     public function messages(): array

@@ -28,14 +28,6 @@ class PhaseController extends Controller
         ]);
     }
 
-    public function show(string $id)
-    {
-        $phase = Phase::findOrFail($id);
-        return Inertia::render('Phase/PhaseSettings',[
-            'phase' => $phase,
-            'skills' => $phase->skills()->with('type')->paginate(10),
-        ]);
-    }
     /**
      * Show the form for creating a new resource.
      */

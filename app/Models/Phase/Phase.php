@@ -12,12 +12,10 @@ use Spatie\Searchable\SearchResult;
 
 class Phase extends Model implements Searchable
 {
-
-    use SoftDeletes;
     protected $table = 'phases';
 
     protected $primaryKey = 'phase_id';
-    protected $fillable = ['phase_name','phase_year','period_type_id'];
+    protected $fillable = ['phase_name','phase_year','period_type_id','updated_by'];
 
     public function getForeignKey()
     {

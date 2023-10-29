@@ -8,13 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PhaseSkill extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'phase_skills';
 
     protected $primaryKey = 'phase_skill_id';
 
-    protected $fillable = ['phase_id','skill_id','phase_skill_marking','phase_skill_is_active'];
+    protected $fillable = ['phase_id','skill_id','phase_skill_marking','phase_skill_is_active','updated_by'];
 
     public function getForeignKey()
     {

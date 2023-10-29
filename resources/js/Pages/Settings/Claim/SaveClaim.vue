@@ -10,6 +10,7 @@
     import InputError from "@/Components/Forms/InputError.vue";
 	import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 	import FormIndications from "@/Components/Forms/FormIndications.vue";
+    import Switch from "@/Components/Forms/Switch.vue";
 
 	const props = defineProps({
 		claim: {
@@ -25,10 +26,12 @@
 			? {
 				claim_type_name: '',
 				claim_type_desc: '',
+                claim_type_is_active: 1,
 			}
 			: {
 				claim_type_name: props.claim.claim_type_name || '',
 				claim_type_desc: props.claim.claim_type_desc || '',
+                claim_type_is_active: props.claim.claim_type_is_active
 			}
 		);
 	}
@@ -51,7 +54,7 @@
 
 	const pages = [
 		{ name: 'Types de Réclamation', href: route('claimTypes.index'), current: false },
-		{ name: 'Nouveau', href: '#', current: true },
+		{ name: isEmpty(props.claim) ? 'Nouveau' : 'Modifier', href: '#', current: true },
 	]
 </script>
 <template>
@@ -93,6 +96,11 @@
 							</div>
 							<!--                            <p class="mt-3 text-sm leading-6 text-gray-600">Optionnel</p>-->
 						</div>
+                        <div class="col-span-full">
+                            <div class="mt-2">
+                                <Switch v-model="form.claim_type_is_active" label="Actif" desc="Sera t-il possible de proposer ou demander ce type de formation lors des évaluations"/>
+                            </div>
+                        </div>
 					</div>
 				</div>
 				<div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">

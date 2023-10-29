@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('mobility_type_name');
             $table->string('mobility_type_desc')->nullable();
             $table->boolean('mobility_type_is_active')->default(false);
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
 
@@ -25,7 +26,8 @@ return new class extends Migration
             $table->string('training_type_name');
             $table->string('training_type_desc')->nullable();
             $table->boolean('training_type_is_active')->default(true);
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
 
@@ -34,7 +36,8 @@ return new class extends Migration
             $table->string('sanction_type_name');
             $table->string('sanction_type_desc')->nullable();
             $table->boolean('sanction_type_is_active')->default(true);
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
 
@@ -43,7 +46,8 @@ return new class extends Migration
             $table->string('claim_type_name');
             $table->string('claim_type_desc')->nullable();
             $table->boolean('claim_type_is_active')->default(true);
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
 
@@ -53,7 +57,8 @@ return new class extends Migration
             $table->integer('skill_type_marking');
             $table->string('skill_type_desc')->nullable();
 //            $table->boolean('claim_type_is_active')->default(true);
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
 
@@ -64,8 +69,9 @@ return new class extends Migration
             $table->integer('skill_marking');
             $table->boolean('skill_is_active')->default(true);
             $table->unsignedInteger('skill_type_id');
-            $table->foreign('skill_type_id')->references('skill_type_id')->on('skill_types');
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('skill_type_id')->references('skill_type_id')->on('skill_types')->restrictOnDelete();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
 
@@ -74,7 +80,8 @@ return new class extends Migration
             $table->string('period_type_name');
             $table->string('period_type_code');
             $table->string('period_type_desc')->nullable();
-            $table->softDeletes();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
     }

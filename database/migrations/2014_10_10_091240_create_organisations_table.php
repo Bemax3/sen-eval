@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('organisations', function (Blueprint $table) {
             $table->increments('org_id');
             $table->string('org_name');
-            $table->string('org_code');
-            $table->unsignedInteger('parent_id');
-            $table->foreign('parent_id')->references('org_id')->on('organisations');
-            $table->softDeletes();
+            $table->string('org_type')->nullable();
+            $table->string('org_responsibility_center')->nullable();
+            $table->unsignedInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('org_id')->on('organisations')->restrictOnDelete();
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                "vtd-primary": colors.amber,
+                "vtd-primary": colors.cyan,
             }
         },
 

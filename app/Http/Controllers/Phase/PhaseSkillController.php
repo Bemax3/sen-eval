@@ -11,17 +11,27 @@ use App\Models\Settings\Skill;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Spatie\Searchable\ModelSearchAspect;
 use Spatie\Searchable\Search;
 
 class PhaseSkillController extends Controller
 {
+    public function show(string $id)
+    {
+        $phase = Phase::findOrFail($id);
+        return Inertia::render('Phase/PhaseSkills',[
+            'phase' => $phase,
+            'skills' => $phase->skills()->with('type')->paginate(10),
+        ]);
+    }
+
     public function update(SavePhaseSkillRequest $request, string $id)
     {
         try {
             $phase = Phase::findOrFail($id);
             $data = $request->validated();
-            $phase->skills()->updateExistingPivot($data['skill_id'],$request->only('phase_skill_is_active','phase_skill_marking'));
+            $phase->skills()->updateExistingPivot($data['skill_id'],$request->only('phase_skill_is_active','phase_skill_marking','updated_by'));
             $phase->save();
             alert_success('Phase modifié avec succès.');
         } catch (Exception) {

@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('phase_skills', function (Blueprint $table) {
             $table->increments('phase_skill_id');
-            $table->unsignedInteger('phase_id');
-            $table->unsignedInteger('skill_id');
             $table->integer('phase_skill_marking');
             $table->boolean('phase_skill_is_active')->default(true);
-            $table->foreign('phase_id')->references('phase_id')->on('phases');
-            $table->foreign('skill_id')->references('skill_id')->on('skills');
-            $table->softDeletes();
+            $table->unsignedInteger('phase_id');
+            $table->unsignedInteger('skill_id');
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('phase_id')->references('phase_id')->on('phases')->restrictOnDelete();
+            $table->foreign('skill_id')->references('skill_id')->on('skills')->restrictOnDelete();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
     }

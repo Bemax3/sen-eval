@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\SaveSkillRequest;
 use App\Http\Requests\Utilities\SearchRequest;
+use App\Models\Phase\Phase;
 use App\Models\Settings\Skill;
 use App\Models\Settings\SkillType;
 use Exception;
@@ -40,7 +41,10 @@ class SkillController extends Controller
     public function store(SaveSkillRequest $request)
     {
         try {
-            Skill::create($request->validated());
+            $skill = Skill::create($request->validated());
+            foreach (Phase::all() as $phase) {
+                $phase->skills()->attach($skill->skill_id,['phase_skill_marking' => $skill->skill_marking]);
+            }
             alert_success('Compétence crée avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la création de cette compétence.');

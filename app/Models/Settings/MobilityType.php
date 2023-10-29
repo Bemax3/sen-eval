@@ -11,10 +11,9 @@ use Spatie\Searchable\SearchResult;
 
 class MobilityType extends Model implements Searchable
 {
-    use SoftDeletes;
     protected $table = 'mobility_types';
     protected $primaryKey = 'mobility_type_id';
-    protected $fillable = ['mobility_type_name', 'mobility_type_desc','mobility_type_is_active'];
+    protected $fillable = ['mobility_type_name', 'mobility_type_desc','mobility_type_is_active','updated_by'];
 
     public function getForeignKey()
     {

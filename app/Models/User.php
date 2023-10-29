@@ -47,7 +47,7 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
         'org_id',
         'email',
         'password',
-        'deleted_by'
+        'updated_by'
     ];
 
     /**

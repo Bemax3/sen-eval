@@ -18,9 +18,14 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Security/Roles/RolesList', [
-            'roles' => Role::paginate(10)
-        ]);
+        try {
+            return Inertia::render('Security/Roles/RolesList', [
+                'roles' => Role::paginate(10)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
 //    /**

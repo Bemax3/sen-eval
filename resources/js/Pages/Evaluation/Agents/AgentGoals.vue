@@ -40,6 +40,7 @@ watch(() => search.keyword,
 );
 
 const pages = [
+    { name: 'Mes Agents', href: route('agents.index'), current: false },
     { name: 'Objectifs', href: '#', current: true },
 ]
 

@@ -42,6 +42,7 @@
 	    keyword: '',
 	    fields: ['training_type_name'],
 	});
+
 	watch(
 	    () => search.keyword,
 	    function (next) {

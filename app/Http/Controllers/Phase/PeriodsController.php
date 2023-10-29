@@ -23,18 +23,28 @@ class PeriodsController extends Controller
      */
     public function create(Request $request)
     {
-        return Inertia::render('Phase/SavePhasePeriod',[
-            'phase' => Phase::findOrFail($request->get('phase')),
-        ]);
+        try{
+            return Inertia::render('Phase/SavePhasePeriod',[
+                'phase' => Phase::findOrFail($request->get('phase')),
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     public function show(string $id)
     {
-        $phase = Phase::findOrFail($id);
-        return Inertia::render('Phase/PhasePeriods',[
-            'phase' => $phase,
-            'periods' => $phase->periods()->paginate(10)
-        ]);
+        try {
+            $phase = Phase::findOrFail($id);
+            return Inertia::render('Phase/PhasePeriods',[
+                'phase' => $phase,
+                'periods' => $phase->periods()->paginate(10)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -62,11 +72,16 @@ class PeriodsController extends Controller
      */
     public function edit(string $id)
     {
-        $period = EvaluationPeriod::findOrFail($id);
-        return Inertia::render('Phase/SavePhasePeriod', [
-            'phase' => Phase::findOrFail($period->phase_id),
-            'period' => $period
-        ]);
+        try {
+            $period = EvaluationPeriod::findOrFail($id);
+            return Inertia::render('Phase/SavePhasePeriod', [
+                'phase' => Phase::findOrFail($period->phase_id),
+                'period' => $period
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

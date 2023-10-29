@@ -50,9 +50,14 @@ class MobilityTypeController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Settings/Mobility/SaveMobility', [
-            'mobility' => MobilityType::findOrFail($id)
-        ]);
+        try {
+            return Inertia::render('Settings/Mobility/SaveMobility', [
+                'mobility' => MobilityType::findOrFail($id)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

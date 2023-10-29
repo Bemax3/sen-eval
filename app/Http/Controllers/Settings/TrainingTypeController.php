@@ -51,9 +51,14 @@ class TrainingTypeController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Settings/Training/SaveTraining', [
-            'training' => TrainingType::findOrFail($id)
-        ]);
+        try {
+            return Inertia::render('Settings/Training/SaveTraining', [
+                'training' => TrainingType::findOrFail($id)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

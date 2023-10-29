@@ -23,9 +23,14 @@ class PhaseController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Phase/PhasesList', [
-            'phases' => Phase::paginate(10)
-        ]);
+        try {
+            return Inertia::render('Phase/PhasesList', [
+                'phases' => Phase::paginate(10)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -33,9 +38,14 @@ class PhaseController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Phase/SavePhase',[
-            'types' => PeriodType::all()
-        ]);
+        try {
+            return Inertia::render('Phase/SavePhase',[
+                'types' => PeriodType::all()
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -58,10 +68,15 @@ class PhaseController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Phase/SavePhase', [
-            'phase' => Phase::findOrFail($id),
-            'types' => PeriodType::all()
-        ]);
+        try {
+            return Inertia::render('Phase/SavePhase', [
+                'phase' => Phase::findOrFail($id),
+                'types' => PeriodType::all()
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

@@ -50,9 +50,14 @@ class ClaimTypeController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Settings/Claim/SaveClaim', [
-            'claim' => ClaimType::findOrFail($id)
-        ]);
+        try {
+            return Inertia::render('Settings/Claim/SaveClaim', [
+                'claim' => ClaimType::findOrFail($id)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

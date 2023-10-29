@@ -19,11 +19,16 @@ class PhaseSkillController extends Controller
 {
     public function show(string $id)
     {
-        $phase = Phase::findOrFail($id);
-        return Inertia::render('Phase/PhaseSkills',[
-            'phase' => $phase,
-            'skills' => $phase->skills()->with('type')->paginate(10),
-        ]);
+        try {
+            $phase = Phase::findOrFail($id);
+            return Inertia::render('Phase/PhaseSkills',[
+                'phase' => $phase,
+                'skills' => $phase->skills()->with('type')->paginate(10),
+            ]);
+        } catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     public function update(SavePhaseSkillRequest $request, string $id)

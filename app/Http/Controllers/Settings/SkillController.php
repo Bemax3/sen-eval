@@ -58,10 +58,15 @@ class SkillController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Settings/Skill/SaveSkill', [
-            'skill' => Skill::with('type')->findOrFail($id),
-            'types' => SkillType::all()
-        ]);
+        try {
+            return Inertia::render('Settings/Skill/SaveSkill', [
+                'skill' => Skill::with('type')->findOrFail($id),
+                'types' => SkillType::all()
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

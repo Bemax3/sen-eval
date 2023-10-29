@@ -20,16 +20,26 @@ class OrgController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Security/Organisations/OrgList', [
-            'orgs' => Organisation::with('parent')->paginate(10)
-        ]);
+        try {
+            return Inertia::render('Security/Organisations/OrgList', [
+                'orgs' => Organisation::with('parent')->paginate(10)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     public function show(string $id) {
-        return Inertia::render('Security/Organisations/Org',[
-            'org' => Organisation::findOrFail($id),
-            'agents' => User::with('org')->whereRelation('org','org_id','=',$id)->orWhereRelation('org','parent_id','=',$id)->paginate(10)
-        ]);
+        try {
+            return Inertia::render('Security/Organisations/Org',[
+                'org' => Organisation::findOrFail($id),
+                'agents' => User::with('org')->whereRelation('org','org_id','=',$id)->orWhereRelation('org','parent_id','=',$id)->paginate(10)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 //    /**
 //     * Show the form for creating a new resource.
@@ -61,10 +71,15 @@ class OrgController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Security/Organisations/SaveOrg', [
-            'org' => Organisation::with('parent')->findOrFail($id),
-            'parents' => Organisation::all()
-        ]);
+        try {
+            return Inertia::render('Security/Organisations/SaveOrg', [
+                'org' => Organisation::with('parent')->findOrFail($id),
+                'parents' => Organisation::all()
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

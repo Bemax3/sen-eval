@@ -4,7 +4,7 @@ import Datatable from '@/Components/Common/Tables/Datatable.vue';
 import TableHeading from '@/Components/Common/Tables/TableHeading.vue';
 import TableData from '@/Components/Common/Tables/TableData.vue';
 import {computed, reactive, ref, watch} from 'vue';
-import {Head, Link, router, useForm} from '@inertiajs/vue3';
+import {Head, Link, router, useForm, usePage} from '@inertiajs/vue3';
 import {getPagination, hasData} from '@/helpers/helper.js';
 import EmptyState from '@/Components/Common/EmptyState.vue';
 import axios from 'axios';
@@ -40,11 +40,15 @@ const query = ref('')
 const filteredN1 = ref(others)
 
 const form = useForm({
-    agent_id: -1
+    agent_id: null,
 })
 
 const addAgent = () => {
-    form.put(route('agents.update',{agent: props.agent.user_id}))
+    form.post(route('agents.store'),{
+        onError: err => {
+            usePage().props.flash.notify = {type: 'error',message: err.agent_id}
+        },
+    })
 }
 
 watch(() => query.value, function (next) {
@@ -112,6 +116,7 @@ const pages = [
 <!--                                <ComboboxLabel class="block text-sm font-medium leading-6 text-gray-900">Agent</ComboboxLabel>-->
                                 <div class="relative">
                                     <ComboboxInput
+                                        :class="form.errors.agent_id !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"
                                         :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0];
                                                             return selected ? selected.user_matricule + ' ' + selected.user_first_name + ' ' + selected.user_last_name : 'Chercher un agent'}"
                                         class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" @change="search.keyword = query = $event.target.value; "  />
@@ -122,9 +127,9 @@ const pages = [
                                         <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" :value="n1.user_id" as="template" v-slot="{ active, selected }">
                                             <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600 text-white' : 'text-gray-900']">
                                                 <div class="flex">
-                                                                    <span :class="['truncate', selected && 'font-semibold']">
-                                                                        {{ n1?.user_matricule + ' ' + n1?.user_first_name + ' ' + n1?.user_last_name }}
-                                                                    </span>
+                                                    <span :class="['truncate', selected && 'font-semibold']">
+                                                        {{ n1?.user_matricule + ' ' + n1?.user_first_name + ' ' + n1?.user_last_name }}
+                                                    </span>
                                                 </div>
                                                 <span v-if="selected" :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">
                                                     <CheckIcon class="h-5 w-5" aria-hidden="true" />
@@ -180,7 +185,7 @@ const pages = [
                 </table>
                 <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé. </div>
             </Datatable>
-            <EmptyState v-else />
+            <EmptyState v-else title="Vous n'avez aucun agent a évaluer." message="Trouver vos agents á l'aide de la barre de recherche plus haut"/>
         </div>
     </AuthenticatedLayout>
 </template>

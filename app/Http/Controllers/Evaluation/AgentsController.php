@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Evaluation;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Evaluation\SaveAgentRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\User;
+use App\Services\Security\UserService;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,28 +16,43 @@ use Spatie\Searchable\Search;
 class AgentsController extends Controller
 {
     public function index() {
-        $user = User::findOrFail(\Auth::id());
-        return Inertia::render('Evaluation/Agents/AgentsList',[
-            'agents' => $user->agents()->with('org')->paginate(10),
-            'others' => User::where('user_id','!=',$user->user_id)->whereHas('org',function ($query) use ($user) {
-                $query->where('organisations.org_id','=',$user->org->org_id)
-                    ->orWhere('organisations.org_id','=',$user->org->parent_id)
-                    ->orWhere('organisations.parent_id','=',$user->org->parent_id);
-                })->limit(30)->get()
-        ]);
+        try {
+            $user = User::findOrFail(\Auth::id());
+            return Inertia::render('Evaluation/Agents/AgentsList',[
+                'agents' => $user->agents()->with('org')->paginate(10),
+                'others' =>(new UserService())->findSameOrgUsers($user)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     public function show(string $id)
     {
-        $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
-        return Inertia::render('Security/Users/UserProfile', [
-            'user' => $user,
-            'n1s' => User::where('user_id','!=',$user->user_id)->whereHas('org',function ($query) use ($user) {
-                $query->where('organisations.org_id','=',$user->org->org_id)
-                    ->orWhere('organisations.org_id','=',$user->org->parent_id)
-                    ->orWhere('organisations.parent_id','=',$user->org->parent_id);
-            })->get()
-        ]);
+        try {
+            $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
+            return Inertia::render('Security/Users/UserProfile', [
+                'user' => $user,
+                'n1s' => (new UserService())->findSameOrgUsers($user)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
+    }
+
+    public function store(SaveAgentRequest $request) {
+        try {
+            (new UserService())->setUserN1($request->validated(),\Auth::id());
+            alert_success('Agent Enregistré avec succès.');
+        }catch (Exception $e) {
+            ray($e);
+            alert_error('Erreur lors de l\'enregistrement de l\'agent.');
+        } finally {
+            return redirect()->route('agents.index');
+        }
+//        ray($request->validated());
     }
 
     public function search(SearchRequest $request)

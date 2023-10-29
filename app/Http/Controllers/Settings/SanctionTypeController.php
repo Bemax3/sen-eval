@@ -50,9 +50,14 @@ class SanctionTypeController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Settings/Sanction/SaveSanction', [
-            'sanction' => SanctionType::findOrFail($id)
-        ]);
+        try {
+            return Inertia::render('Settings/Sanction/SaveSanction', [
+                'sanction' => SanctionType::findOrFail($id)
+            ]);
+        }catch (Exception) {
+            alert_error('Resource Introuvable.');
+            return redirect()->back();
+        }
     }
 
     /**

@@ -22,7 +22,7 @@ const notification = computed(() => usePage().props.flash.notify);
 <template>
     <div>
         <SideBar :opened="sidebarOpen" @close-sidebar="closeSidebar"/>
-        <div class="lg:pl-72">
+        <div class="lg:pl-64">
             <NavBar @open-sidebar="openSidebar" />
             <main class="py-10">
                 <div class="px-4 sm:px-6 lg:px-8">

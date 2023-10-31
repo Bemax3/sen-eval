@@ -1,10 +1,13 @@
 <script setup>
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head, Link, router, usePage} from "@inertiajs/vue3";
+import {Head, Link, router, useForm, usePage} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
-import {CheckIcon, ChevronDoubleRightIcon, PencilSquareIcon} from "@heroicons/vue/20/solid/index.js";
-import {ref} from "vue";
+import {CheckIcon, ChevronDoubleRightIcon, ChevronUpDownIcon, PencilSquareIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
+import {ref, watch} from "vue";
+import InputLabel from "@/Components/Forms/InputLabel.vue";
+import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
+import SubmitButton from "@/Components/Forms/SubmitButton.vue";
 
 const props = defineProps({
     evaluation: {
@@ -13,6 +16,9 @@ const props = defineProps({
     agent: {
         type: Object,
     },
+    specific_skill_types: {
+
+    },
     specific_skills: {
 	    type: Object,
     },
@@ -20,6 +26,7 @@ const props = defineProps({
         type: Object
     }
 })
+
 
 const pages = [
     { name: 'Mes Agents', href: route('agents.index'), current: false },
@@ -35,12 +42,18 @@ const tabs = [
     { name: 'Sanctions', href: '#', current: false },
 ]
 
+const form = useForm({
+    evaluation_id: props.evaluation.evaluation_id,
+    phase_skill_id: props.specific_skill_types[0].pivot.phase_skill_id,
+})
 
 const edits = ref([]);
 const inputs = ref([]);
 
 const setupEdits = () => {
+	edits.value = [];
     props.skills.forEach(item => edits.value.push({id: item.evaluation_skill_id,edit: item.evaluation_skill_mark <= 0 }))
+    props.specific_skills.forEach(item => edits.value.push({id: item.evaluation_skill_id,edit: item.evaluation_skill_mark <= 0 }))
 }
 
 setupEdits();
@@ -51,19 +64,37 @@ const editMark = (id) => {
 const updateMark = (id,marking) => {
     const input = inputs.value[id];
     edits.value.find(s => s.id === id).edit = false;
+
     router.put(
         route('evaluationSkill.update',{evaluationSkill: id}),
         {evaluation_skill_mark : input.value, evaluation_skill_marking: marking},
         {
+			onSuccess: () => setupEdits(),
             onError: err => {
+				setupEdits();
+				console.log(err)
                 usePage().props.flash.notify = {type: 'error',message: err.evaluation_skill_mark}
             },
-            onSuccess: () => search.keyword = ''
+            preserveScroll: true
         }
     );
 
 }
 
+const addSpecificSkill = () => {
+	form.post(route('evaluationSkill.store'),{
+		onError: err => {
+			setupEdits();
+			usePage().props.flash.notify = {type: 'error',message: err.phase_skill_id}
+		},
+		onSuccess: () => setupEdits(),
+		preserveScroll: true
+    })
+}
+
+watch(() => props.specific_skills, function (next) {
+	setupEdits();
+},{immediate: true})
 
 </script>
 
@@ -73,9 +104,18 @@ const updateMark = (id,marking) => {
         <Breadcrumbs :pages="pages"/>
 	    <div class="sm:flex sm:items-center">
 		    <div class="sm:flex-auto">
-			    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Evaluation de {{agent.user_first_name + ' ' + agent.user_last_name}}. Année : {{evaluation.phase.phase_year}}</h1>
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">
+                        Evaluation de {{agent.user_first_name + ' ' + agent.user_last_name}}. Année : {{evaluation.phase.phase_year}}
+                    </h1>
+                    <span class="flex-shrink-0">
+                        <span class="flex h-20 w-20 items-center justify-center rounded-full border-4 border-cyan-600">
+                            <span class="text-cyan-600 text-2xl font-bold">{{ evaluation.evaluation_mark }}</span>
+                        </span>
+                    </span>
+                </div>
 			    <p class="mt-2 text-sm text-gray-700">
-				    Evaluation de {{agent.user_first_name + ' ' + agent.user_last_name}}. Matricule : {{agent.user_matricule}}. Année : {{evaluation.phase.phase_year}}
+				    Evalué par {{evaluation.evaluator.user_first_name + ' ' + evaluation.evaluator.user_last_name}}. Matricule : {{evaluation.evaluator.user_matricule}}.
 			    </p>
 		    </div>
 	    </div>
@@ -94,26 +134,63 @@ const updateMark = (id,marking) => {
                 </div>
             </div>
         </div>
-	    <div class="px-4 sm:px-6 lg:px-8">
-        <div role="list" class="divide-y divide-cyan-600">
+
+        <div role="list">
 	        <div class="px-4 py-4 sm:px-0">
-		        <div class="border-b border-cyan-600 bg-white px-4 py-5 sm:px-6">
-			        <h3 class="text-base font-semibold leading-6 text-gray-900">Compétences Spécifiques</h3>
+		        <div class="pr-4 py-5 sm:pr-6">
+			        <InputLabel>Ajouter une compétence spécifique á évaluer</InputLabel>
+			        <form class="mt-5 sm:flex sm:items-center" @submit.prevent="addSpecificSkill">
+				        <div class="w-full sm:max-w-xl">
+					        <Listbox as="div" v-model="form.phase_skill_id">
+						        <div class="relative">
+							        <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6">
+								        <span class="block truncate">{{ specific_skill_types.filter((type) => type.pivot.phase_skill_id === form.phase_skill_id)[0].skill_name }}</span>
+								        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                                    <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                                </span>
+							        </ListboxButton>
+							        <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+								        <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+									        <ListboxOption as="template" v-for="type in specific_skill_types" :key="type.skill_id" :value="type.pivot.phase_skill_id" v-slot="{ active, selected }">
+										        <li :class="[active ? 'bg-cyan-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+											        <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.skill_name }}</span>
+											        <span v-if="selected" :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                                <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                                                            </span>
+										        </li>
+									        </ListboxOption>
+								        </ListboxOptions>
+							        </transition>
+						        </div>
+					        </Listbox>
+				        </div>
+				        <SubmitButton type="submit" class="mt-2 sm:ml-3 sm:mt-0 sm:w-auto">Ajouter</SubmitButton>
+			        </form>
+		        </div>
+		        <div class="border-b border-cyan-600 bg-white pr-4 py-5 sm:pr-6 flex justify-between items-center">
+			        <h3 class="text-base font-semibold leading-6 text-gray-900">
+                        Compétences Spécifiques
+                    </h3>
+			        <span class="flex-shrink-0">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                            <span class="text-cyan-600">{{ evaluation.specific_skills_sum_evaluation_skill_mark }}</span>
+                        </span>
+                    </span>
 		        </div>
 		        <ul role="list" class="divide-y divide-gray-100">
 			        <li v-for="skill in specific_skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
 				        <div class="min-w-0">
 					        <div class="flex items-start gap-x-3">
 						        <p class="text-lg font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
-						        <!--                                <p :class="[statuses[project.status], 'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset']">{{ project.status }}</p>-->
+						        <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
 					        </div>
-					        <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+					        <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
 						        <p class="whitespace-break-spaces">
 							        {{ skill.phase_skill.skill.skill_desc }}
 						        </p>
-						        <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
-							        <circle cx="1" cy="1" r="1" />
-						        </svg>
+<!--						        <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">-->
+<!--							        <circle cx="1" cy="1" r="1" />-->
+<!--						        </svg>-->
 						        <!--                                <p class="truncate">Created by {{ project.createdBy }}</p>-->
 					        </div>
 				        </div>
@@ -123,7 +200,7 @@ const updateMark = (id,marking) => {
 							        {{ skill.evaluation_skill_mark }}
 						        </template>
 						        <template v-else>
-							        <input :ref="el => {inputs[skill.evaluation_skill_id] = el}" type="text" :value="skill.evaluation_skill_mark" class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" />
+							        <input :ref="el => {inputs[skill.evaluation_skill_id] = el}" maxlength="2" type="text" :value="skill.evaluation_skill_mark" class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" />
 						        </template>
 						        <p class="ml-0.5 font-bold">
 							        / {{ skill.phase_skill.phase_skill_marking }}
@@ -138,29 +215,37 @@ const updateMark = (id,marking) => {
 								        <CheckIcon class="h-5 w-5" aria-hidden="true"/>
 							        </button>
 						        </template>
+						        <button @click="router.delete(route('evaluationSkill.destroy',{evaluationSkill: skill.evaluation_skill_id}))" type="button" class="rounded-full bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+							        <TrashIcon class="h-5 w-5" aria-hidden="true" />
+						        </button>
 					        </div>
 				        </div>
 			        </li>
 		        </ul>
 	        </div>
             <div class="px-4 py-4 sm:px-0">
-                <div class="border-b border-cyan-600 bg-white px-4 py-5 sm:px-6">
+                <div class="border-b border-cyan-600 bg-white pr-4 py-5 sm:pr-6 flex justify-between">
                     <h3 class="text-base font-semibold leading-6 text-gray-900">Compétences Générales</h3>
+	                <span class="flex-shrink-0">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                            <span class="text-cyan-600">{{ evaluation.general_skills_sum_evaluation_skill_mark }}</span>
+                        </span>
+                    </span>
                 </div>
                 <ul role="list" class="divide-y divide-gray-100">
                     <li v-for="skill in skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
                         <div class="min-w-0">
                             <div class="flex items-start gap-x-3">
                                 <p class="text-lg font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
-<!--                                <p :class="[statuses[project.status], 'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset']">{{ project.status }}</p>-->
+                                <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
                             </div>
-                            <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+                            <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
                                 <p class="whitespace-break-spaces">
                                     {{ skill.phase_skill.skill.skill_desc }}
                                 </p>
-                                <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
-                                    <circle cx="1" cy="1" r="1" />
-                                </svg>
+<!--                                <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">-->
+<!--                                    <circle cx="1" cy="1" r="1" />-->
+<!--                                </svg>-->
 <!--                                <p class="truncate">Created by {{ project.createdBy }}</p>-->
                             </div>
                         </div>
@@ -170,7 +255,7 @@ const updateMark = (id,marking) => {
                                     {{ skill.evaluation_skill_mark }}
                                 </template>
                                 <template v-else>
-                                    <input :ref="el => {inputs[skill.evaluation_skill_id] = el}" type="text" :value="skill.evaluation_skill_mark" class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" />
+                                    <input :ref="el => {inputs[skill.evaluation_skill_id] = el}" maxlength="2" type="text" :value="skill.evaluation_skill_mark" class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" />
                                 </template>
                                 <p class="ml-0.5 font-bold">
                                     / {{ skill.phase_skill.phase_skill_marking }}
@@ -194,7 +279,7 @@ const updateMark = (id,marking) => {
                 <!-- Your content -->
             </div>
         </div>
-        </div>
+
     </AuthenticatedLayout>
 </template>
 

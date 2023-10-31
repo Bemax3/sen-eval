@@ -72,8 +72,7 @@ class AgentsGoalsController extends Controller
         try {
             $this->goalService->update($request->validated(),$id,$goal_id);
             alert_success('Objectif Enregistré avec succès');
-        }catch (\Exception $e) {
-            ray($e);
+        }catch (\Exception) {
             alert_error('Erreur lors de l\'enregistrement de l\'objectif');
         } finally {
             return redirect()->back();
@@ -85,7 +84,6 @@ class AgentsGoalsController extends Controller
 //        ray($agent_id);
         try {
             $data = $request->validated();
-        ray($request->validated());
             $searchResults = (new Search())
                 ->registerModel(Goal::class, function  (ModelSearchAspect $aspect) use ($data,$agent_id) {
                     foreach ($data['fields'] as $field) $aspect->addSearchableAttribute($field);

@@ -6,6 +6,7 @@ use App\Models\Evaluation\Evaluation;
 use App\Models\Evaluation\EvaluationSkill;
 use App\Models\Group;
 use App\Models\Phase\PhaseSkill;
+use App\Models\Settings\SkillType;
 use App\Models\User;
 
 class EvaluationService
@@ -29,6 +30,26 @@ class EvaluationService
             'evaluation_id' => $evaluation->evaluation_id,
             'phase_skill_id' => $skill->phase_skill_id
         ]);
+    }
+
+    public function raiseMark($evaluation_id,$mark): void
+    {
+        $eval = Evaluation::findOrFail($evaluation_id);
+        $eval->increment('evaluation_mark', $mark);
+    }
+    public function lowerMark($evaluation_id,$mark): void
+    {
+        $eval = Evaluation::findOrFail($evaluation_id);
+        $eval->decrement('evaluation_mark',$mark);
+    }
+
+    public function checkMarking($evaluation_id): bool
+    {
+        $eval = Evaluation::with('specific_skills')->findOrFail($evaluation_id);
+        $total = 0;
+        foreach ($eval->specific_skills as $skill) $total += ($skill->phaseSkill->phase_skill_marking);
+        if($total >= SkillType::SPECIFIC_MARKING) return false;
+        return true;
     }
 
 }

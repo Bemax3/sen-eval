@@ -14,10 +14,35 @@ class EvaluationSkillController extends Controller
 
     public function update(SaveEvaluationSkillRequest $request,string $id) {
         try {
-            $this->evaluationSkillService->update($request->validated(),$id);
-            alert_success('Note Enregistré.');
+            switch ($this->evaluationSkillService->update($request->validated(),$id)) {
+                case 'exceed': alert_error('Le total des notes pour cette section a atteint 30 points'); break;
+                default: alert_success('Note Enregistré.');
+            }
         }catch (\Exception) {
             alert_error('Erreur lors l\'enregistrement de cette note.');
+        }
+    }
+
+    public function store(SaveEvaluationSkillRequest $request) {
+        try {
+            switch ($this->evaluationSkillService->create($request->validated())) {
+                case 'exceed': alert_error('Le barème a atteint 30 points'); break;
+                case 'exist': alert_error('Vous avez déjá ajouter cette compétence.'); break;
+                default: alert_success('Compétence Ajouté.');
+            }
+        }catch (\Exception) {
+            alert_error('Erreur lors l\'ajout de cette compétence.');
+        }
+
+    }
+
+    public function destroy(string $id) {
+        try {
+            $this->evaluationSkillService->delete($id);
+            alert_success('Compétence retiré avec succès.');
+        }catch (\Exception) {
+            alert_error('Erreur lors de la suppression de cette compétence.');
+
         }
     }
 }

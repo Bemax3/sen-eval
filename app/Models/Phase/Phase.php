@@ -32,7 +32,7 @@ class Phase extends Model implements Searchable
     }
 
     public function skills(): BelongsToMany {
-        return  $this->belongsToMany(Skill::class,'phase_skills','phase_id','skill_id')->withPivot('phase_skill_marking','phase_skill_is_active');
+        return  $this->belongsToMany(Skill::class,'phase_skills','phase_id','skill_id')->withPivot('phase_skill_marking','phase_skill_is_active','phase_skill_id');
     }
 
     public function specific_skills(): BelongsToMany {

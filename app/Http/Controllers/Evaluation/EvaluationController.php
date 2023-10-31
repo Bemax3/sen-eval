@@ -32,11 +32,12 @@ class EvaluationController extends Controller
     }
 
     public function show(string $id,string $evaluation_id) {
-        $evaluation = Evaluation::with('phase')->findOrFail($evaluation_id);
+        $evaluation = Evaluation::with('phase','evaluator')->withSum('specific_skills','evaluation_skill_mark')->withSum('general_skills','evaluation_skill_mark')->findOrFail($evaluation_id);
         $agent = User::with('org')->findOrFail($id);
         return Inertia::render('Evaluation/Evaluation/EvaluationSkills',[
             'evaluation' => $evaluation,
             'agent' => $agent,
+            'specific_skill_types' => $evaluation->phase->specific_skills()->get(),
             'specific_skills' => $evaluation->specific_skills()->get(),
             'skills' => $evaluation->general_skills()->get(),
         ]);

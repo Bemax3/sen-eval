@@ -28,7 +28,7 @@ const userNavigation = [
 
         <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div class="relative flex flex-1 items-center">
-                <h1 class="text-xl text-cyan-700 font-bold">Sen Evaluation</h1>
+<!--                <h1 class="text-xl text-cyan-700 font-bold">Sen Evaluation</h1>-->
             </div>
             <div class="flex items-center gap-x-4 lg:gap-x-6">
                 <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">

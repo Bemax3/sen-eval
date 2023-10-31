@@ -19,8 +19,9 @@ class AgentsController extends Controller
         try {
             $user = User::findOrFail(\Auth::id());
             return Inertia::render('Evaluation/Agents/AgentsList',[
-                'agents' => $user->agents()->with('org')->paginate(10),
-                'others' =>(new UserService())->findSameOrgUsers($user)
+                'agents' => $user->agents()->paginate(10),
+                'others' => User::limit(30)->get(),
+//                    (new UserService())->findSameOrgUsers($user)
             ]);
         }catch (Exception) {
             alert_error('Resource Introuvable.');

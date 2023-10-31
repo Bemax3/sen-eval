@@ -32,7 +32,7 @@ const pages = [
 
 let form;
 const setForm = () => {
-    form = useForm({goal_is_accepted: 1});
+    form = useForm(isEmpty(props.goal) ? {goal_is_accepted: 1} : {goal_is_accepted: props.goal.goal_is_accepted});
 }
 
 setForm();
@@ -105,11 +105,16 @@ const desc = 'Accepter ou Contester un objectif.';
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-span-full">
+                                <div class="mt-2">
+                                    <Switch v-model="form.goal_is_accepted" label="Accepté / Contesté" desc="Accepter cette objectif ou le contesté ?"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
                         <FormIndications />
-                        <SubmitButton :disabled="form.processing">Accepter cet objectif</SubmitButton>
+                        <SubmitButton :disabled="form.processing">Enregistrer</SubmitButton>
                     </div>
                 </form>
             </div>

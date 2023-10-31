@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Evaluation;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Evaluation\SaveGoalRequest;
+use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Evaluation\Goal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use PHPUnit\Framework\MockObject\Exception;
+use Spatie\Searchable\ModelSearchAspect;
+use Spatie\Searchable\Search;
 
 class GoalsController extends Controller
 {
     public function index() {
         return Inertia::render('Evaluation/Goals/GoalsList',[
-            'goals' => Goal::where('evaluated_id', '=',\Auth::id())->paginate(10)
+            'goals' => Goal::where('evaluated_id', '=',\Auth::id())->with('phase')->paginate(10)
         ]);
     }
 
@@ -42,5 +45,27 @@ class GoalsController extends Controller
 
     }
 
-
+    public function search(SearchRequest $request)
+    {
+//        ray($agent_id);
+        try {
+            $data = $request->validated();
+            ray($request->validated());
+            $searchResults = (new Search())
+                ->registerModel(Goal::class, function (ModelSearchAspect $aspect) use ($data) {
+                    foreach ($data['fields'] as $field) $aspect->addSearchableAttribute($field);
+                    $aspect->where('evaluated_id', '=', \Auth::id());
+                    $aspect->with('phase');
+                })
+                ->limitAspectResults(20)
+                ->search($data['keyword']);
+            $result = [];
+            foreach ($searchResults as $sr) {
+                $result[] = $sr->searchable;
+            }
+            return response()->json($result);
+        } catch (Exception) {
+            return response()->json();
+        }
+    }
 }

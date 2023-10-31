@@ -32,7 +32,7 @@ class AgentsController extends Controller
     {
         try {
             $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
-            return Inertia::render('Security/Users/UserProfile', [
+            return Inertia::render('Security/Profile/Profile', [
                 'user' => $user,
                 'n1s' => (new UserService())->findSameOrgUsers($user)
             ]);

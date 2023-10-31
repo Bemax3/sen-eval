@@ -39,19 +39,8 @@ class DatabaseSeeder extends Seeder
              'user_display_name' => 'Root',
              'email' => 'root@example.com',
              'user_login' => 'root',
+             'user_matricule' => 'root@seneval',
              'role_id' => Role::ROOT
-         ]);
-         User::factory()->create([
-             'user_display_name' => 'User',
-             'email' => 'user@example.com',
-             'user_login' => 'user',
-             'role_id' => Role::USER
-         ]);
-         User::factory()->create([
-             'user_display_name' => 'Admin',
-             'email' => 'admin@example.com',
-             'user_login' => 'admin',
-             'role_id' => Role::ADMIN
          ]);
 //
 //         User::factory()->create([

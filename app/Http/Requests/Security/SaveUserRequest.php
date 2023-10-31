@@ -17,8 +17,9 @@ class SaveUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'n1_id' => ['required'],
-            'updated_by' => ['required']
+            'n1_id' => ['sometimes'],
+            'role_id' => ['sometimes'],
+            'updated_by' => ['required'],
         ];
     }
 

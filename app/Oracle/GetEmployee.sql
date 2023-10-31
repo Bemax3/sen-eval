@@ -4,6 +4,7 @@ SELECT
     pap.first_name PRENOM,
     pap.last_name NOM,
     org.name ORGANISATION,
+    org.organization_id org_id,
     org.attribute4 CENTRE_DE_RESPONSABILITE,
     -- pj.name             FONCTION ,
     HR_GENERAL.DECODE_POSITION_LATEST_NAME(PAAF.POSITION_ID) Poste,
@@ -36,7 +37,7 @@ WHERE
         psp.spinal_point_id = psps.spinal_point_id AND
         psps.step_id = pspp.step_id AND
         pap.employee_number = :matri AND
-        Substr(org.attribute4 ,1,2) = 'SI' AND
+--         Substr(org.attribute4 ,1,2) = 'SI' AND
         paaf.assignment_status_type_id IN ('1','45','46','43','44','2','5') AND
     :eff_date BETWEEN pap.effective_start_date AND pap.effective_end_date AND
     :eff_date BETWEEN paaf.effective_start_date AND paaf.effective_end_date AND

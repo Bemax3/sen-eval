@@ -69,8 +69,10 @@ return new class extends Migration
             $table->integer('skill_marking');
             $table->boolean('skill_is_active')->default(true);
             $table->unsignedInteger('skill_type_id');
+            $table->unsignedInteger('group_id')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->foreign('skill_type_id')->references('skill_type_id')->on('skill_types')->restrictOnDelete();
+            $table->foreign('group_id')->references('group_id')->on('groups')->restrictOnDelete();
             $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });

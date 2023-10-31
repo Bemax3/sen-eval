@@ -102,7 +102,7 @@ watch(() => query.value, function (next) {
                     <form class="md:col-span-2">
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                             <div class="col-span-full flex items-center gap-x-8">
-                                <img alt="" class="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover" />
+                                <img alt="" class="h-24 w-24 flex-none rounded-lg bg-cyan-700 object-cover" />
                             </div>
 
                             <div class="sm:col-span-3">

@@ -73,8 +73,9 @@ return [
                 'model' => App\Models\User::class,
                 'sync_passwords' => true,
                 'sync_attributes' => \App\Ldap\AttributeHandler::class,
-                'sync_existing' => \App\Ldap\ExistingAttributeHandler::class,
-                'password_column' => 'password'
+                'sync_existing' => [
+                    'email' => 'mail'
+                ]
             ],
         ],
         // 'users' => [

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Security;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Security\SaveUserRequest;
 use App\Http\Requests\Utilities\SearchRequest;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\Security\UserService;
 use Exception;
@@ -38,7 +39,8 @@ class UserController extends Controller
             $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
             return Inertia::render('Security/Users/UserProfile', [
                 'user' => $user,
-                'n1s' => (new UserService())->findSameOrgUsers($user)
+                'n1s' => (new UserService())->findSameOrgUsers($user),
+                'roles' => Role::all()
             ]);
         }catch (Exception) {
             alert_error('Resource Introuvable.');
@@ -91,7 +93,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->update($request->validated());
             alert_success('Agent modifié avec succès.');
-        } catch (Exception) {
+        } catch (Exception $e) {
             alert_error('Erreur lors de la modification de cette agent.');
         } finally {
             return redirect()->back();

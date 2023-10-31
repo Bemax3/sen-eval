@@ -2,7 +2,9 @@
 
 namespace App\Models\Phase;
 
+use App\Models\Group;
 use App\Models\Settings\Skill;
+use App\Models\Settings\SkillType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,6 +33,19 @@ class Phase extends Model implements Searchable
 
     public function skills(): BelongsToMany {
         return  $this->belongsToMany(Skill::class,'phase_skills','phase_id','skill_id')->withPivot('phase_skill_marking','phase_skill_is_active');
+    }
+
+    public function specific_skills(): BelongsToMany {
+        return $this->skills()->where('skills.skill_type_id','=',SkillType::SPECIFIC);
+    }
+
+    public function general_skills_cadre(): BelongsToMany
+    {
+        return $this->skills()->where('skills.skill_type_id','=',SkillType::GENERAL)->where('skills.group_id','=',Group::CADRE);
+    }
+    public function general_skills_others(): BelongsToMany
+    {
+        return $this->skills()->where('skills.skill_type_id','=',SkillType::GENERAL)->where('skills.group_id','!=',Group::CADRE);
     }
 
     public function periods(): HasMany {

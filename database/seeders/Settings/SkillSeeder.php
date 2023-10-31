@@ -3,6 +3,7 @@
 namespace Database\Seeders\Settings;
 
 
+use App\Models\Group;
 use App\Models\Settings\Skill;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -38,48 +39,56 @@ class SkillSeeder extends Seeder
                 'skill_marking' => 15,
                 'skill_desc' => 'Communication, Leadership, Organisation, Planification, Motivation, Délégation, Evaluation, Résolution de problèmes, Innovation, Persuasion',
                 'skill_type_id' => 2,
+                'group_id' => Group::CADRE
             ],
             [
                 'skill_name' => 'Gestion des ressources financières et matérielles',
                 'skill_marking' => 10,
                 'skill_desc' => 'Optimisation et Efficience',
                 'skill_type_id' => 2,
+                'group_id' => Group::CADRE
             ],
             [
                 'skill_name' => 'Engagement',
                 'skill_marking' => 5,
                 'skill_desc' => 'Respect des valeurs éthiques et du règlement intérieur, Ponctualité, Assiduité',
                 'skill_type_id' => 2,
+                'group_id' => Group::CADRE
             ],
             [
                 'skill_name' => 'Disponibilité',
                 'skill_marking' => 10,
                 'skill_desc' => 'Respect des dispositions internes et du règlement intérieur, Ponctualité, Assiduité',
                 'skill_type_id' => 2,
+                'group_id' => Group::MAITRISE
             ],
              [
                 'skill_name' => 'Relation Humaines',
                  'skill_marking' => 5,
                 'skill_desc' => 'Ouverture d\'esprit, Esprit d\'équipe, Convivialité, Communication, Persuasion',
                 'skill_type_id' => 2,
+                 'group_id' => Group::MAITRISE
             ],
             [
                 'skill_name' => 'Esprit d\'organisation',
                 'skill_marking' => 5,
-                'skill_desc' => 'Gestion efficiente du temps, du matériel et des moyens de travail',
+                'skill_desc' => 'Gestion efficiente du temps, du matériel et des moyens de travail et réactivité',
                 'skill_type_id' => 2,
+                'group_id' => Group::MAITRISE
             ],
             [
                 'skill_name' => 'Initiative',
                 'skill_marking' => 5,
                 'skill_desc' => 'Créativité',
                 'skill_type_id' => 2,
+                'group_id' => Group::MAITRISE
             ],
             [
                 'skill_name' => 'Prévention - Sécurité',
                 'skill_marking' => 5,
                 'skill_desc' => 'Esprit et attitude sécurisants',
                 'skill_type_id' => 2,
+                'group_id' => Group::MAITRISE
             ],
         ];
 

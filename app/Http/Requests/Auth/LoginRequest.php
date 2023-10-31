@@ -55,11 +55,16 @@ class LoginRequest extends FormRequest
             $credentials = [
                 'samaccountname' => $this->get('user_login'),
                 'password' => $this->get('password'),
+                'fallback' => [
+                    'user_login' => $this->get('user_login'),
+                    'password' => $this->get('password')
+                ]
             ];
 
-            if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+            if (!Auth::attempt($credentials, $this->boolean('remember'))) {
                 $this->throwLoginError();
             }
+
         }
         RateLimiter::clear($this->throttleKey());
     }

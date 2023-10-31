@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use App\Oracle\ImportUsersFromOracle;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +28,9 @@ class AuthController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
+//        $user = Auth::user();
+//        $this->importOracleDataOnLogin($user);
+//        Auth::login($user);
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);
@@ -44,5 +48,12 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+    }
+
+    private function importOracleDataOnLogin($user)
+    {
+        ImportUsersFromOracle::updateUserWithOracleData($user);
+        alert_success('Connexion réussie !');
+
     }
 }

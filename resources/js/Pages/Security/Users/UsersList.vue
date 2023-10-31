@@ -79,7 +79,8 @@ const pages = [
                     <thead class="bg-gray-50">
                     <tr>
                         <TableHeading :first="true">Matricule</TableHeading>
-                        <TableHeading>Prénom</TableHeading>
+<!--                        <TableHeading>Prénom</TableHeading>-->
+<!--                        <TableHeading>Nom</TableHeading>-->
                         <TableHeading>Nom</TableHeading>
                         <TableHeading>Poste</TableHeading>
                         <TableHeading>GF</TableHeading>
@@ -92,8 +93,8 @@ const pages = [
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="user in displayedData" :key="user.user_id">
                         <TableData class="whitespace-pre-line" :first="true">{{ user.user_matricule }}</TableData>
-                        <TableData class="whitespace-pre-line">{{ user.user_first_name }}</TableData>
-                        <TableData >{{ user.user_last_name }}</TableData>
+<!--                        <TableData class="whitespace-pre-line">{{ user.user_first_name }}</TableData>-->
+                        <TableData >{{ user.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ user.user_title }}</TableData>
                         <TableData >{{ user.user_gf }}</TableData>
                         <TableData >{{ user.user_nr }}</TableData>

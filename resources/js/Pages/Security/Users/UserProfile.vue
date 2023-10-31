@@ -6,8 +6,17 @@ import TextInput from "@/Components/Forms/TextInput.vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
 import {CheckIcon, ChevronUpDownIcon, LockClosedIcon} from "@heroicons/vue/20/solid/index.js";
 import {capitalized, isEmpty, moment} from "@/helpers/helper.js";
-import {Combobox, ComboboxButton, ComboboxInput, ComboboxLabel, ComboboxOption, ComboboxOptions} from "@headlessui/vue";
+import {
+    Combobox,
+    ComboboxButton,
+    ComboboxInput,
+    ComboboxLabel,
+    ComboboxOption,
+    ComboboxOptions, Listbox,
+    ListboxButton, ListboxOption, ListboxOptions
+} from "@headlessui/vue";
 import {computed, reactive, ref, watch} from "vue";
+import InputLabel from "@/Components/Forms/InputLabel.vue";
 
 const props = defineProps({
     user: {
@@ -15,6 +24,9 @@ const props = defineProps({
     },
     n1s: {
         type: Array
+    },
+    roles: {
+
     }
 });
 
@@ -40,7 +52,8 @@ const setData = () => useForm(!isEmpty(props.user) ? {
 const data = setData();
 
 const form = useForm({
-    n1_id: props.user.n1 ? props.user.n1.user_id : -1
+    n1_id: props.user.n1 ? props.user.n1.user_id : null,
+    role_id: props.user.role_id
 })
 
 const n1s =  props.n1s;
@@ -243,6 +256,34 @@ watch(() => query.value, function (next) {
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <LockClosedIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-4">
+                                <InputLabel>Année d'évaluation</InputLabel>
+                                <div class="mt-2">
+                                    <Listbox as="div" v-model="form.role_id">
+                                        <div class="relative mt-2">
+                                            <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6">
+                                                <span class="block truncate">{{ roles.filter((type) => type.role_id === form.role_id)[0].role_name }}</span>
+                                                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </span>
+                                            </ListboxButton>
+                                            <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+                                                <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    <ListboxOption as="template" v-for="type in roles" :key="type.role_id" :value="type.role_id" v-slot="{ active, selected }">
+                                                        <li :class="[active ? 'bg-cyan-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                            <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.role_name }}</span>
+                                                            <span v-if="selected" :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                            <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                                                        </span>
+                                                        </li>
+                                                    </ListboxOption>
+                                                </ListboxOptions>
+                                            </transition>
+                                        </div>
+                                    </Listbox>
                                 </div>
                             </div>
 

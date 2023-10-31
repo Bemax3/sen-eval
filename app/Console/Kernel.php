@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Ldap\Scopes\Utilisateurs;
 use App\Models\User;
 use App\Oracle\ImportOrgsFromOracle;
 use App\Oracle\ImportUsersFromOracle;
@@ -18,8 +19,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->call(new ImportOrgsFromOracle())->everyMinute();
-         $schedule->call(new ImportUsersFromOracle())->everyMinute();
+        $schedule->call(new ImportOrgsFromOracle())->everyFourHours();
+        $schedule->command('ldap:import users',[
+            '--chunk' => 500,
+            '--attributes' => "company,mail,name,samaccountname"
+        ])->everyFourHours();
+        $schedule->call(new ImportUsersFromOracle())->everyFourHours();
     }
 
     /**

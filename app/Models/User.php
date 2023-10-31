@@ -12,13 +12,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use LdapRecord\Laravel\Auth\HasLdapUser;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
 class User extends Authenticatable implements LdapAuthenticatable,Searchable
 {
-    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap;
+    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap, HasLdapUser;
 
     protected $table = 'users';
     protected $primaryKey = 'user_id';
@@ -46,6 +47,8 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
         'role_id',
         'org_id',
         'email',
+        'guid',
+        'domain',
         'password',
         'updated_by'
     ];
@@ -118,6 +121,9 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
         return $this->role_id === Role::ADMIN;
     }
 
+    public function isCadre(): bool {
+        return $this->group_id === Group::CADRE;
+    }
     public function isUser(): bool
     {
         return $this->role_id === Role::USER;

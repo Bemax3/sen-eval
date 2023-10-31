@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Evaluation\SaveAsMyAgentController;
+use App\Http\Controllers\Evaluation\EvaluationController;
 use App\Http\Controllers\Evaluation\AgentsController;
 use App\Http\Controllers\Evaluation\AgentsGoalsController;
+use App\Http\Controllers\Evaluation\EvaluationSkillController;
 use App\Http\Controllers\Evaluation\GoalsController;
 use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
@@ -40,7 +41,9 @@ Route::group(['middleware' => ['auth']],function () {
         'profile' => ProfileController::class,
         'goals' => GoalsController::class,
         'agents' => AgentsController::class,
-        'agent/{agent}/agent-goals' => AgentsGoalsController::class
+        'agent/{agent}/agent-goals' => AgentsGoalsController::class,
+        'agent/{agent}/evaluation' => EvaluationController::class,
+        'evaluationSkill' => EvaluationSkillController::class
     ]);
     Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
     Route::post('/claimTypes/search', [ClaimTypeController::class, 'search'])->name('claimTypes.search');
@@ -54,6 +57,7 @@ Route::group(['middleware' => ['auth']],function () {
     Route::post('/phaseSkills/search', [PhaseSkillController::class, 'search'])->name('phaseSkills.search');
     Route::post('/periods/search', [PeriodsController::class, 'search'])->name('periods.search');
     Route::post('/orgs/search', [OrgController::class, 'search'])->name('orgs.search');
+    Route::post('/goals/search', [GoalsController::class, 'search'])->name('goals.search');
     Route::post('/agents/search', [AgentsController::class, 'search'])->name('agents.search');
     Route::post('/agent/{agent}/agent-goals/search', [AgentsGoalsController::class, 'search'])->name('agent-goals.search');
 });

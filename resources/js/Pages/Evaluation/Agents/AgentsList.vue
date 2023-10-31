@@ -29,7 +29,7 @@ const displayedData = ref(props.agents.data);
 
 const search = reactive({
     keyword: '',
-    fields: ['user_login','user_first_name','user_last_name','user_matricule','user_display_name','user_title'],
+    fields: ['user_first_name','user_last_name','user_matricule'],
 });
 
 const others =  props.others;
@@ -118,7 +118,8 @@ const pages = [
                                     <ComboboxInput
                                         :class="form.errors.agent_id !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"
                                         :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0];
-                                                            return selected ? selected.user_matricule + ' ' + selected.user_first_name + ' ' + selected.user_last_name : 'Chercher un agent'}"
+                                                            return selected ? selected.user_matricule + ' ' + selected.user_first_name + ' ' + selected.user_last_name : ''}"
+                                        placeholder="Chercher un agent..."
                                         class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" @change="search.keyword = query = $event.target.value; "  />
                                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                         <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -172,7 +173,7 @@ const pages = [
                         <TableData class="whitespace-pre-line">{{ user.org ? user.org.org_name : 'No Org' }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">
-                                <Link :href="route('agent-goals.index', {agent: user.user_id})" class="group flex items-center px-4 py-2 text-sm">
+                                <Link :href="route('evaluation.index', {agent: user.user_id})" class="group flex items-center px-4 py-2 text-sm">
                                     <EyeIcon class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600" aria-hidden="true" />
                                 </Link>
                                 <Link :href="route('agents.show', {agent: user.user_id})" class="group flex items-center px-4 py-2 text-sm">

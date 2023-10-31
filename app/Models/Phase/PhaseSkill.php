@@ -2,8 +2,14 @@
 
 namespace App\Models\Phase;
 
+use App\Models\Evaluation\Evaluation;
+use App\Models\Evaluation\EvaluationSkill;
+use App\Models\Settings\Skill;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PhaseSkill extends Model
@@ -17,5 +23,17 @@ class PhaseSkill extends Model
     public function getForeignKey()
     {
         return $this->primaryKey;
+    }
+
+    public function evaluations(): BelongsToMany {
+        return $this->belongsToMany(Evaluation::class,'evaluation_skills','phase_skill_id','evaluation_id')->withPivot('evaluation_skill_mark','evaluation_skill_mark_is_claimed');
+    }
+
+    public function evaluation_skills(): HasMany {
+        return $this->hasMany(EvaluationSkill::class,'phase_skill_id','phase_skill_id');
+    }
+
+    public function skill(): BelongsTo {
+        return $this->belongsTo(Skill::class,'skill_id','skill_id');
     }
 }

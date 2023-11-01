@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Evaluation\SaveGoalRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Evaluation\Goal;
+use App\Services\Evaluation\EvaluationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use PHPUnit\Framework\MockObject\Exception;
@@ -16,7 +17,7 @@ class GoalsController extends Controller
 {
     public function index() {
         return Inertia::render('Evaluation/Goals/GoalsList',[
-            'goals' => Goal::where('evaluated_id', '=',\Auth::id())->with('phase')->paginate(10)
+            'goals' => Goal::where('evaluated_id', '=',\Auth::id())->with('phase','period')->paginate(10)
         ]);
     }
 
@@ -34,10 +35,14 @@ class GoalsController extends Controller
     public function update(SaveGoalRequest $request,string $id) {
         try {
             $goal = Goal::findOrFail($id);
-            $goal->update($request->validated());
-            alert_success('Objectif Accepté');
-        }catch (\Exception) {
-            alert_error('Erreur lors de l\'acceptation, réessayer plus tard.');
+            $data = $request->validated();
+            (new EvaluationService())->lowerMark($data['evaluation_id'],$goal->goal_mark);
+            $goal->update($data);
+            (new EvaluationService())->raiseMark($data['evaluation_id'],$goal->goal_mark);
+            alert_success('Objectif enregistré');
+        }catch (\Exception $e) {
+
+            alert_error('Erreur lors de l\'enregistrement, réessayer plus tard.');
         } finally {
             return redirect()->back();
         }

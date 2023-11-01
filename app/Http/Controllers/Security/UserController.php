@@ -132,7 +132,7 @@ class UserController extends Controller
                             $query->where('organisations.org_id', '=', $data['org_id'])->orWhere('organisations.parent_id','=',$data['org_id']);
                         });
                     }
-                    $aspect->with('org');
+//                    $aspect->with('org');
                 })
                 ->limitAspectResults(50)
                 ->search($data['keyword']);

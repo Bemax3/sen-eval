@@ -16,7 +16,9 @@ import TextArea from "@/Components/Forms/TextArea.vue";
 import Switch from "@/Components/Forms/Switch.vue";
 import DatePicker from "@/Components/Forms/DatePicker.vue";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
-import {CheckIcon, ChevronUpDownIcon} from "@heroicons/vue/20/solid/index.js";
+import {CheckIcon, ChevronDoubleRightIcon, ChevronUpDownIcon} from "@heroicons/vue/20/solid/index.js";
+import NumberInput from "@/Components/Forms/NumberInput.vue";
+import {ref, watch} from "vue";
 
 const props = defineProps({
     agent: {
@@ -46,20 +48,30 @@ const setForm = () => {
                 goal_means_available: 1,
                 goal_expected_date: new Date(),
                 goal_expected_result: '',
+                goal_marking: 5,
                 phase_id: props.phases.filter(p => p.phase_year === new Date().getFullYear().toString())[0].phase_id,
+                evaluation_period_id: props.phases.filter(p => p.phase_year === new Date().getFullYear().toString())[0].periods[0].evaluation_period_id
             }
             : {
                 goal_name: props.goal.goal_name,
                 goal_means_available: props.goal.goal_means_available,
                 goal_expected_date: new Date(props.goal.goal_expected_date),
                 goal_expected_result: props.goal.goal_expected_result,
+                goal_marking: props.goal.goal_marking,
                 phase_id: props.goal.phase_id,
+                evaluation_period_id: props.goal.evaluation_period_id
             }
     );
 }
 
 setForm();
 
+const periods = ref();
+
+watch(() => form.phase_id,function (next) {
+    periods.value = props.phases.filter(p => p.phase_id === next)[0].periods;
+    form.evaluation_period_id = periods.value[0].evaluation_period_id
+},{immediate: true})
 
 const submit = () => {
     if (isEmpty(props.goal))
@@ -89,10 +101,11 @@ const desc = isEmpty(props.goal) ? 'Fixer un objectif a cet agent' : 'Modifier u
                 </div>
                 <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <Link
-                        href="#"
+                        :href="route('evaluation.index',{agent: agent.user_id})"
                         class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                         as="button">
                         Evaluations
+                        <ChevronDoubleRightIcon class="-mr-0.5 h-5 w-5"/>
                     </Link>
                 </div>
             </div>
@@ -135,7 +148,7 @@ const desc = isEmpty(props.goal) ? 'Fixer un objectif a cet agent' : 'Modifier u
                                 </div>
                             </div>
 
-                            <div class="sm:col-span-4">
+                            <div class="sm:col-span-3">
                                 <InputLabel>Année d'évaluation</InputLabel>
                                 <div class="mt-2">
                                     <Listbox as="div" v-model="form.phase_id">
@@ -162,6 +175,43 @@ const desc = isEmpty(props.goal) ? 'Fixer un objectif a cet agent' : 'Modifier u
                                     </Listbox>
                                 </div>
                             </div>
+                            <div class="sm:col-span-3">
+                                <InputLabel>Période</InputLabel>
+                                <div class="mt-2">
+                                    <Listbox as="div" v-model="form.evaluation_period_id">
+                                        <div class="relative mt-2">
+                                            <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6">
+                                                <span class="block truncate">{{ periods.filter(p => p.evaluation_period_id === form.evaluation_period_id)[0].evaluation_period_name }}</span>
+                                                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </span>
+                                            </ListboxButton>
+                                            <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+                                                <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    <ListboxOption as="template" v-for="type in periods" :key="type.evaluation_period_id" :value="type.evaluation_period_id" v-slot="{ active, selected }">
+                                                        <li :class="[active ? 'bg-cyan-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                            <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.evaluation_period_name }}</span>
+                                                            <span v-if="selected" :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                            <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                                                        </span>
+                                                        </li>
+                                                    </ListboxOption>
+                                                </ListboxOptions>
+                                            </transition>
+                                        </div>
+                                    </Listbox>
+                                </div>
+                            </div>
+
+                        <div class="col-span-full">
+                            <InputLabel for="start_date" required>Barème</InputLabel>
+                            <div class="mt-2">
+                                <NumberInput maxlength="2" v-model="form.goal_marking" :invalid="form.errors.goal_marking !== undefined"/>
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <InputError :message="form.errors.goal_marking"/>
+                            </div>
+                        </div>
                         </div>
                     </div>
                     <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">

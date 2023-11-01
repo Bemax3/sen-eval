@@ -34,6 +34,7 @@ class PhaseService
                     $start_date = Carbon::createFromDate($phase->phase_year,$i)->startOfMonth()->toDateTimeString();
                     $end_date = Carbon::createFromDate($phase->phase_year,$i)->endOfMonth()->addDays(5)->toDateTimeString();
                     $phase->periods()->create([
+                        'evaluation_period_name' => 'Semestre ' . $i/6,
                         'evaluation_period_start' => $start_date,
                         'evaluation_period_end' => $end_date
                     ]);
@@ -44,6 +45,7 @@ class PhaseService
                     $start_date = Carbon::createFromDate($phase->phase_year,$i)->startOfMonth()->toDateTimeString();
                     $end_date = Carbon::createFromDate($phase->phase_year,$i)->endOfMonth()->addDays(5)->toDateTimeString();
                     $phase->periods()->create([
+                        'evaluation_period_name' => 'Trimestre ' . $i/3,
                         'evaluation_period_start' => $start_date,
                         'evaluation_period_end' => $end_date
                     ]);
@@ -51,10 +53,11 @@ class PhaseService
                 break;
             case PeriodType::MONTHLY:
                 for($i = 1; $i <= 12; $i = $i + 1) {
-                    $start_date = Carbon::createFromDate($phase->phase_year,$i)->startOfMonth()->toDateTimeString();
+                    $start_date = Carbon::createFromDate($phase->phase_year,$i)->startOfMonth();
                     $end_date = Carbon::createFromDate($phase->phase_year,$i)->endOfMonth()->addDays(5)->toDateTimeString();
                     $phase->periods()->create([
-                        'evaluation_period_start' => $start_date,
+                        'evaluation_period_name' => 'Mois de ' . $start_date->locale('fr')->monthName,
+                        'evaluation_period_start' => $start_date->toDateTimeString(),
                         'evaluation_period_end' => $end_date
                     ]);
                 }

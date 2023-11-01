@@ -16,6 +16,8 @@ class SkillType extends Model implements Searchable
     protected $fillable = ['skill_type_name', 'skill_type_desc','skill_type_marking','updated_by'];
     public const SPECIFIC = 1;
     public const SPECIFIC_MARKING = 30;
+    public const GENERAL_MARKING = 30;
+    public const GOALS_MARKING = 40;
     public const GENERAL = 2;
 
     public function getForeignKey()

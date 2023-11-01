@@ -13,11 +13,14 @@ const props = defineProps({
 const showToast = () => {
 	setTimeout(function () {
 		document.getElementById('notification').style.visibility = 'hidden';
+	    document.getElementById('notification-container').style.zIndex = '-1';
 	}, 5000);
 	document.getElementById('notification').style.visibility = 'visible';
+	document.getElementById('notification-container').style.zIndex = '20';
 }
 const closeToast = () => {
-	document.getElementById('notification').style.visibility = 'hidden'
+	document.getElementById('notification').style.visibility = 'hidden';
+    document.getElementById('notification-container').style.zIndex = '-1';
 }
 
 watch(() => props.notification, (next) => {
@@ -28,7 +31,7 @@ watch(() => props.notification, (next) => {
 </script>
 
 <template>
-	<div aria-live="assertive" class="fixed bottom-1 right-1 flex items-end px-4 py-6 sm:items-start sm:p-6">
+	<div id="notification-container" aria-live="assertive" class="fixed bottom-1 right-1 flex items-end px-4 py-6 sm:items-start sm:p-6" >
 		<div
 				v-show="notification?.message"
 				id="notification"

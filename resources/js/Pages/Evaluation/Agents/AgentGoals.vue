@@ -92,6 +92,7 @@ const pages = [
                         <TableHeading>Disponibilité des Moyens</TableHeading>
                         <TableHeading>Échéance</TableHeading>
                         <TableHeading>Accepté / Contesté</TableHeading>
+                        <TableHeading>Raison</TableHeading>
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
@@ -105,10 +106,20 @@ const pages = [
                             </span>
                         </TableData>
                         <TableData >{{ capitalized(moment(goal.goal_expected_date).format('DD MMMM YYYY')) }}</TableData>
+<!--                        <TableData >-->
+<!--                            <span class="flex-shrink-0">-->
+<!--                                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">-->
+<!--                                    <span class="text-cyan-600">{{ goal.goal_marking }}</span>-->
+<!--                                </span>-->
+<!--                            </span>-->
+<!--                        </TableData>-->
                         <TableData>
                             <span :class="goal.goal_is_accepted ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'" class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ goal.goal_is_accepted ? 'Accepté' : 'Contesté' }}
                             </span>
+                        </TableData>
+                        <TableData class="whitespace-break-spaces">
+                            {{goal.goal_comment || '__'}}
                         </TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">

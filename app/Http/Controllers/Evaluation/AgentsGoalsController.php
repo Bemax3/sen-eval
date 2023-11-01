@@ -36,7 +36,7 @@ class AgentsGoalsController extends Controller
         try {
             return Inertia::render('Evaluation/Agents/SaveAgentGoal',[
                 'agent' =>  User::with('org')->findOrFail($id),
-                'phases' => Phase::all(),
+                'phases' => Phase::with('periods')->get(),
             ]);
         }catch (Exception) {
             alert_error('Resource Introuvable.');
@@ -48,7 +48,7 @@ class AgentsGoalsController extends Controller
         try {
             return Inertia::render('Evaluation/Agents/SaveAgentGoal',[
                 'agent' =>  User::with('org')->findOrFail($agent_id),
-                'phases' => Phase::all(),
+                'phases' => Phase::with('periods')->get(),
                 'goal' => Goal::findOrFail($goal_id)
             ]);
         }catch (Exception) {
@@ -59,9 +59,11 @@ class AgentsGoalsController extends Controller
 
     public function store(SaveAgentGoalRequest $request,string $id) {
         try {
-            $this->goalService->create($request->validated(),$id);
-            alert_success('Objectif Enregistré avec succès');
-        }catch (\Exception) {
+            switch ($this->goalService->create($request->validated(),$id)) {
+                case 'exceed': alert_error('Le barème total pour les objectifs dépasse la limite fixée.'); break;
+                default: alert_success('Objectif Enregistré avec succès');
+            }
+        }catch (\Exception $e) {
             alert_error('Erreur lors de l\'enregistrement de l\'objectif');
         } finally {
             return redirect()->back();
@@ -70,9 +72,11 @@ class AgentsGoalsController extends Controller
 
     public function update(SaveAgentGoalRequest $request,string $id,string $goal_id) {
         try {
-            $this->goalService->update($request->validated(),$id,$goal_id);
-            alert_success('Objectif Enregistré avec succès');
-        }catch (\Exception) {
+            switch ($this->goalService->update($request->validated(),$id,$goal_id)) {
+                case 'exceed': alert_error('Le barème total pour les objectifs dépasse la limite fixée.'); break;
+                default: alert_success('Objectif Enregistré avec succès');
+            }
+        }catch (\Exception $e) {
             alert_error('Erreur lors de l\'enregistrement de l\'objectif');
         } finally {
             return redirect()->back();

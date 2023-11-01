@@ -67,6 +67,8 @@ const pages = [
                         <TableHeading>Disponibilité des Moyens</TableHeading>
                         <TableHeading>Échéance</TableHeading>
                         <TableHeading>Année d'évaluation</TableHeading>
+                        <TableHeading>Période</TableHeading>
+                        <TableHeading>Barème</TableHeading>
                         <TableHeading>Accepté / Contesté</TableHeading>
                         <TableHeading></TableHeading>
                     </tr>
@@ -82,6 +84,14 @@ const pages = [
                         </TableData>
                         <TableData>{{ capitalized(moment(goal.goal_expected_date).format('DD MMMM YYYY')) }}</TableData>
                         <TableData>{{goal.phase.phase_year}}</TableData>
+                        <TableData>{{goal.period.evaluation_period_name}}</TableData>
+                        <TableData>
+                            <span class="flex-shrink-0">
+                                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                    <span class="text-cyan-600">{{ goal.goal_marking }}</span>
+                                </span>
+                            </span>
+                        </TableData>
                         <TableData>
                             <span :class="goal.goal_is_accepted ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'" class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ goal.goal_is_accepted ? 'Accepté' : 'Contesté' }}

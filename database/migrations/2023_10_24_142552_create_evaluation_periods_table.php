@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('evaluation_periods', function (Blueprint $table) {
             $table->increments('evaluation_period_id');
+            $table->string('evaluation_period_name')->nullable();
             $table->datetime('evaluation_period_start');
             $table->datetime('evaluation_period_end');
             $table->unsignedInteger('phase_id');

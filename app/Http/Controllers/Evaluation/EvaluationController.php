@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Evaluation\SaveEvaluationRequest;
 use App\Models\Evaluation\Evaluation;
 use App\Models\Evaluation\EvaluationSkill;
+use App\Models\Evaluation\Goal;
 use App\Models\Phase\Phase;
 use App\Models\User;
 use App\Services\Evaluation\EvaluationService;
@@ -40,6 +41,7 @@ class EvaluationController extends Controller
             'specific_skill_types' => $evaluation->phase->specific_skills()->get(),
             'specific_skills' => $evaluation->specific_skills()->get(),
             'skills' => $evaluation->general_skills()->get(),
+            'goals' => Goal::where('phase_id',$evaluation->phase_id)->where('evaluated_id',$evaluation->evaluated_id)->with('period','phase')->get(),
         ]);
     }
 

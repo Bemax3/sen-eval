@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, Link, router, useForm, usePage} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import {CheckIcon, ChevronDoubleRightIcon, ChevronUpDownIcon, PencilSquareIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
@@ -16,13 +16,14 @@ const props = defineProps({
     agent: {
         type: Object,
     },
-    specific_skill_types: {
-
-    },
+    specific_skill_types: {},
     specific_skills: {
 	    type: Object,
     },
     skills: {
+        type: Object
+    },
+    goals: {
         type: Object
     }
 })
@@ -47,12 +48,19 @@ const form = useForm({
     phase_skill_id: props.specific_skill_types[0].pivot.phase_skill_id,
 })
 
+const goalsTotal = computed(() => {
+    let total = 0;
+    props.goals.forEach(goal => total += goal.goal_mark)
+    return total;
+})
+
 const edits = ref([]);
 const inputs = ref([]);
 
 const setupEdits = () => {
 	edits.value = [];
     props.skills.forEach(item => edits.value.push({id: item.evaluation_skill_id,edit: item.evaluation_skill_mark <= 0 }))
+    props.goals.forEach(item => edits.value.push({id: 'goal_' + item.goal_id,edit: item.goal_mark <= 0 }))
     props.specific_skills.forEach(item => edits.value.push({id: item.evaluation_skill_id,edit: item.evaluation_skill_mark <= 0 }))
 }
 
@@ -74,6 +82,25 @@ const updateMark = (id,marking) => {
 				setupEdits();
 				console.log(err)
                 usePage().props.flash.notify = {type: 'error',message: err.evaluation_skill_mark}
+            },
+            preserveScroll: true
+        }
+    );
+
+}
+const updateGoal = (id,marking) => {
+    const input = inputs.value['goal_' + id];
+    edits.value.find(s => s.id === ('goal_' + id)).edit = false;
+
+    router.put(
+        route('goals.update',{goal: id}),
+        {goal_mark : input.value, goal_marking: marking,evaluation_id: props.evaluation.evaluation_id},
+        {
+			onSuccess: () => setupEdits(),
+            onError: err => {
+				setupEdits();
+				// console.log(err)
+                usePage().props.flash.notify = {type: 'error',message: err.goal_mark}
             },
             preserveScroll: true
         }
@@ -168,7 +195,7 @@ watch(() => props.specific_skills, function (next) {
 			        </form>
 		        </div>
 		        <div class="border-b border-cyan-600 bg-white pr-4 py-5 sm:pr-6 flex justify-between items-center">
-			        <h3 class="text-base font-semibold leading-6 text-gray-900">
+			        <h3 class="text-lg font-semibold leading-6 text-gray-900">
                         Compétences Spécifiques
                     </h3>
 			        <span class="flex-shrink-0">
@@ -181,7 +208,7 @@ watch(() => props.specific_skills, function (next) {
 			        <li v-for="skill in specific_skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
 				        <div class="min-w-0">
 					        <div class="flex items-start gap-x-3">
-						        <p class="text-lg font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
+						        <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
 						        <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
 					        </div>
 					        <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
@@ -225,7 +252,7 @@ watch(() => props.specific_skills, function (next) {
 	        </div>
             <div class="px-4 py-4 sm:px-0">
                 <div class="border-b border-cyan-600 bg-white pr-4 py-5 sm:pr-6 flex justify-between">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900">Compétences Générales</h3>
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Compétences Générales</h3>
 	                <span class="flex-shrink-0">
                         <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
                             <span class="text-cyan-600">{{ evaluation.general_skills_sum_evaluation_skill_mark }}</span>
@@ -236,7 +263,7 @@ watch(() => props.specific_skills, function (next) {
                     <li v-for="skill in skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
                         <div class="min-w-0">
                             <div class="flex items-start gap-x-3">
-                                <p class="text-lg font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
+                                <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
                                 <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
                             </div>
                             <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
@@ -276,7 +303,62 @@ watch(() => props.specific_skills, function (next) {
                 </ul>
             </div>
             <div class="px-4 py-4 sm:px-0">
-                <!-- Your content -->
+                <div class="border-b border-cyan-600 bg-white pr-4 py-5 sm:pr-6 flex justify-between">
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Performances</h3>
+                    <span class="flex-shrink-0">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                            <span class="text-cyan-600">{{ goalsTotal }}</span>
+                        </span>
+                    </span>
+                </div>
+                <ul role="list" class="divide-y divide-gray-100">
+                    <li v-for="goal in goals " :key="goal.goal_id" class="flex items-center justify-between gap-x-6 py-5">
+                        <div class="min-w-0">
+                            <div class="flex items-start gap-x-3">
+                                <p class="text-base font-bold leading-6 text-gray-900">{{ goal.goal_name }}</p>
+                                <p  class="text-gray-700 bg-gray-50 ring-gray-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
+                                    {{ goal.period.evaluation_period_name }}
+                                </p>
+                                <p v-if="goal.goal_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
+                                    Contesté
+                                </p>
+<!--                                <p v-if="goal.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>-->
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
+                                <p class="whitespace-break-spaces">
+                                    {{ goal.goal_expected_result }}
+                                </p>
+                                <!--                                <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">-->
+                                <!--                                    <circle cx="1" cy="1" r="1" />-->
+                                <!--                                </svg>-->
+                                <!--                                <p class="truncate">Created by {{ project.createdBy }}</p>-->
+                            </div>
+                        </div>
+                        <div class="flex flex-none items-center gap-x-4">
+                            <div class="flex items-center justify-center space-x-4">
+                                <template v-if="!editMark('goal_' + goal.goal_id)">
+                                    {{ goal.goal_mark }}
+                                </template>
+                                <template v-else>
+                                    <input :ref="el => {inputs['goal_' + goal.goal_id] = el}" maxlength="2" type="text" :value="goal.goal_mark" class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" />
+                                </template>
+                                <p class="ml-0.5 font-bold">
+                                    / {{ goal.goal_marking }}
+                                </p>
+                                <template v-if="!editMark('goal_' + goal.goal_id)">
+                                    <button @click="edits.find(s => s.id === ('goal_' + goal.goal_id)).edit = true" type="button" class="rounded-full bg-cyan-600 p-2 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                                        <PencilSquareIcon class="h-5 w-5" aria-hidden="true" />
+                                    </button>
+                                </template>
+                                <template v-else>
+                                    <button @click="updateGoal(goal.goal_id,goal.goal_marking)" type="button" class="rounded-full bg-cyan-600 p-2 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                                        <CheckIcon class="h-5 w-5" aria-hidden="true"/>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
 

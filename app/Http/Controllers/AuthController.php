@@ -27,10 +27,12 @@ class AuthController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-//        $user = Auth::user();
-//        $this->importOracleDataOnLogin($user);
-//        Auth::login($user);
+        if(!$request->authenticateFromDb()) {
+            $request->authenticate();
+            $user = Auth::user();
+            $this->importOracleDataOnLogin($user);
+            Auth::login($user);
+        }
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);

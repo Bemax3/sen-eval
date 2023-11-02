@@ -39,7 +39,7 @@ class UserController extends Controller
             $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
             return Inertia::render('Security/Users/UserProfile', [
                 'user' => $user,
-                'n1s' => (new UserService())->findSameOrgUsers($user),
+                'n1s' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],
                 'roles' => Role::all()
             ]);
         }catch (Exception) {
@@ -132,7 +132,7 @@ class UserController extends Controller
                             $query->where('organisations.org_id', '=', $data['org_id'])->orWhere('organisations.parent_id','=',$data['org_id']);
                         });
                     }
-//                    $aspect->with('org');
+                    $aspect->with('org');
                 })
                 ->limitAspectResults(50)
                 ->search($data['keyword']);

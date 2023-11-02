@@ -19,9 +19,7 @@ class ImportUsersFromOracle
                 $user->delete();
                 continue;
             }
-            if(!$this::updateUserWithOracleData($user)) {
-                $user->delete();
-            }
+            if(!$this::updateUserWithOracleData($user)) continue;
         }
     }
 

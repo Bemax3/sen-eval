@@ -5,6 +5,7 @@ use App\Http\Controllers\Evaluation\AgentsController;
 use App\Http\Controllers\Evaluation\AgentsGoalsController;
 use App\Http\Controllers\Evaluation\EvaluationSkillController;
 use App\Http\Controllers\Evaluation\GoalsController;
+use App\Http\Controllers\Evaluation\UserEvaluationController;
 use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
 use App\Http\Controllers\Phase\PhaseSkillController;
@@ -43,7 +44,8 @@ Route::group(['middleware' => ['auth']],function () {
         'agents' => AgentsController::class,
         'agent/{agent}/agent-goals' => AgentsGoalsController::class,
         'agent/{agent}/evaluation' => EvaluationController::class,
-        'evaluationSkill' => EvaluationSkillController::class
+        'evaluationSkill' => EvaluationSkillController::class,
+        'rating' => UserEvaluationController::class
     ]);
     Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
     Route::post('/claimTypes/search', [ClaimTypeController::class, 'search'])->name('claimTypes.search');

@@ -29,7 +29,7 @@ const displayedData = ref(props.agents.data);
 
 const search = reactive({
     keyword: '',
-    fields: ['user_first_name','user_last_name','user_matricule'],
+    fields: ['user_display_name','user_matricule'],
 });
 
 const others =  props.others;
@@ -118,7 +118,7 @@ const pages = [
                                     <ComboboxInput
                                         :class="form.errors.agent_id !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"
                                         :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0];
-                                                            return selected ? selected.user_matricule + ' ' + selected.user_first_name + ' ' + selected.user_last_name : ''}"
+                                                            return selected ? selected.user_matricule + ' ' + selected.user_display_name : ''}"
                                         placeholder="Chercher un agent..."
                                         class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" @change="search.keyword = query = $event.target.value; "  />
                                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
@@ -129,7 +129,7 @@ const pages = [
                                             <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600 text-white' : 'text-gray-900']">
                                                 <div class="flex">
                                                     <span :class="['truncate', selected && 'font-semibold']">
-                                                        {{ n1?.user_matricule + ' ' + n1?.user_first_name + ' ' + n1?.user_last_name }}
+                                                        {{ n1?.user_matricule + ' ' + n1?.user_display_name  }}
                                                     </span>
                                                 </div>
                                                 <span v-if="selected" :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">
@@ -151,7 +151,6 @@ const pages = [
                     <thead class="bg-gray-50">
                     <tr>
                         <TableHeading :first="true">Matricule</TableHeading>
-                        <TableHeading>Prénom</TableHeading>
                         <TableHeading>Nom</TableHeading>
                         <TableHeading>Poste</TableHeading>
                         <TableHeading>GF</TableHeading>
@@ -164,8 +163,7 @@ const pages = [
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="user in displayedData" :key="user.user_id">
                         <TableData class="whitespace-pre-line" :first="true">{{ user.user_matricule }}</TableData>
-                        <TableData class="whitespace-pre-line">{{ user.user_first_name }}</TableData>
-                        <TableData >{{ user.user_last_name }}</TableData>
+                        <TableData >{{ user.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ user.user_title }}</TableData>
                         <TableData >{{ user.user_gf }}</TableData>
                         <TableData >{{ user.user_nr }}</TableData>

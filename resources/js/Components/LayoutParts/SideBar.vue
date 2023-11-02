@@ -38,9 +38,9 @@ const currentRoute = getCurrentRoute();
 
 let navigation = [
     { name: 'Dashboard', href: route('home'), icon: HomeIcon, current: currentRoute === 'home' },
-    { name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents','agent-goals'].includes(currentRoute) },
+    { name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents','agent-goals','evaluation'].includes(currentRoute) },
     { name: 'Mes Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals' },
-    { name: 'Mes Evaluations', href: route('home'), icon: ChartBarIcon, current: currentRoute === 'home' },
+    { name: 'Mes Evaluations', href: route('rating.index'), icon: ChartBarIcon, current: currentRoute === 'rating' },
     { name: 'Mon Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile' },
 ]
 if ([1,2].includes(user.value.role_id)) {
@@ -117,7 +117,7 @@ defineEmits(['closeSidebar'])
                             </div>
                         </TransitionChild>
                         <!-- Sidebar component, swap this element with another sidebar if you like -->
-                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-800 px-6 pb-4">
+                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 px-6 pb-4">
                             <div class="flex h-16 shrink-0 items-center">
                                 <img class="h-8 w-auto" src="../../assets/logo1637145113.png" alt="Your Company" />
                             </div>
@@ -159,7 +159,7 @@ defineEmits(['closeSidebar'])
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-800 px-3 pb-4">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 px-3 pb-4">
             <div class="flex h-24 shrink-0 items-center justify-center">
 	            <img class="h-24 w-auto" src="../../assets/logo1637145113.png" alt="Your Company" />
             </div>

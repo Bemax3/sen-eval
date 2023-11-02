@@ -53,9 +53,9 @@ const pages = [
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Objectifs de {{agent.user_first_name + ' ' + agent.user_last_name}}</h1>
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Objectifs de {{agent.user_display_name}}</h1>
                     <p class="mt-2 text-sm text-gray-700">
-                        Objectifs de {{agent.user_first_name + ' ' + agent.user_last_name}}. Matricule : {{agent.user_matricule}}
+                        Objectifs de {{agent.user_display_name}}. Matricule : {{agent.user_matricule}}
                     </p>
                 </div>
                 <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">

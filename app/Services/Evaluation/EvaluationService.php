@@ -12,6 +12,10 @@ use App\Models\User;
 class EvaluationService
 {
     public function create($validated) {
+
+        if(Evaluation::where('evaluated_id','=',$validated['evaluated_id'])->where('phase_id','=',$validated['phase_id'])->exists())
+            return null;
+
         $evaluation = Evaluation::create($validated);
 
         $user = User::findOrFail($validated['evaluated_id']);

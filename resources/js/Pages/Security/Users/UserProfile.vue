@@ -99,7 +99,7 @@ watch(() => query.value, function (next) {
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Profil de {{user.user_first_name + ' ' + user.user_last_name}}</h1>
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Profil de {{user.user_display_name}}</h1>
                     <p class="mt-2 text-sm text-gray-700">
                         Informations personnelles et administratives de l'agent.
                     </p>
@@ -293,7 +293,7 @@ watch(() => query.value, function (next) {
                                     <div class="relative mt-2">
                                         <ComboboxInput
                                             :display-value="(id) => { let selected = user.n1 ? user.n1 : filteredN1.filter(n1 => n1.user_id === id)[0];
-                                                return selected ? selected.user_matricule + ' ' + selected.user_first_name + ' ' + selected.user_last_name : 'Non défini'}"
+                                                return selected ? selected.user_matricule + ' ' + selected.user_display_name : 'Non défini'}"
                                             class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" @change="search.keyword = query = $event.target.value; "  />
                                         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                             <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -303,7 +303,7 @@ watch(() => query.value, function (next) {
                                                 <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600 text-white' : 'text-gray-900']">
                                                     <div class="flex">
                                                         <span :class="['truncate', selected && 'font-semibold']">
-                                                            {{ n1?.user_matricule + ' ' + n1?.user_first_name + ' ' + n1?.user_last_name }}
+                                                            {{ n1?.user_matricule + ' ' + n1?.user_display_name }}
                                                         </span>
                                                     </div>
                                                     <span v-if="selected" :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">

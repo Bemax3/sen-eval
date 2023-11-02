@@ -45,7 +45,7 @@ const userNavigation = [
                         <span class="sr-only">Open user menu</span>
 <!--                        <img class="h-8 w-8 rounded-full bg-gray-50" src="" alt="" />-->
                         <span class="hidden lg:flex lg:items-center">
-                  <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{user.user_first_name + ' ' + user.user_last_name}}</span>
+                  <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{user.user_display_name}}</span>
                   <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </span>
                     </MenuButton>

@@ -29,7 +29,7 @@ return new class extends Migration
 //            $table->binary('user_image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->unsignedInteger('n1_id')->nullable();
-            $table->unsignedInteger('group_id')->nullable();
+            $table->unsignedInteger('group_id')->nullable()->default(\App\Models\Group::MAITRISE);
             $table->unsignedInteger('org_id')->nullable();
             $table->unsignedInteger('role_id')->default(\App\Models\Role::USER);
             $table->unsignedInteger('updated_by')->nullable();

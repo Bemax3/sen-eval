@@ -19,7 +19,7 @@ class EvaluationController extends Controller
     public function __construct(private readonly EvaluationService $evaluationService){}
 
     public function index(string $id) {
-        return Inertia::render('Evaluation/Evaluation/EvalsList',[
+        return Inertia::render('Evaluation/Agents/AgentEvaluations',[
             'agent' => User::with('org')->findOrFail($id),
             'evals' => Evaluation::where('evaluator_id','=',\Auth::id())->where('evaluated_id','=',$id)->with('evaluator','phase','evaluated')->paginate(10)
         ]);
@@ -35,8 +35,9 @@ class EvaluationController extends Controller
     public function show(string $id,string $evaluation_id) {
         $evaluation = Evaluation::with('phase','evaluator')->withSum('specific_skills','evaluation_skill_mark')->withSum('general_skills','evaluation_skill_mark')->findOrFail($evaluation_id);
         $agent = User::with('org')->findOrFail($id);
-        return Inertia::render('Evaluation/Evaluation/EvaluationSkills',[
+        return Inertia::render('Evaluation/Agents/AgentEvaluationSkills',[
             'evaluation' => $evaluation,
+            'user_id' => \Auth::id(),
             'agent' => $agent,
             'specific_skill_types' => $evaluation->phase->specific_skills()->get(),
             'specific_skills' => $evaluation->specific_skills()->get(),
@@ -48,6 +49,10 @@ class EvaluationController extends Controller
     public function store(SaveEvaluationRequest $request, string $id) {
         try {
             $evaluation = $this->evaluationService->create($request->validated());
+            if (!$evaluation) {
+                alert_error('Cet agent a déjà une évaluation pour l\'année choisi.');
+                return redirect()->back();
+            }
             alert_success('Evaluation crée avec succès.');
             return redirect()->route('evaluation.show',['evaluation' => $evaluation->evaluation_id,'agent' => $id]);
         }catch (Exception) {

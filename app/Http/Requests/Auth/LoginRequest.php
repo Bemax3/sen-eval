@@ -51,30 +51,27 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-        if(!$this->authenticateFromDb()) {
-            $credentials = [
-                'samaccountname' => $this->get('user_login'),
-                'password' => $this->get('password'),
-                'fallback' => [
-                    'user_login' => $this->get('user_login'),
-                    'password' => $this->get('password')
-                ]
-            ];
 
-            if (!Auth::attempt($credentials, $this->boolean('remember'))) {
-                $this->throwLoginError();
-            }
+        $credentials = [
+            'samaccountname' => $this->get('user_login'),
+            'password' => $this->get('password'),
+        ];
 
+        if (!Auth::attempt($credentials, $this->boolean('remember'))) {
+            $this->throwLoginError();
         }
+
         RateLimiter::clear($this->throttleKey());
     }
 
     public function authenticateFromDb(): bool
     {
+        $this->ensureIsNotRateLimited();
         try {
             $user = User::where('user_login',$this->get('user_login'))->firstOrFail();
             if(Hash::check($this->get('password'),$user->password)) {
                 Auth::login($user);
+                RateLimiter::clear($this->throttleKey());
                 return true;
             }
             else {

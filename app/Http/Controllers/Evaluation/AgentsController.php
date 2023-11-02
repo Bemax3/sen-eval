@@ -20,8 +20,9 @@ class AgentsController extends Controller
             $user = User::findOrFail(\Auth::id());
             return Inertia::render('Evaluation/Agents/AgentsList',[
                 'agents' => $user->agents()->paginate(10),
-                'others' => User::where('role_id','!=',1)->limit(30)->get(),
-//                    (new UserService())->findSameOrgUsers($user)
+                'others' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : []
+//                    User::where('role_id','!=',1)->limit(30)->get(),
+
             ]);
         }catch (Exception) {
             alert_error('Resource Introuvable.');
@@ -35,8 +36,7 @@ class AgentsController extends Controller
             $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
             return Inertia::render('Security/Profile/Profile', [
                 'user' => $user,
-                'n1s' => User::where('role_id','!=',1)->limit(30)->get(),
-//                'n1s' => (new UserService())->findSameOrgUsers($user)
+                'n1s' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : []
             ]);
         }catch (Exception) {
             alert_error('Resource Introuvable.');
@@ -68,7 +68,7 @@ class AgentsController extends Controller
                         $aspect->addSearchableAttribute($field);
                     }
                     $aspect->where('n1_id','=',\Auth::id());
-//                    $aspect->with('org');
+                    $aspect->with('org');
                 })
                 ->limitAspectResults(50)
                 ->search($data['keyword']);

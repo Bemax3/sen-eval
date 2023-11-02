@@ -94,7 +94,7 @@ const desc = isEmpty(props.goal) ? 'Fixer un objectif a cet agent' : 'Modifier u
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Objectifs de {{agent.user_first_name + ' ' + agent.user_last_name}}</h1>
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Objectifs de {{agent.user_display_name}}</h1>
                     <p class="mt-2 text-sm text-gray-700">
                         Objectifs de l'agent.
                     </p>

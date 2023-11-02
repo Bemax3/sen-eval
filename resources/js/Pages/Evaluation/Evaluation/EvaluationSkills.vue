@@ -1,14 +1,9 @@
 <script setup>
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head, Link, router, useForm, usePage} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
-import {CheckIcon, ChevronDoubleRightIcon, ChevronUpDownIcon, PencilSquareIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
 import {computed, ref, watch} from "vue";
-import InputLabel from "@/Components/Forms/InputLabel.vue";
-import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
-import SubmitButton from "@/Components/Forms/SubmitButton.vue";
-
 const props = defineProps({
     evaluation: {
         type: Object,
@@ -27,9 +22,6 @@ const props = defineProps({
     }
 })
 
-// const isEvaluated = computed(() => {
-//     return props.user_id === props.evaluation.evaluated_id;
-// })
 
 const pages = [
     { name: 'Mes Evaluations', href: route('rating.index'), current: false },
@@ -105,7 +97,7 @@ const goalsTotal = computed(() => {
                     </span>
                 </div>
 			    <p class="mt-2 text-sm text-gray-700">
-				    Evalué par {{evaluation.evaluator.user_display_name}}. Matricule : {{evaluation.evaluator.user_matricule}}.
+				    Evaluateur: {{evaluation.evaluator.user_display_name}}. Matricule : {{evaluation.evaluator.user_matricule}}.
 			    </p>
 		    </div>
 	    </div>

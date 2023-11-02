@@ -2,6 +2,7 @@
 
 namespace App\Models\Settings;
 
+use App\Models\Group;
 use App\Models\Phase\Phase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +32,9 @@ class Skill extends Model implements Searchable
 
     public function type(): BelongsTo {
         return $this->belongsTo(SkillType::class,'skill_type_id','skill_type_id');
+    }
+    public function group(): BelongsTo {
+        return $this->belongsTo(Group::class,'group_id','group_id');
     }
 
     public function phases(): BelongsToMany

@@ -116,6 +116,7 @@ const pages = [
                     <thead class="bg-gray-50">
                     <tr>
                         <TableHeading :first="true">Identifiant</TableHeading>
+                        <TableHeading>Nom</TableHeading>
                         <TableHeading>Date de début</TableHeading>
                         <TableHeading>Date de Fin</TableHeading>
                         <TableHeading></TableHeading>
@@ -124,6 +125,7 @@ const pages = [
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="(period,i) in displayedData" :key="period.evaluation_period_id">
                         <TableData :first="true">{{i + 1}}</TableData>
+                        <TableData>{{period.evaluation_period_name}}</TableData>
                         <TableData>{{capitalized(moment(period.evaluation_period_start).format('DD MMMM YYYY')) }}</TableData>
                         <TableData>{{capitalized(moment(period.evaluation_period_end).format('DD MMMM YYYY')) }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

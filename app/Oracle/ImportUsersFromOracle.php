@@ -27,9 +27,8 @@ class ImportUsersFromOracle
     {
         try {
             $oracleUser = DB::connection('oracle')->select(\File::get(app_path() . '/Oracle/GetEmployee.sql'),['matri' => $user->user_matricule,'eff_date'=> Carbon::today()])[0];
-
+            dd($oracleUser);
             if($oracleUser == null) return false;
-
             $user->update([
                 'user_id' => $oracleUser->person_id,
     //                'user_matricule' => $oracleUser->matricule,
@@ -39,15 +38,15 @@ class ImportUsersFromOracle
                 'user_responsibility_center' => $oracleUser->centre_de_responsabilite,
                 'user_gf' => $oracleUser->gf,
                 'user_nr' => $oracleUser->nr,
-                'group_id' => Group::where('group_code', '=', strtolower($oracleUser->college))->first()->group_id,
+//                'group_id' => Group::where('group_code', '=', strtolower($oracleUser->college))->first()->group_id,
     //                'role_id' => Role::USER,
             ]);
 
-            $user->update([
-                'user_gf_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promogf)->toDateTimeString(),
-                'user_nr_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promonr)->toDateTimeString(),
-                'org_id' => $oracleUser->org_id
-            ]);
+//            $user->update([
+//                'user_gf_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promogf)->toDateTimeString(),
+//                'user_nr_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promonr)->toDateTimeString(),
+//                'org_id' => $oracleUser->org_id
+//            ]);
             return true;
         }catch (\Exception $e) {
             return false;

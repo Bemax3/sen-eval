@@ -35,19 +35,28 @@ class GoalsController extends Controller
     public function update(SaveGoalRequest $request,string $id) {
         try {
             $goal = Goal::findOrFail($id);
+            $goal->update($request->validated());
+            alert_success('Objectif enregistré');
+        }catch (\Exception $e) {
+            alert_error('Erreur lors de l\'enregistrement, réessayer plus tard.');
+        } finally {
+            return redirect()->back();
+        }
+    }
+
+    public function updateMark(SaveGoalRequest $request,string $id) {
+        try {
+            $goal = Goal::findOrFail($id);
             $data = $request->validated();
             (new EvaluationService())->lowerMark($data['evaluation_id'],$goal->goal_mark);
             $goal->update($data);
             (new EvaluationService())->raiseMark($data['evaluation_id'],$goal->goal_mark);
             alert_success('Objectif enregistré');
         }catch (\Exception $e) {
-
             alert_error('Erreur lors de l\'enregistrement, réessayer plus tard.');
         } finally {
             return redirect()->back();
         }
-
-
     }
 
     public function search(SearchRequest $request)

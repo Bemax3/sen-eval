@@ -9,21 +9,28 @@ use Carbon\Carbon;
 
 class PhaseService
 {
-    public function create(mixed $validated): void
+    public function create(mixed $validated): string
     {
+        if (Phase::where('phase_year','=',$validated['phase_year'])->exists()) return 'exist';
         $phase = Phase::create($validated);
         $this->generatePeriods($phase);
         $this->generateSkills($phase);
+        return 'ok';
     }
 
-    public function update(string $id, mixed $validated): void
+    public function update(string $id, mixed $validated): string
     {
         $phase = Phase::findOrFail($id);
+        if ($validated['phase_year'] != $phase->phase_year && Phase::where('phase_year','=',$validated['phase_year'])->exists()) return 'exist';
         $phase->update($validated);
-        foreach ($phase->periods()->get() as $period) {
-            $period->delete();
+        if($phase->period_type_id != $validated['period_type_id'])
+        {
+            foreach ($phase->periods()->get() as $period) {
+                $period->delete();
+            }
+            $this->generatePeriods($phase);
         }
-        $this->generatePeriods($phase);
+        return 'ok';
     }
 
     public function generatePeriods(Phase $phase): void
@@ -78,5 +85,11 @@ class PhaseService
     public function destroy(int $id): void
     {
         Phase::findOrFail($id)->delete();
+    }
+
+    public function updateStatus(int $id, mixed $validated): void
+    {
+        $phase = Phase::findOrFail($id);
+        $phase->update($validated);
     }
 }

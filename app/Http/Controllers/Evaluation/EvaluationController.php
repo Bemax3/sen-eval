@@ -8,6 +8,7 @@ use App\Models\Evaluation\Evaluation;
 use App\Models\Evaluation\EvaluationSkill;
 use App\Models\Evaluation\Goal;
 use App\Models\Phase\Phase;
+use App\Models\Settings\SkillType;
 use App\Models\User;
 use App\Services\Evaluation\EvaluationService;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class EvaluationController extends Controller
     public function create(string $id) {
         return Inertia::render('Evaluation/Evaluation/SaveEvaluation',[
             'agent' => User::with('org')->findOrFail($id),
-            'phases' => Phase::all(),
+            'phases' => Phase::where('phase_is_active','=',1)->get(),
         ]);
     }
 
@@ -38,8 +39,9 @@ class EvaluationController extends Controller
         return Inertia::render('Evaluation/Agents/AgentEvaluationSkills',[
             'evaluation' => $evaluation,
             'user_id' => \Auth::id(),
+            'bareme' => ['specific' => SkillType::SPECIFIC_MARKING,'general' => SkillType::GENERAL_MARKING,'perf' => SkillType::GOALS_MARKING],
             'agent' => $agent,
-            'specific_skill_types' => $evaluation->phase->specific_skills()->get(),
+            'specific_skill_types' => $evaluation->phase->active_specific_skills()->get(),
             'specific_skills' => $evaluation->specific_skills()->get(),
             'skills' => $evaluation->general_skills()->get(),
             'goals' => Goal::where('phase_id',$evaluation->phase_id)->where('evaluated_id',$evaluation->evaluated_id)->with('period','phase')->get(),

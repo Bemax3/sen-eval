@@ -30,6 +30,7 @@ class GoalService
     {
         $goal = Goal::findOrFail($goal_id);
         if(!$this->checkMarking($goal->evaluated_id,$validated['phase_id'], $validated['goal_marking'] - $goal->goal_marking )) return 'exceed';
+        if($validated['goal_marking'] <= $goal->goal_mark) return 'exceed_mark';
         $goal->update([
             'goal_name' => $validated['goal_name'],
             'goal_expected_result' => $validated['goal_expected_result'],

@@ -15,7 +15,7 @@ class SaveAgentGoalRequest extends FormRequest
             'goal_expected_result' => ['required'],
             'goal_marking' => ['sometimes','required'],
             'evaluation_period_id' => ['required'],
-            'phase_id' => ['required']
+            'phase_id' => ['required'],
         ];
     }
 

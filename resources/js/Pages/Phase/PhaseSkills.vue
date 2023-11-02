@@ -128,6 +128,7 @@ onBeforeUpdate(()=> inputs.value = [])
 <!--                        <TableHeading>Description</TableHeading>-->
                     <TableHeading>Status pour cette phase</TableHeading>
                     <TableHeading>Barème pour cette phase</TableHeading>
+                    <TableHeading>College</TableHeading>
                     <TableHeading>Type</TableHeading>
                 </tr>
                 </thead>
@@ -136,7 +137,7 @@ onBeforeUpdate(()=> inputs.value = [])
                     <TableData class="whitespace-pre-line" :first="true">{{ skill.skill_name }}</TableData>
 <!--                        <TableData class="whitespace-pre-line">{{ skill.skill_desc }}</TableData>-->
                     <TableData >
-                        <div class="flex items-center justify-center space-x-2">
+                        <div class="flex items-center justify-center space-x-2" v-if="!skill.group">
 
                         <ToggleOnDatatable
                             :link="route('phaseSkills.update',{phaseSkill: phase.phase_id})"
@@ -175,6 +176,7 @@ onBeforeUpdate(()=> inputs.value = [])
                             </template>
                         </div>
                     </TableData>
+                    <TableData>{{ skill.group ? skill.group.group_name : 'Commun' }}</TableData>
                     <TableData>{{ skill.type.skill_type_name }}</TableData>
                 </tr>
                 </tbody>

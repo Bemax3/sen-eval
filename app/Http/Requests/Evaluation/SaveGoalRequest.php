@@ -11,7 +11,7 @@ class SaveGoalRequest extends FormRequest
         return [
             'goal_is_accepted' => ['sometimes','required'],
             'goal_comment' => ['sometimes'],
-            'goal_mark' => ['sometimes','required','lte:goal_marking','gt:0'],
+            'goal_mark' => ['sometimes','required','lte:goal_marking','gte:0'],
             'goal_marking' => ['sometimes','required'],
             'evaluation_id' => ['sometimes','required']
         ];

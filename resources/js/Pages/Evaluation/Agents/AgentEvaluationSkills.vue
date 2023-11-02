@@ -13,7 +13,9 @@ const props = defineProps({
     evaluation: {
         type: Object,
     },
-    user_id: {},
+    bareme: {
+        type: Object
+    },
     agent: {
         type: Object,
     },
@@ -28,6 +30,8 @@ const props = defineProps({
         type: Object
     }
 })
+
+console.log(props.bareme);
 
 // const isEvaluated = computed(() => {
 //     return props.user_id === props.evaluation.evaluated_id;
@@ -97,7 +101,7 @@ const updateGoal = (id,marking) => {
     edits.value.find(s => s.id === ('goal_' + id)).edit = false;
 
     router.put(
-        route('goals.update',{goal: id}),
+        route('goals.update-mark',{goal: id}),
         {goal_mark : input.value, goal_marking: marking,evaluation_id: props.evaluation.evaluation_id},
         {
             onSuccess: () => setupEdits(),
@@ -109,7 +113,6 @@ const updateGoal = (id,marking) => {
             preserveScroll: true
         }
     );
-
 }
 
 const addSpecificSkill = () => {
@@ -138,7 +141,8 @@ watch(() => props.specific_skills, function (next) {
             <div class="sm:flex-auto">
                 <div class="flex justify-between items-center">
                     <h1 class="text-2xl font-semibold leading-6 text-gray-900">
-                        Evaluation de {{agent.user_display_name}}. Année : {{evaluation.phase.phase_year}}
+                        Evaluation de {{agent.user_display_name}}. Matricule : {{agent.user_matricule}}
+                        Année : {{evaluation.phase.phase_year}}
                     </h1>
                     <span class="flex-shrink-0">
                         <span class="flex h-20 w-20 items-center justify-center rounded-full border-4 border-cyan-600">
@@ -147,7 +151,7 @@ watch(() => props.specific_skills, function (next) {
                     </span>
                 </div>
                 <p class="mt-2 text-sm text-gray-700">
-                    Evalué par {{evaluation.evaluator.user_display_name}}. Matricule : {{evaluation.evaluator.user_matricule}}.
+                    Evaluteur: {{evaluation.evaluator.user_display_name}}. Matricule : {{evaluation.evaluator.user_matricule}}.
                 </p>
             </div>
         </div>
@@ -202,11 +206,21 @@ watch(() => props.specific_skills, function (next) {
                     <h3 class="text-lg font-semibold leading-6 text-gray-900">
                         Compétences Spécifiques
                     </h3>
-                    <span class="flex-shrink-0">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                            <span class="text-cyan-600">{{ evaluation.specific_skills_sum_evaluation_skill_mark }}</span>
+                    <div class="flex space-x-2">
+                        <span class="flex-shrink-0">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                <span class="text-cyan-600">{{ evaluation.specific_skills_sum_evaluation_skill_mark }}</span>
+                            </span>
                         </span>
-                    </span>
+                        <span class="text-3xl">
+                        /
+                        </span>
+                        <span class="flex-shrink-0">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                <span class="text-cyan-600">{{ bareme.specific }}</span>
+                            </span>
+                        </span>
+                    </div>
                 </div>
                 <ul role="list" class="divide-y divide-gray-100">
                     <li v-for="skill in specific_skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
@@ -257,11 +271,21 @@ watch(() => props.specific_skills, function (next) {
             <div class="px-4 py-4 sm:px-0">
                 <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between">
                     <h3 class="text-lg font-semibold leading-6 text-gray-900">Compétences Générales</h3>
-                    <span class="flex-shrink-0">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                            <span class="text-cyan-600">{{ evaluation.general_skills_sum_evaluation_skill_mark }}</span>
+                    <div class="flex space-x-2">
+                        <span class="flex-shrink-0">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                <span class="text-cyan-600">{{ evaluation.general_skills_sum_evaluation_skill_mark }}</span>
+                            </span>
                         </span>
-                    </span>
+                        <span class="text-3xl">
+                            /
+                            </span>
+                        <span class="flex-shrink-0">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                <span class="text-cyan-600">{{ bareme.general }}</span>
+                            </span>
+                        </span>
+                    </div>
                 </div>
                 <ul role="list" class="divide-y divide-gray-100">
                     <li v-for="skill in skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
@@ -309,11 +333,21 @@ watch(() => props.specific_skills, function (next) {
             <div class="px-4 py-4 sm:px-0">
                 <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between">
                     <h3 class="text-lg font-semibold leading-6 text-gray-900">Performances</h3>
-                    <span class="flex-shrink-0">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                            <span class="text-cyan-600">{{ goalsTotal }}</span>
+                    <div class="flex space-x-2">
+                        <span class="flex-shrink-0">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                <span class="text-cyan-600">{{ goalsTotal }}</span>
+                            </span>
                         </span>
-                    </span>
+                        <span class="text-3xl">
+                            /
+                        </span>
+                        <span class="flex-shrink-0">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                <span class="text-cyan-600">{{ bareme.perf }}</span>
+                            </span>
+                        </span>
+                    </div>
                 </div>
                 <ul role="list" class="divide-y divide-gray-100">
                     <li v-for="goal in goals " :key="goal.goal_id" class="flex items-center justify-between gap-x-6 py-5">

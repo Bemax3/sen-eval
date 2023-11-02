@@ -94,9 +94,7 @@
                         <TableHeading :first="true">Nom</TableHeading>
                         <TableHeading>Description</TableHeading>
                         <TableHeading>Barème</TableHeading>
-                        <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                            <span class="sr-only">Edit</span>
-                        </th>
+                        <TableHeading>Modifier</TableHeading>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
@@ -109,9 +107,6 @@
                                 <Link :href="route('skillTypes.edit',{skillType: skill.skill_type_id})" class="group flex items-center px-4 py-2 text-sm">
                                     <PencilSquareIcon class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600" aria-hidden="true" />
                                 </Link>
-                                <a href="#" @click="destroy(skill.skill_type_id)" class="group flex items-center px-4 py-2 text-sm">
-                                    <TrashIcon class="mr-3 h-5 w-5 text-gray-400 group-hover:text-red-600" aria-hidden="true" />
-                                </a>
                             </div>
 	                    </td>
                     </tr>

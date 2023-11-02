@@ -17,7 +17,7 @@ class Phase extends Model implements Searchable
     protected $table = 'phases';
 
     protected $primaryKey = 'phase_id';
-    protected $fillable = ['phase_name','phase_year','period_type_id','updated_by'];
+    protected $fillable = ['phase_name','phase_year','period_type_id','updated_by','phase_is_active'];
 
     public function getForeignKey()
     {
@@ -37,6 +37,10 @@ class Phase extends Model implements Searchable
 
     public function specific_skills(): BelongsToMany {
         return $this->skills()->where('skills.skill_type_id','=',SkillType::SPECIFIC);
+    }
+
+    public function active_specific_skills(): BelongsToMany {
+        return $this->specific_skills()->where('phase_skill_is_active','=',1);
     }
 
     public function general_skills_cadre(): BelongsToMany

@@ -54,8 +54,10 @@ class PhaseController extends Controller
     public function store(SavePhaseRequest $request)
     {
         try {
-            $this->phaseService->create($request->validated());
-            alert_success('Phase crée avec succès.');
+            switch ($this->phaseService->create($request->validated())){
+                case 'exist': alert_error('Une Phase existe pour cette année.'); break;
+                default: alert_success('Phase crée avec succès.');
+            }
         } catch (Exception $e) {
             alert_error('Erreur lors de la création de cette phase.');
         } finally {
@@ -85,12 +87,26 @@ class PhaseController extends Controller
     public function update(SavePhaseRequest $request, string $id)
     {
         try {
-            $this->phaseService->update(intval($id),$request->validated());
-            alert_success('Phase modifié avec succès.');
-        } catch (Exception) {
+            switch ($this->phaseService->update(intval($id),$request->validated())){
+                case 'exist': alert_error('Une Phase existe pour cette année.'); break;
+                default: alert_success('Phase modifié avec succès.');
+            }
+        } catch (Exception $e) {
             alert_error('Erreur lors de la modification de cette phase.');
         } finally {
             return redirect()->route('phases.edit', ['phase' => $id]);
+        }
+    }
+
+    public function updateStatus(SavePhaseRequest $request, string $id)
+    {
+        try {
+            $this->phaseService->updateStatus(intval($id),$request->validated());
+             alert_success('Phase modifié avec succès.');
+        } catch (Exception $e) {
+            alert_error('Erreur lors de la modification de cette phase.');
+        } finally {
+            return redirect()->back();
         }
     }
 

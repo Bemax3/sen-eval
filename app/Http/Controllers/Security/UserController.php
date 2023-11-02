@@ -36,7 +36,9 @@ class UserController extends Controller
     public function show(string $id)
     {
         try {
-            $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
+            $user = User::with('role')
+//                ->with('org')
+                ->with('n1')->with('group')->findOrFail($id);
             return Inertia::render('Security/Users/UserProfile', [
                 'user' => $user,
                 'n1s' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],

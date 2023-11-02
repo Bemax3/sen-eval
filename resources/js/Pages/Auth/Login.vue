@@ -23,25 +23,28 @@ const submit = () => {
     <div class="flex items-center min-h-screen p-6 bg-gray-50 ">
         <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl ">
             <div class="flex flex-col overflow-y-auto md:flex-row">
-                <div class="h-32 md:h-auto md:w-1/2 flex items-center justify-center">
+                <div class="h-20 md:h-auto md:w-1/3 flex items-center justify-center">
                     <img aria-hidden="true" class="object-cover w-30 h-30 alt=Office" src="../../assets/logo1637145113.png">
                 </div>
-                <div class="flex items-center justify-center flex-col p-6 sm:p-12 md:w-1/2">
-                    <h1 class="mb-2 font-semibold text-xl text-gray-700">
-                        Se connecter
+                <div class="flex items-center justify-center flex-col p-12 sm:p-12 md:w-2/3">
+                    <h1 class="mb-4 font-bold text-3xl text-cyan-900">
+                        Système d'Évaluation du Personnel
                     </h1>
-                    <div class="w-full">
+<!--                    <h1 class="mb-2 font-semibold text-xl text-gray-700">-->
+<!--                        Se connecter-->
+<!--                    </h1>-->
+                    <div class="w-full mt-4">
                         <form class="mb-0 space-y-6" @submit.prevent="submit">
                             <div>
                                 <InputLabel for="login">Login</InputLabel>
-                                <div class="mt-1">
+                                <div class="mt-2">
                                     <TextInput v-model="form.user_login" :invalid="form.errors.user_login !== undefined" id="user_login" placeholder="Login"  autofocus />
                                 </div>
                                 <InputError :message="form.errors.user_login" />
                             </div>
                             <div>
                                 <InputLabel for="login">Mot de Passe</InputLabel>
-                                <div class="mt-1">
+                                <div class="mt-2">
                                     <TextInput v-model="form.password" :invalid="form.errors.password !== undefined" id="password" type="password" placeholder="********"  />
                                 </div>
                                 <InputError :message="form.errors.password" />

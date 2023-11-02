@@ -17,7 +17,7 @@ class ProfileController extends Controller
             $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail(\Auth::id());
             return Inertia::render('Security/Profile/Profile', [
                 'user' => $user,
-                'n1s' => (new UserService())->findSameOrgUsers($user)
+                'n1s' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : []
             ]);
         }catch (Exception) {
             alert_error('Resource Introuvable.');

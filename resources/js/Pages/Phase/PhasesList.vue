@@ -12,6 +12,7 @@ import {capitalized, getPagination, hasData, moment} from '@/helpers/helper.js';
 import EmptyState from '@/Components/Common/EmptyState.vue';
 import axios from 'axios';
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
+import ToggleOnDatatable from "@/Components/Forms/ToggleOnDatatable.vue";
 
 const props = defineProps({
 	phases: {
@@ -85,27 +86,32 @@ const pages = [
 					<tr>
 						<TableHeading :first="true">Nom</TableHeading>
 						<TableHeading>Année de l'évaluation</TableHeading>
-						<th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-							<span class="sr-only">Actions</span>
-						</th>
+						<TableHeading>Activée</TableHeading>
+						<TableHeading>Details et modification</TableHeading>
 					</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 bg-white">
 					<tr v-for="phase in displayedData" :key="phase.phase_id">
 						<TableData :first="true">{{ phase.phase_name }}</TableData>
 						<TableData>{{ phase.phase_year}}</TableData>
+						<TableData>
+                            <div class="flex space-x-4">
+                                <ToggleOnDatatable :link="route('phases.update-status',{phase: phase.phase_id})" :value="phase.phase_is_active" obj="phase_is_active"/>
+                                <span
+                                    :class="phase.phase_is_active ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
+                                    class="rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                                    {{ phase.phase_is_active ? 'Activé' : 'Désactivé' }}
+                                </span>
+                            </div>
+                        </TableData>
 						<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                            <div class="flex items-center justify-center">
+                            <div class="flex items-center">
                                 <Link :href="route('phaseSkills.show', {phaseSkill: phase.phase_id})" class="group flex items-center px-4 py-2 text-sm">
                                     <Cog6ToothIcon class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600" aria-hidden="true" />
                                 </Link>
                                 <Link :href="route('phases.edit', {phase: phase.phase_id})" class="group flex items-center px-4 py-2 text-sm">
                                     <PencilSquareIcon class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600" aria-hidden="true" />
                                 </Link>
-                                <a
-                                    href="#" @click="destroy(phase.phase_id)" class="group flex items-center px-4 py-2 text-sm">
-                                    <TrashIcon class="mr-3 h-5 w-5 text-gray-400 group-hover:text-red-600" aria-hidden="true" />
-                                </a>
                             </div>
 						</td>
 					</tr>

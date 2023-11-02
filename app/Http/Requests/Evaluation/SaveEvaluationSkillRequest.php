@@ -10,7 +10,7 @@ class SaveEvaluationSkillRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'evaluation_skill_mark' => [Rule::when($this->method() === $this::METHOD_POST,'sometimes'),'required','gt:0','lte:evaluation_skill_marking'],
+            'evaluation_skill_mark' => [Rule::when($this->method() === $this::METHOD_POST,'sometimes'),'required','gte:0','lte:evaluation_skill_marking'],
             'evaluation_skill_marking' => [Rule::when($this->method() === $this::METHOD_POST,'sometimes'),'required','integer','gte:evaluation_skill_mark'],
             'evaluation_id' => [Rule::when($this->method() === $this::METHOD_PUT,'sometimes'),'required'],
             'phase_skill_id' => [Rule::when($this->method() === $this::METHOD_PUT,'sometimes'),'required'],

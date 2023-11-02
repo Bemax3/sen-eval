@@ -31,7 +31,6 @@ class AuthController extends Controller
             $request->authenticate();
             $user = Auth::user();
             $this->importOracleDataOnLogin($user);
-            Auth::login($user);
         }
         $request->session()->regenerate();
 

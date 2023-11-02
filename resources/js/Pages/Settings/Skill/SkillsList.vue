@@ -91,9 +91,8 @@
                         <TableHeading>Status</TableHeading>
                         <TableHeading>Barème Par Défaut</TableHeading>
                         <TableHeading>Type</TableHeading>
-                        <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                            <span class="sr-only">Actions</span>
-                        </th>
+                        <TableHeading>College</TableHeading>
+                        <TableHeading>Modifier</TableHeading>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
@@ -101,7 +100,7 @@
                         <TableData class="whitespace-pre-line" :first="true">{{ skill.skill_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ skill.skill_desc }}</TableData>
                         <TableData>
-                            <div class="flex space-x-4">
+                            <div class="flex space-x-4" v-if="!skill.group">
                                 <ToggleOnDatatable :link="route('skills.update',{skill: skill.skill_id})" :value="skill.skill_is_active" obj="skill_is_active" />
                                 <span
                                     :class="skill.skill_is_active ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
@@ -112,6 +111,7 @@
                         </TableData>
                         <TableData >{{ skill.skill_marking }} points</TableData>
                         <TableData>{{ skill.type.skill_type_name }}</TableData>
+                        <TableData>{{ skill.group ? skill.group.group_name : 'Commun' }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">
                                 <Link
@@ -121,14 +121,6 @@
                                         class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"
                                         aria-hidden="true" />
                                 </Link>
-                                <a
-                                    href="#"
-                                    @click="destroy(skill.skill_id)"
-                                    class="group flex items-center px-4 py-2 text-sm">
-                                    <TrashIcon
-                                        class="mr-3 h-5 w-5 text-gray-400 group-hover:text-red-600"
-                                        aria-hidden="true" />
-                                </a>
                             </div>
                         </td>
                     </tr>

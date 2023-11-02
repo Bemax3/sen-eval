@@ -21,7 +21,7 @@ class SkillController extends Controller
     public function index()
     {
         return Inertia::render('Settings/Skill/SkillsList', [
-            'skills' => Skill::with('type')->paginate(10)
+            'skills' => Skill::with('type','group')->paginate(10)
         ]);
     }
 

@@ -38,6 +38,7 @@ Route::get('/', function () {
 })->middleware('auth')->name('home');
 
 Route::group(['middleware' => ['auth']],function () {
+    Route::put('/goals/{goal}/updateMark',[GoalsController::class,'updateMark'])->name('goals.update-mark');
     Route::resources([
         'profile' => ProfileController::class,
         'goals' => GoalsController::class,
@@ -47,6 +48,7 @@ Route::group(['middleware' => ['auth']],function () {
         'evaluationSkill' => EvaluationSkillController::class,
         'rating' => UserEvaluationController::class
     ]);
+
     Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
     Route::post('/claimTypes/search', [ClaimTypeController::class, 'search'])->name('claimTypes.search');
     Route::post('/mobilityTypes/search', [MobilityTypeController::class, 'search'])->name('mobilityTypes.search');
@@ -65,6 +67,7 @@ Route::group(['middleware' => ['auth']],function () {
 });
 
 Route::group(['middleware' => ['auth', 'root']], function () {
+    Route::put('/phases/{phase}/updateStatus',[PhaseController::class,'updateStatus'])->name('phases.update-status');
     Route::resources([
         'claimTypes' => ClaimTypeController::class,
         'mobilityTypes' => MobilityTypeController::class,

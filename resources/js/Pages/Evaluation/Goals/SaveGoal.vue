@@ -108,7 +108,7 @@ const desc = 'Accepter ou Contester un objectif.';
 
                             <div class="col-span-full">
                                 <div class="mt-2">
-                                    <Switch v-model="form.goal_is_accepted" label="Accepté / Contesté" desc="Accepter cette objectif ou le contesté ?"/>
+                                    <Switch v-model="form.goal_is_accepted" label="Contester / Accepter" desc="Accepter cette objectif ou le contesté ?"/>
                                 </div>
                             </div>
 

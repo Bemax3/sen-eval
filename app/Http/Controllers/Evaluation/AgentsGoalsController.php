@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Evaluation;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Evaluation\SaveAgentGoalRequest;
+use App\Http\Requests\Evaluation\SaveGoalRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Evaluation\Goal;
 use App\Models\Phase\Phase;
 use App\Models\User;
+use App\Services\Evaluation\EvaluationService;
 use App\Services\Evaluation\GoalService;
 use Exception;
 use Illuminate\Http\Request;
@@ -36,7 +38,7 @@ class AgentsGoalsController extends Controller
         try {
             return Inertia::render('Evaluation/Agents/SaveAgentGoal',[
                 'agent' =>  User::with('org')->findOrFail($id),
-                'phases' => Phase::with('periods')->get(),
+                'phases' => Phase::where('phase_is_active','=',1)->with('periods')->get(),
             ]);
         }catch (Exception) {
             alert_error('Resource Introuvable.');
@@ -48,7 +50,7 @@ class AgentsGoalsController extends Controller
         try {
             return Inertia::render('Evaluation/Agents/SaveAgentGoal',[
                 'agent' =>  User::with('org')->findOrFail($agent_id),
-                'phases' => Phase::with('periods')->get(),
+                'phases' => Phase::where('phase_is_active','=',1)->with('periods')->get(),
                 'goal' => Goal::findOrFail($goal_id)
             ]);
         }catch (Exception) {
@@ -74,7 +76,8 @@ class AgentsGoalsController extends Controller
         try {
             switch ($this->goalService->update($request->validated(),$id,$goal_id)) {
                 case 'exceed': alert_error('Le barème total pour les objectifs dépasse la limite fixée.'); break;
-                default: alert_success('Objectif Enregistré avec succès');
+                case 'exceed_mark': alert_error('Le barème ne peut pas être inférieure á la note déjà donnée.'); break;
+                default: alert_success('Objectif Enregistré avec succès.');
             }
         }catch (\Exception $e) {
             alert_error('Erreur lors de l\'enregistrement de l\'objectif');
@@ -82,6 +85,7 @@ class AgentsGoalsController extends Controller
             return redirect()->back();
         }
     }
+
 
     public function search(SearchRequest $request,string $agent_id)
     {

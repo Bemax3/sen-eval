@@ -28,9 +28,10 @@ class SavePhaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phase_name' => ['required'],
-            'phase_year' => ['required','digits:4','integer','min:' . date('Y')],
-            'period_type_id' => ['required'],
+            'phase_name' => ['sometimes','required'],
+            'phase_year' => ['sometimes','required','digits:4','integer','min:' . date('Y')],
+            'period_type_id' => ['sometimes','required'],
+            'phase_is_active' => ['sometimes'],
             'updated_by' => ['sometimes']
         ];
     }

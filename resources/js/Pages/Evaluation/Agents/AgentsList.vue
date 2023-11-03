@@ -32,10 +32,16 @@ const search = reactive({
     fields: ['user_display_name','user_matricule'],
 });
 
+const searchAgent = reactive({
+    keyword: '',
+    fields: ['user_display_name','user_matricule'],
+});
+
 const others =  props.others;
 const getFromDb =  () => {
-    return axios.post(route('users.search'), search);
+    return axios.post(route('users.search'), searchAgent);
 }
+
 const query = ref('')
 const filteredN1 = ref(others)
 
@@ -120,7 +126,7 @@ const pages = [
                                         :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0];
                                                             return selected ? selected.user_matricule + ' ' + selected.user_display_name : ''}"
                                         placeholder="Chercher un agent..."
-                                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" @change="search.keyword = query = $event.target.value; "  />
+                                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6" @change="searchAgent.keyword = query = $event.target.value; "  />
                                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                         <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
                                     </ComboboxButton>

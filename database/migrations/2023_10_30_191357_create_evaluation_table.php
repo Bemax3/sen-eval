@@ -38,14 +38,17 @@ return new class extends Migration
             $table->timestamps();
         });
 
-//        Schema::create('evaluation_trainings', function (Blueprint $table) {
-//            $table->increments('evaluation_training_id');
-//            $table->unsignedInteger('evaluation_id');
-//            $table->unsignedInteger('updated_by')->nullable();
-//            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
-//            $table->foreign('evaluation_id')->references('evaluation_id')->on('evaluations');
-//
-//        });
+        Schema::create('evaluation_trainings', function (Blueprint $table) {
+            $table->increments('evaluation_training_id');
+            $table->boolean('asked_by_evaluated')->nullable();
+            $table->boolean('asked_by_evaluator')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('evaluation_id');
+            $table->unsignedInteger('training_type_id');
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
+            $table->foreign('evaluation_id')->references('evaluation_id')->on('evaluations');
+            $table->foreign('training_type_id')->references('training_type_id')->on('training_types');
+        });
 //
 //        Schema::create('evaluation_claims', function (Blueprint $table) {
 //            $table->increments('evaluation_claim_id');

@@ -56,4 +56,11 @@ class EvaluationService
         return true;
     }
 
+    public function addEvaluatorComment( $validated,$evaluation_id): void
+    {
+        $eval = Evaluation::findOrFail($evaluation_id);
+
+        $eval->update($validated);
+    }
+
 }

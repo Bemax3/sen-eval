@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Evaluation;
 use App\Http\Controllers\Controller;
 use App\Models\Evaluation\Evaluation;
 use App\Models\Evaluation\Goal;
+use App\Models\Settings\SkillType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,6 +24,7 @@ class UserEvaluationController extends Controller
         return Inertia::render('Evaluation/Evaluation/EvaluationSkills',[
             'evaluation' => $evaluation,
             'agent' => $agent,
+            'bareme' => ['specific' => SkillType::SPECIFIC_MARKING,'general' => SkillType::GENERAL_MARKING,'perf' => SkillType::GOALS_MARKING],
             'specific_skills' => $evaluation->specific_skills()->get(),
             'skills' => $evaluation->general_skills()->get(),
             'goals' => Goal::where('phase_id',$evaluation->phase_id)->where('evaluated_id',$evaluation->evaluated_id)->with('period','phase')->get(),

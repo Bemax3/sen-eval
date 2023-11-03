@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SaveEvaluationRequest extends FormRequest
 {
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'evaluator_id' => \Auth::id()
@@ -22,7 +22,7 @@ class SaveEvaluationRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'phase_id.required' => 'Veuillez choisir une année pour l\'evaluation.'

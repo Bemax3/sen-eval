@@ -76,12 +76,11 @@ const pages = [
                         <TableData class="whitespace-pre-line" :first="true">{{ e.evaluated.user_display_name + ' ' + e.evaluated.user_matricule  }}</TableData>
                         <TableData>{{ e.phase.phase_year }}</TableData>
                         <TableData>
-                                  <span class="flex-shrink-0">
+                            <span class="flex-shrink-0">
                                 <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
                                     <span class="text-cyan-600">{{e.evaluation_mark}}</span>
                                 </span>
                             </span>
-
                         </TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">

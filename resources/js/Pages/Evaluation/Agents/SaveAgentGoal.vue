@@ -49,8 +49,8 @@ const setForm = () => {
                 goal_expected_date: new Date(),
                 goal_expected_result: '',
                 goal_marking: 5,
-                phase_id: props.phases.filter(p => p.phase_year === new Date().getFullYear().toString())[0].phase_id,
-                evaluation_period_id: props.phases.filter(p => p.phase_year === new Date().getFullYear().toString())[0].periods[0].evaluation_period_id
+                phase_id: props.phases[0].phase_id,
+                evaluation_period_id: props.phases[0].periods[0].evaluation_period_id
             }
             : {
                 goal_name: props.goal.goal_name,

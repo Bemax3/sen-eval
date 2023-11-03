@@ -46,6 +46,10 @@ class AgentsController extends Controller
 
     public function store(SaveAgentRequest $request) {
         try {
+            if($request->get('agent_id') == \Auth::id()) {
+                alert_error('Ahh Nonn! Vous ne pouver pas vous evaluer quand même.');
+                return redirect()->back();
+            }
             (new UserService())->setUserN1($request->validated(),\Auth::id());
             alert_success('Agent Enregistré avec succès.');
         }catch (Exception $e) {

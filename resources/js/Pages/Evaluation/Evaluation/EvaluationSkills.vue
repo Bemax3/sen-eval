@@ -1,9 +1,17 @@
 <script setup>
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, useForm, usePage} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import {computed, ref, watch} from "vue";
+import TextArea from "@/Components/Forms/TextArea.vue";
+import FormIndications from "@/Components/Forms/FormIndications.vue";
+import SubmitButton from "@/Components/Forms/SubmitButton.vue";
+import InputLabel from "@/Components/Forms/InputLabel.vue";
+import {LockClosedIcon} from "@heroicons/vue/20/solid/index.js";
+import Tabs from "@/Components/Evaluation/Tabs.vue";
+import Title from "@/Components/Evaluation/Title.vue";
+import SectionMark from "@/Components/Evaluation/SectionMark.vue";
 const props = defineProps({
     evaluation: {
         type: Object,
@@ -11,6 +19,7 @@ const props = defineProps({
     agent: {
         type: Object,
     },
+    bareme: {},
     specific_skills: {
 	    type: Object,
     },
@@ -34,6 +43,7 @@ const tabs = [
     { name: 'Formations', href: '#', current: false },
     { name: 'Mobilités', href: '#', current: false },
     { name: 'Sanctions', href: '#', current: false },
+    { name: 'Promotions & Avancements', href: '#', current: false },
 ]
 
 const goalsTotal = computed(() => {
@@ -42,6 +52,20 @@ const goalsTotal = computed(() => {
     return total;
 })
 
+const commentForm = useForm({
+    evaluated_comment: props.evaluation.evaluated_comment || '',
+})
+
+const submitEval = () => {
+    commentForm.put(route('evaluation.update',{
+        agent: props.agent.user_id,
+        evaluation: props.evaluation.evaluation_id
+    }),{
+        onError: err => {
+            usePage().props.flash.notify = {type: 'error',message: err.phase_skill_id}
+        },
+    })
+}
 // const edits = ref([]);
 // const inputs = ref([]);
 //
@@ -83,138 +107,133 @@ const goalsTotal = computed(() => {
     <AuthenticatedLayout>
         <Head title="Profil"/>
         <div class="px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs :pages="pages"/>
-	    <div class="sm:flex sm:items-center">
-		    <div class="sm:flex-auto">
-                <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">
-                        Evaluation de {{agent.user_display_name}}. Année : {{evaluation.phase.phase_year}}
-                    </h1>
-                    <span class="flex-shrink-0">
-                        <span class="flex h-20 w-20 items-center justify-center rounded-full border-4 border-cyan-600">
-                            <span class="text-cyan-600 text-2xl font-bold">{{ evaluation.evaluation_mark }}</span>
-                        </span>
-                    </span>
-                </div>
-			    <p class="mt-2 text-sm text-gray-700">
-				    Evaluateur: {{evaluation.evaluator.user_display_name}}. Matricule : {{evaluation.evaluator.user_matricule}}.
-			    </p>
-		    </div>
-	    </div>
-        <div class="border-b border-gray-200 pb-5 sm:pb-0">
-            <div class="mt-3 sm:mt-4">
-                <div class="sm:hidden">
-                    <label for="current-tab" class="sr-only">Select a tab</label>
-                    <select id="current-tab" name="current-tab" class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm">
-                        <option v-for="tab in tabs" :key="tab.name" :selected="tab.current">{{ tab.name }}</option>
-                    </select>
-                </div>
-                <div class="hidden sm:block">
-                    <nav class="-mb-px flex space-x-8">
-                        <Link v-for="tab in tabs" :key="tab.name" :href="tab.href" :class="[tab.current ? 'border-cyan-500 text-cyan-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium']" :aria-current="tab.current ? 'page' : undefined">{{ tab.name }}</Link>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <div role="list">
-	        <div class="px-4 py-4 sm:px-0">
-		        <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between items-center">
-			        <h3 class="text-lg font-semibold leading-6 text-gray-900">
-                        Compétences Spécifiques
-                    </h3>
-			        <span class="flex-shrink-0">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                            <span class="text-cyan-600">{{ evaluation.specific_skills_sum_evaluation_skill_mark }}</span>
-                        </span>
-                    </span>
-		        </div>
-		        <ul role="list" class="divide-y divide-gray-100">
-			        <li v-for="skill in specific_skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
-				        <div class="min-w-0">
-					        <div class="flex items-start gap-x-3">
-						        <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
-						        <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
-					        </div>
-					        <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
-						        <p class="whitespace-break-spaces">
-							        {{ skill.phase_skill.skill.skill_desc }}
-						        </p>
-					        </div>
-				        </div>
-				        <div class="flex flex-none items-center gap-x-4">
-					        <div class="flex items-center justify-center space-x-4">
-                                <p class="ml-0.5 font-bold"> {{ skill.evaluation_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
-					        </div>
-				        </div>
-			        </li>
-		        </ul>
-	        </div>
-            <div class="px-4 py-4 sm:px-0">
-                <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between">
-                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Compétences Générales</h3>
-	                <span class="flex-shrink-0">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                            <span class="text-cyan-600">{{ evaluation.general_skills_sum_evaluation_skill_mark }}</span>
-                        </span>
-                    </span>
-                </div>
-                <ul role="list" class="divide-y divide-gray-100">
-                    <li v-for="skill in skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
-                        <div class="min-w-0">
-                            <div class="flex items-start gap-x-3">
-                                <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
-                                <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
+            <Breadcrumbs :pages="pages"/>
+            <Title :agent="agent" :evaluation="evaluation" />
+            <Tabs />
+            <div role="list">
+                <div class="px-4 py-4 sm:px-0">
+                    <SectionMark title="Compétences Spécifiques (Savoir, Savoir Faire, Savoir Être)" :mark="evaluation.specific_skills_sum_evaluation_skill_mark" :marking="bareme.specific"/>
+                    <ul role="list" class="divide-y divide-gray-100">
+                        <li v-for="skill in specific_skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
+                            <div class="min-w-0">
+                                <div class="flex items-start gap-x-3">
+                                    <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
+                                    <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
+                                </div>
+                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">
+                                        {{ skill.phase_skill.skill.skill_desc }}
+                                    </p>
+                                </div>
                             </div>
-                            <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
-                                <p class="whitespace-break-spaces">
-                                    {{ skill.phase_skill.skill.skill_desc }}
-                                </p>
+                            <div class="flex flex-none items-center gap-x-4">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <p class="ml-0.5 font-bold"> {{ skill.evaluation_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex flex-none items-center gap-x-4">
-                            <div class="flex items-center justify-center space-x-4">
-                                <p class="ml-0.5 font-bold"> {{ skill.evaluation_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="px-4 py-4 sm:px-0">
+                    <SectionMark title="Compétences Générales" :mark="evaluation.general_skills_sum_evaluation_skill_mark" :marking="bareme.general"/>
+                    <ul role="list" class="divide-y divide-gray-100">
+                        <li v-for="skill in skills " :key="skill.evaluation_skill_id" class="flex items-center justify-between gap-x-6 py-5">
+                            <div class="min-w-0">
+                                <div class="flex items-start gap-x-3">
+                                    <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
+                                    <p v-if="skill.evaluation_skill_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">Contesté</p>
+                                </div>
+                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">
+                                        {{ skill.phase_skill.skill.skill_desc }}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
+                            <div class="flex flex-none items-center gap-x-4">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <p class="ml-0.5 font-bold"> {{ skill.evaluation_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="px-4 py-4 sm:px-0">
+                    <SectionMark title="Performances" :mark="goalsTotal" :marking="bareme.perf"/>
+                    <ul role="list" class="divide-y divide-gray-100">
+                        <li v-for="goal in goals " :key="goal.goal_id" class="flex items-center justify-between gap-x-6 py-5">
+                            <div class="min-w-0">
+                                <div class="flex items-start gap-x-3">
+                                    <p class="text-base font-bold leading-6 text-gray-900">{{ goal.goal_name }}</p>
+                                    <p  class="text-gray-700 bg-gray-50 ring-gray-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
+                                        {{ goal.period.evaluation_period_name }}
+                                    </p>
+                                    <p v-if="goal.goal_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
+                                        Contesté
+                                    </p>
+                                </div>
+                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">
+                                        {{ goal.goal_expected_result }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-none items-center gap-x-4">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <p class="ml-0.5 font-bold"> {{ goal.goal_mark }} / {{ goal.goal_marking }} </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="px-4 py-4 sm:px-0">
-                <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between">
-                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Performances</h3>
-                    <span class="flex-shrink-0">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                            <span class="text-cyan-600">{{ goalsTotal }}</span>
-                        </span>
-                    </span>
+                <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Commentaires</h3>
                 </div>
-                <ul role="list" class="divide-y divide-gray-100">
-                    <li v-for="goal in goals " :key="goal.goal_id" class="flex items-center justify-between gap-x-6 py-5">
-                        <div class="min-w-0">
-                            <div class="flex items-start gap-x-3">
-                                <p class="text-base font-bold leading-6 text-gray-900">{{ goal.goal_name }}</p>
-                                <p  class="text-gray-700 bg-gray-50 ring-gray-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
-                                    {{ goal.period.evaluation_period_name }}
-                                </p>
-                                <p v-if="goal.goal_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
-                                    Contesté
-                                </p>
+                <form class="mt-8 bg-white shadow sm:rounded-lg" @submit.prevent="submitEval">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-base font-semibold leading-6 text-gray-900">Commentaire Évaluateur</h3>
+                            <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                <p>Commentaire de {{evaluation.evaluator.user_display_name}} </p>
                             </div>
-                            <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
-                                <p class="whitespace-break-spaces">
-                                    {{ goal.goal_expected_result }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex flex-none items-center gap-x-4">
-                            <div class="flex items-center justify-center space-x-4">
-                                <p class="ml-0.5 font-bold"> {{ goal.goal_mark }} / {{ goal.goal_marking }} </p>
+                            <div class="mt-5 sm:flex sm:items-center">
+                                <div class="w-full sm:max-w-xl">
+                                    <div class="col-span-full">
+                                        <InputLabel for="start_date"></InputLabel>
+                                        <div class="relative mt-2">
+                                            <TextArea :disabled="true" v-model="evaluation.evaluator_comment" />
+                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <LockClosedIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-base font-semibold leading-6 text-gray-900">Commentaire Évalué</h3>
+                            <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                <p>Ajouter un commentaire. </p>
+                            </div>
+                            <div class="mt-5 sm:flex sm:items-center">
+                                <div class="w-full sm:max-w-xl">
+                                    <div class="col-span-full">
+                                        <InputLabel for="start_date"></InputLabel>
+                                        <div class=" mt-2">
+                                            <TextArea v-model="commentForm.evaluated_comment" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                        <FormIndications />
+                        <SubmitButton type="submit" class="mt-3 sm:ml-3 sm:mt-0 sm:w-auto">Enregistrer</SubmitButton>
+                    </div>
+                </form>
             </div>
-        </div>
         </div>
     </AuthenticatedLayout>
 </template>

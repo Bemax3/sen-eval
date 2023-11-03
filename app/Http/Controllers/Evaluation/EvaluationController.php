@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Evaluation;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Evaluation\SaveEvaluationCommentsRequest;
 use App\Http\Requests\Evaluation\SaveEvaluationRequest;
 use App\Models\Evaluation\Evaluation;
 use App\Models\Evaluation\EvaluationSkill;
@@ -34,7 +35,7 @@ class EvaluationController extends Controller
     }
 
     public function show(string $id,string $evaluation_id) {
-        $evaluation = Evaluation::with('phase','evaluator')->withSum('specific_skills','evaluation_skill_mark')->withSum('general_skills','evaluation_skill_mark')->findOrFail($evaluation_id);
+        $evaluation = Evaluation::with('phase','evaluator','evaluated')->withSum('specific_skills','evaluation_skill_mark')->withSum('general_skills','evaluation_skill_mark')->findOrFail($evaluation_id);
         $agent = User::with('org')->findOrFail($id);
         return Inertia::render('Evaluation/Agents/AgentEvaluationSkills',[
             'evaluation' => $evaluation,
@@ -59,6 +60,17 @@ class EvaluationController extends Controller
             return redirect()->route('evaluation.show',['evaluation' => $evaluation->evaluation_id,'agent' => $id]);
         }catch (Exception) {
             alert_error('Erreur lors de la création de l\'évaluation.');
+            return redirect()->back();
+        }
+    }
+
+    public function update(SaveEvaluationCommentsRequest $request,string $id, string $evaluation_id) {
+        try {
+            $this->evaluationService->addEvaluatorComment($request->validated(),$evaluation_id);
+            alert_success('Evaluation enregistré avec succès.');
+            return redirect()->back();
+        }catch (Exception) {
+            alert_error('Erreur lors de l\'enregistrement de l\'évaluation.');
             return redirect()->back();
         }
     }

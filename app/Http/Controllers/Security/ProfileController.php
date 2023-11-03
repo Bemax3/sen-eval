@@ -32,6 +32,10 @@ class ProfileController extends Controller
     {
         try {
             $user = User::findOrFail($id);
+            if($request->get('n1_id') == $user->user_id) {
+                alert_error('Ahh Nonn! Vous ne pouver pas vous evaluer quand même.');
+                return redirect()->back();
+            }
             $user->update($request->validated());
             alert_success('Profil modifié avec succès.');
         } catch (Exception) {

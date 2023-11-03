@@ -82,11 +82,13 @@ const desc = 'Accepter ou Contester un objectif.';
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-span-full">
                                 <div class="mt-2">
                                     <Switch :disabled="true"  v-model="goal.goal_means_available" label="Disponibilité des moyens" desc="Les moyens pour accomplir cette objectif sont t-il disponible ?"/>
                                 </div>
                             </div>
+
                             <div class="col-span-full">
                                 <InputLabel for="start_date" required>Échéance</InputLabel>
                                 <div class="relative mt-2">
@@ -96,6 +98,7 @@ const desc = 'Accepter ou Contester un objectif.';
                                     </div>
                                 </div>
                             </div>
+
                             <div class="sm:col-span-4">
                                 <InputLabel>Année d'évaluation</InputLabel>
                                 <div class="relative mt-2">

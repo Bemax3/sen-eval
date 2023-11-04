@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Sen Evaluation'),
+    'name' => env('APP_NAME', 'Sen Rating'),
 
     /*
     |--------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 
 namespace App\Models\Phase;
 
-use App\Models\Evaluation\Goal;
+use App\Models\Rating\Goal;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;

@@ -38,9 +38,9 @@ const currentRoute = getCurrentRoute();
 
 let navigation = [
     { name: 'Dashboard', href: route('home'), icon: HomeIcon, current: currentRoute === 'home' },
-    { name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents','agent-goals','evaluation'].includes(currentRoute) },
+    { name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents','agent-goals','agent-ratings'].includes(currentRoute) },
     { name: 'Mes Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals' },
-    { name: 'Mes Evaluations', href: route('rating.index'), icon: ChartBarIcon, current: currentRoute === 'rating' },
+    { name: 'Mes Evaluations', href: route('ratings.index'), icon: ChartBarIcon, current: currentRoute === 'ratings' },
     { name: 'Mon Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile' },
 ]
 if ([1,2].includes(user.value.role_id)) {

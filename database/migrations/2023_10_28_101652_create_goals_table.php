@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('goal_id');
             $table->text('goal_name');
             $table->boolean('goal_means_available');
-            $table->boolean('goal_is_accepted')->default(false);
+            $table->boolean('goal_is_accepted')->default(true);
             $table->boolean('goal_mark_is_claimed')->default(false);
             $table->dateTime('goal_expected_date');
             $table->text('goal_expected_result');

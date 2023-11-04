@@ -2,7 +2,7 @@
 
 namespace App\Policies\Evaluation;
 
-use App\Models\Evaluation\Goal;
+use App\Models\Rating\Goal;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 

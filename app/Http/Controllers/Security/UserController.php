@@ -98,7 +98,7 @@ class UserController extends Controller
                 return redirect()->back();
             }
             $user->update($request->validated());
-            alert_success('Agent modifié avec succès.');
+            alert_success('Agents modifié avec succès.');
         } catch (Exception $e) {
             alert_error('Erreur lors de la modification de cette agent.');
         } finally {

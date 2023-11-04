@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title inertia>{{ config('app.name', 'Sen Evaluation') }}</title>
+        <title inertia>{{ config('app.name', 'Sen Rating') }}</title>
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])

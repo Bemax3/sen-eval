@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\Evaluation\EvaluationController;
-use App\Http\Controllers\Evaluation\AgentsController;
-use App\Http\Controllers\Evaluation\AgentsGoalsController;
-use App\Http\Controllers\Evaluation\EvaluationSkillController;
-use App\Http\Controllers\Evaluation\GoalsController;
-use App\Http\Controllers\Evaluation\UserEvaluationController;
+use App\Http\Controllers\Agent\AgentGoalsController;
+use App\Http\Controllers\Agent\AgentRatingsController;
+use App\Http\Controllers\Agent\AgentsController;
+use App\Http\Controllers\Goal\GoalsController;
 use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
 use App\Http\Controllers\Phase\PhaseSkillController;
+use App\Http\Controllers\Rating\RatingsController;
+use App\Http\Controllers\Rating\RatingSkillsController;
+use App\Http\Controllers\Rating\RatingTrainingsController;
 use App\Http\Controllers\Security\OrgController;
 use App\Http\Controllers\Security\ProfileController;
 use App\Http\Controllers\Security\RoleController;
@@ -42,11 +43,14 @@ Route::group(['middleware' => ['auth']],function () {
     Route::resources([
         'profile' => ProfileController::class,
         'goals' => GoalsController::class,
+        'ratings' => RatingsController::class,
+
         'agents' => AgentsController::class,
-        'agent/{agent}/agent-goals' => AgentsGoalsController::class,
-        'agent/{agent}/evaluation' => EvaluationController::class,
-        'evaluationSkill' => EvaluationSkillController::class,
-        'rating' => UserEvaluationController::class
+        'agent/{agent}/agent-goals' => AgentGoalsController::class,
+        'agent/{agent}/agent-ratings' => AgentRatingsController::class,
+
+        'rating/rating-skills' => RatingSkillsController::class,
+        'rating/rating-trainings' => RatingTrainingsController::class
     ]);
 
     Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
@@ -63,7 +67,7 @@ Route::group(['middleware' => ['auth']],function () {
     Route::post('/orgs/search', [OrgController::class, 'search'])->name('orgs.search');
     Route::post('/goals/search', [GoalsController::class, 'search'])->name('goals.search');
     Route::post('/agents/search', [AgentsController::class, 'search'])->name('agents.search');
-    Route::post('/agent/{agent}/agent-goals/search', [AgentsGoalsController::class, 'search'])->name('agent-goals.search');
+    Route::post('/agent/{agent}/agent-goals/search', [AgentGoalsController::class, 'search'])->name('agent-goals.search');
 });
 
 Route::group(['middleware' => ['auth', 'root']], function () {

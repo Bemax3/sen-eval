@@ -37,7 +37,7 @@ class SkillSeeder extends Seeder
             [
                 'skill_name' => 'Management',
                 'skill_marking' => 15,
-                'skill_desc' => 'Communication, Leadership, Organisation, Planification, Motivation, Délégation, Evaluation, Résolution de problèmes, Innovation, Persuasion',
+                'skill_desc' => 'Communication, Leadership, Organisation, Planification, Motivation, Délégation, Rating, Résolution de problèmes, Innovation, Persuasion',
                 'skill_type_id' => 2,
                 'group_id' => Group::CADRE
             ],

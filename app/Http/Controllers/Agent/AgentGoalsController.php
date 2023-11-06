@@ -71,7 +71,7 @@ class AgentGoalsController extends Controller
 
     public function update(SaveAgentGoalRequest $request,string $id,string $goal_id) {
         try {
-            switch ($this->goalService->update($request->validated(),$id,$goal_id)) {
+            switch ($this->goalService->update($request->validated(),$goal_id)) {
                 case 'exceed': alert_error('Le barème total pour les objectifs dépasse la limite fixée.'); break;
                 case 'exceed_mark': alert_error('Le barème ne peut pas être inférieure á la note déjà donnée.'); break;
                 default: alert_success('Objectif Enregistré avec succès.');

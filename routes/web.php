@@ -7,6 +7,10 @@ use App\Http\Controllers\Goal\GoalsController;
 use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
 use App\Http\Controllers\Phase\PhaseSkillController;
+use App\Http\Controllers\Rating\RatingClaimsController;
+use App\Http\Controllers\Rating\RatingMobilitiesController;
+use App\Http\Controllers\Rating\RatingPromotionController;
+use App\Http\Controllers\Rating\RatingSanctionsController;
 use App\Http\Controllers\Rating\RatingsController;
 use App\Http\Controllers\Rating\RatingSkillsController;
 use App\Http\Controllers\Rating\RatingTrainingsController;
@@ -44,13 +48,17 @@ Route::group(['middleware' => ['auth']],function () {
         'profile' => ProfileController::class,
         'goals' => GoalsController::class,
         'ratings' => RatingsController::class,
+        'rating/rating-skills' => RatingSkillsController::class,
 
         'agents' => AgentsController::class,
         'agent/{agent}/agent-goals' => AgentGoalsController::class,
         'agent/{agent}/agent-ratings' => AgentRatingsController::class,
 
-        'rating/rating-skills' => RatingSkillsController::class,
-        'rating/rating-trainings' => RatingTrainingsController::class
+        'rating/{rating}/rating-trainings' => RatingTrainingsController::class,
+        'rating/{rating}/rating-mobilities' => RatingMobilitiesController::class,
+        'rating/{rating}/rating-sanctions' => RatingSanctionsController::class,
+        'rating/{rating}/rating-claims' => RatingClaimsController::class,
+        'rating/{rating}/rating-promotions' => RatingPromotionController::class
     ]);
 
     Route::post('/users/search', [UserController::class, 'search'])->name('users.search');

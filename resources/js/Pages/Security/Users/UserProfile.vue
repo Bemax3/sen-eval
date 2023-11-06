@@ -260,7 +260,7 @@ watch(() => query.value, function (next) {
                             </div>
 
                             <div class="sm:col-span-4">
-                                <InputLabel>Année d'évaluation</InputLabel>
+                                <InputLabel>Role</InputLabel>
                                 <div class="mt-2">
                                     <Listbox as="div" v-model="form.role_id">
                                         <div class="relative mt-2">

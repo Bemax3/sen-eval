@@ -30,7 +30,12 @@ class Organisation extends Model implements Searchable
         return  $this->hasMany(User::class);
     }
 
-    public function users() {
+    public function children () : HasMany {
+        return $this->hasMany($this,'parent_id','org_id');
+    }
+
+    public function users(): array
+    {
         return array_merge($this->child_org_agents()->get()->toArray(),$this->org_agents()->get()->toArray());
     }
 

@@ -86,6 +86,16 @@ return new class extends Migration
             $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->timestamps();
         });
+
+        Schema::create('promotion_types',function (Blueprint $table) {
+            $table->increments('promotion_type_id');
+            $table->string('promotion_type_name');
+            $table->string('promotion_type_desc')->nullable();
+            $table->boolean('promotion_type_is_active')->default(true);
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**

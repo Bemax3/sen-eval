@@ -33,3 +33,9 @@ export const parseDate = (input,format) => {
     format.replace(/(yyyy|dd|mm)/g, (parts) => {fmt[parts] = i++;})
     return new Date(parts[fmt['yyyy']],parts[fmt['mm']]-1,parts[fmt['dd']]);
 }
+
+export const getCurrentRoute = () => {
+    let routeName = route().current();
+    if (routeName.indexOf(".") === -1) return routeName;
+    return routeName.substring(0, routeName.indexOf("."))
+}

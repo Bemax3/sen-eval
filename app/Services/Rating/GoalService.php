@@ -26,7 +26,7 @@ class GoalService
         return 'ok';
     }
 
-    public function update(mixed $validated, string $id, string $goal_id): string
+    public function update(mixed $validated, string $goal_id): string
     {
         $goal = Goal::findOrFail($goal_id);
         if(!$this->checkMarking($goal->evaluated_id,$validated['phase_id'], $validated['goal_marking'] - $goal->goal_marking )) return 'exceed';
@@ -39,8 +39,6 @@ class GoalService
             'evaluation_period_id' => $validated['evaluation_period_id'],
             'goal_marking' => $validated['goal_marking'],
             'phase_id' => $validated['phase_id'],
-            'evaluator_id' => \Auth::id(),
-            'evaluated_id' => $id
         ]);
         return 'ok';
     }

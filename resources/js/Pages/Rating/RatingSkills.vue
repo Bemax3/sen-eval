@@ -9,9 +9,9 @@ import FormIndications from "@/Components/Forms/FormIndications.vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
 import {LockClosedIcon} from "@heroicons/vue/20/solid/index.js";
-import Tabs from "@/Components/Evaluation/Tabs.vue";
-import Title from "@/Components/Evaluation/Title.vue";
-import SectionMark from "@/Components/Evaluation/SectionMark.vue";
+import Tabs from "@/Components/Rating/Tabs.vue";
+import Title from "@/Components/Rating/Title.vue";
+import SectionMark from "@/Components/Rating/SectionMark.vue";
 const props = defineProps({
     rating: {
         type: Object,
@@ -67,7 +67,7 @@ const submitEval = () => {
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating" />
-            <Tabs />
+            <Tabs :rating_id="rating.rating_id" :agent_id="agent.user_id" :evaluated="true"/>
             <div role="list">
                 <div class="px-4 py-4 sm:px-0">
                     <SectionMark title="Compétences Spécifiques (Savoir, Savoir Faire, Savoir Être)" :mark="rating.specific_skills_sum_rating_skill_mark" :marking="marking.specific"/>
@@ -123,7 +123,7 @@ const submitEval = () => {
                                 <div class="flex items-start gap-x-3">
                                     <p class="text-base font-bold leading-6 text-gray-900">{{ goal.goal_name }}</p>
                                     <p  class="text-gray-700 bg-gray-50 ring-gray-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
-                                        {{ goal.period.rating_period_name }}
+                                        {{ goal.period.evaluation_period_name }}
                                     </p>
                                     <p v-if="goal.goal_mark_is_claimed" class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
                                         Contesté
@@ -145,9 +145,7 @@ const submitEval = () => {
                 </div>
             </div>
             <div class="px-4 py-4 sm:px-0">
-                <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Commentaires</h3>
-                </div>
+                <SectionMark title="Commentaires" />
                 <form class="mt-8 bg-white shadow sm:rounded-lg" @submit.prevent="submitEval">
                     <div class="grid grid-cols-2 gap-2">
                         <div class="px-4 py-5 sm:p-6">

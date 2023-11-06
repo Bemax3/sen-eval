@@ -46,6 +46,10 @@ class GoalsController extends Controller
     public function updateMark(SaveGoalRequest $request,string $id) {
         try {
             $goal = Goal::findOrFail($id);
+            if($goal->evaluator_id !== \Auth::id()) {
+                alert_error('Vous ne pouvez pas vous donner de note !');
+                return redirect()->back();
+            }
             $data = $request->validated();
             (new RatingService())->lowerMark($data['rating_id'],$goal->goal_mark);
             $goal->update($data);

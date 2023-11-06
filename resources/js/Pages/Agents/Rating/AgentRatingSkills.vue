@@ -3,7 +3,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, Link, router, useForm, usePage} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
-import Tabs from "@/Components/Evaluation/Tabs.vue";
+import Tabs from "@/Components/Rating/Tabs.vue";
 import {CheckIcon, ChevronUpDownIcon, LockClosedIcon, PencilSquareIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
 import {computed, ref, watch} from "vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
@@ -12,8 +12,8 @@ import SubmitButton from "@/Components/Forms/SubmitButton.vue";
 import {hasData} from "@/helpers/helper.js";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
-import SectionMark from "@/Components/Evaluation/SectionMark.vue";
-import Title from "@/Components/Evaluation/Title.vue";
+import SectionMark from "@/Components/Rating/SectionMark.vue";
+import Title from "@/Components/Rating/Title.vue";
 
 const props = defineProps({
     rating: {
@@ -40,21 +40,26 @@ const props = defineProps({
 const pages = [
     { name: 'Mes Agents', href: route('agents.index'), current: false },
     { name: 'Evaluations', href: route('agent-ratings.index',{agent: props.agent.user_id}), current: false },
-    { name: 'Rating', href: '#', current: true },
+    { name: 'Evaluation', href: '#', current: true },
 ]
+
 const form = useForm({
     rating_id: props.rating.rating_id,
     phase_skill_id: props.specific_skill_types[0] ? props.specific_skill_types[0].pivot.phase_skill_id : null,
 })
+
 const commentForm = useForm({
     evaluator_comment: props.rating.evaluator_comment || '',
 })
+
 const goalsTotal = computed(() => {
     let total = 0;
     props.goals.forEach(goal => total += goal.goal_mark)
     return total;
 })
+
 const edits = ref([]);
+
 const inputs = ref([]);
 
 const evaluatedComment = props.rating.evaluated_comment || '';
@@ -141,7 +146,7 @@ watch(() => props.specific_skills, function (next) {
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating" />
-            <Tabs />
+            <Tabs :rating_id="props.rating.rating_id" :agent_id="props.agent.user_id" />
             <div role="list">
                 <div class="px-4 py-4 sm:px-0">
                     <div class="pr-4 py-5 sm:pr-6">
@@ -307,9 +312,7 @@ watch(() => props.specific_skills, function (next) {
                 </div>
             </div>
             <div class="px-4 py-4 sm:px-0">
-                <div class="border-b border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Commentaires</h3>
-                </div>
+                <SectionMark title="Commentaires" />
                 <form class="mt-8 bg-white shadow-xl sm:rounded-lg" @submit.prevent="submitEval">
                     <div class="grid grid-cols-2 gap-2">
                         <div class="px-4 py-5 sm:p-6">

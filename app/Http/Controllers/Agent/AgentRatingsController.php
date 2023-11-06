@@ -34,10 +34,9 @@ class AgentRatingsController extends Controller
 
     public function show(string $agent_id,string $rating_id) {
         $rating = Rating::with('phase','evaluator','evaluated')->withSum('specific_skills','rating_skill_mark')->withSum('general_skills','rating_skill_mark')->findOrFail($rating_id);
-        $agent = User::with('org')->findOrFail($agent_id);
         return Inertia::render('Agents/Rating/AgentRatingSkills',[
             'rating' => $rating,
-            'agent' => $agent,
+            'agent' => $rating->evaluated,
             'specific_skill_types' => $rating->phase->active_specific_skills()->get(),
             'marking' => ['specific' => SkillType::SPECIFIC_MARKING,'general' => SkillType::GENERAL_MARKING,'perf' => SkillType::GOALS_MARKING],
             'specific_skills' => $rating->specific_skills()->get(),
@@ -53,7 +52,7 @@ class AgentRatingsController extends Controller
                 alert_error('Cet agent a déjà une évaluation pour l\'année choisi.');
                 return redirect()->back();
             }
-            alert_success('Evaluation crée avec succès.');
+            alert_success('Rating crée avec succès.');
             return redirect()->route('agent-ratings.show',['agent' => $agent_id,'agent_rating' => $rating->rating_id]);
         }catch (Exception) {
             alert_error('Erreur lors de la création de l\'évaluation.');

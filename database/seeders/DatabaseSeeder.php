@@ -9,6 +9,7 @@ use Database\Seeders\Phase\PeriodTypeSeeder;
 use Database\Seeders\Phase\PhaseSeeder;
 use Database\Seeders\Settings\ClaimTypeSeeder;
 use Database\Seeders\Settings\MobilityTypeSeeder;
+use Database\Seeders\Settings\PromotionTypeSeeder;
 use Database\Seeders\Settings\SanctionTypeSeeder;
 use Database\Seeders\Settings\SkillSeeder;
 use Database\Seeders\Settings\SkillTypeSeeder;
@@ -33,8 +34,10 @@ class DatabaseSeeder extends Seeder
              SkillSeeder::class,
              TrainingTypeSeeder::class,
              PeriodTypeSeeder::class,
-             PhaseSeeder::class
+             PhaseSeeder::class,
+             PromotionTypeSeeder::class,
          ]);
+
          User::factory()->create([
              'user_display_name' => 'Root',
              'email' => 'root@example.com',

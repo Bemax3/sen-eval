@@ -33,7 +33,7 @@ class OrgController extends Controller
     public function show(string $id) {
         try {
             return Inertia::render('Security/Organisations/Org',[
-                'org' => Organisation::findOrFail($id),
+                'org' => Organisation::with('children')->findOrFail($id),
                 'agents' => User::with('org')->whereRelation('org','org_id','=',$id)->orWhereRelation('org','parent_id','=',$id)->paginate(10)
             ]);
         }catch (Exception) {

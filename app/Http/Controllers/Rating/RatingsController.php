@@ -26,10 +26,13 @@ class RatingsController extends Controller
 
     public function show(string $rating_id) {
         $rating = Rating::with('phase','evaluator')->withSum('specific_skills','rating_skill_mark')->withSum('general_skills','rating_skill_mark')->findOrFail($rating_id);
-        $agent = User::with('org')->findOrFail(\Auth::id());
+        if($rating->evaluated_id !== \Auth::id()) {
+            alert_error('Vous n\'êtes pas autorisé a voir cette évaluation.');
+            return redirect()->back();
+        }
         return Inertia::render('Rating/RatingSkills',[
             'rating' => $rating,
-            'agent' => $agent,
+            'agent' => $rating->evaluated,
             'marking' => ['specific' => SkillType::SPECIFIC_MARKING,'general' => SkillType::GENERAL_MARKING,'perf' => SkillType::GOALS_MARKING],
             'specific_skills' => $rating->specific_skills()->get(),
             'skills' => $rating->general_skills()->get(),

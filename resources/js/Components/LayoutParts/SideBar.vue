@@ -20,6 +20,7 @@ import {
 import {computed, ref, watch} from "vue";
 
 import {Link, usePage} from '@inertiajs/vue3';
+import {getCurrentRoute} from "@/helpers/helper.js";
 
 const props = defineProps({
     opened : {
@@ -29,11 +30,7 @@ const props = defineProps({
 
 const user = computed(() => usePage().props.auth.user);
 const sidebarOpen = ref(false)
-const getCurrentRoute = () => {
-	let routeName = route().current();
-	if (routeName.indexOf(".") === -1) return routeName;
-	return routeName.substring(0, routeName.indexOf("."))
-}
+
 const currentRoute = getCurrentRoute();
 
 let navigation = [
@@ -43,6 +40,7 @@ let navigation = [
     { name: 'Mes Evaluations', href: route('ratings.index'), icon: ChartBarIcon, current: currentRoute === 'ratings' },
     { name: 'Mon Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile' },
 ]
+
 if ([1,2].includes(user.value.role_id)) {
     navigation.push(
         {

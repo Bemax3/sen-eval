@@ -11,6 +11,7 @@ readonly class RatingSkillService
     public function update($validated,$id): string
     {
         $ratingSkill = RatingSkill::findOrFail($id);
+        if($ratingSkill->rating->evaluator_id !== \Auth::id()) return 'revoked';
         if(!$this->ratingService->checkMarking($ratingSkill->rating_id)) return "exceed";
         $this->ratingService->lowerMark($ratingSkill->rating_id,$ratingSkill->rating_skill_mark);
         $ratingSkill->update(['rating_skill_mark' => $validated['rating_skill_mark']]);

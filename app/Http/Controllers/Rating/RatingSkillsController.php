@@ -16,6 +16,7 @@ class RatingSkillsController extends Controller
         try {
             switch ($this->ratingSkillService->update($request->validated(),$id)) {
                 case 'exceed': alert_error('Le total des notes pour cette section a atteint 30 points'); break;
+                case 'revoked': alert_error('Vous ne pouvez pas vous attribuer des notes.'); break;
                 default: alert_success('Note Enregistré.');
             }
         }catch (\Exception) {

@@ -1,17 +1,24 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
+import {getCurrentRoute} from "@/helpers/helper.js";
 
-defineProps({
-    evaluation_id: Number,
+const props = defineProps({
+    rating_id: Number,
+    agent_id: Number,
+    evaluated: {
+        type: Boolean, default: false
+    },
 })
 
+const currentRoute = getCurrentRoute();
+
 const tabs = [
-    { name: 'Compétences', href: '#', current: true },
-    { name: 'Réclamations', href: '#', current: false },
-    { name: 'Formations', href: '#', current: false },
-    { name: 'Mobilités', href: '#', current: false },
-    { name: 'Sanctions', href: '#', current: false },
-    { name: 'Promotions & Avancements', href: '#', current: false },
+    { name: 'Compétences', href: !props.evaluated ? route('agent-ratings.show',{agent: props.agent_id,agent_rating: props.rating_id}) : route('ratings.show',{rating: props.rating_id}), current: ['agent-ratings','ratings'].includes(currentRoute)},
+    { name: 'Réclamations', href: route('rating-claims.index',{rating: props.rating_id}), current: currentRoute === 'rating-claims' },
+    { name: 'Formations', href: route('rating-trainings.index',{rating: props.rating_id}), current: currentRoute === 'rating-trainings' },
+    { name: 'Mobilités', href: route('rating-mobilities.index',{rating: props.rating_id}), current: currentRoute === 'rating-mobilities' },
+    { name: 'Sanctions', href: route('rating-sanctions.index',{rating: props.rating_id}), current: currentRoute === 'rating-sanctions' },
+    { name: 'Promotions & Avancements', href: route('rating-promotions.index',{rating: props.rating_id}), current: currentRoute === 'rating-promotions' },
 ]
 
 </script>

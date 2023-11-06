@@ -48,6 +48,27 @@ class Rating extends Model implements Searchable
     {
         return $this->belongsTo(Phase::class,'phase_id','phase_id');
     }
+
+    public function trainings(): HasMany {
+        return $this->hasMany(Training::class,'rating_id','rating_id');
+    }
+
+    public function mobilities(): HasMany {
+        return $this->hasMany(Mobility::class,'rating_id','rating_id');
+    }
+
+    public function sanctions(): HasMany {
+        return $this->hasMany(Sanction::class,'rating_id','rating_id');
+    }
+
+    public function claims(): HasMany {
+        return $this->hasMany(Claim::class,'rating_id','rating_id');
+    }
+
+    public function promotions(): HasMany {
+        return $this->hasMany(Promotion::class,'rating_id','rating_id');
+    }
+
     public function getSearchResult(): SearchResult
     {
         return new SearchResult(

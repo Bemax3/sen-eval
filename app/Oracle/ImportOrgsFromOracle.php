@@ -32,6 +32,9 @@ class ImportOrgsFromOracle
                 $cr = substr($org->org_responsibility_center,0,2) . '001';
                 if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,2) . '000';
                 if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,2) . '101';
+                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,3) . '01';
+                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,3) . '01';
+                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,3) . '00';
                 if(!isset($rcAsIndex[$cr]) || $org->org_responsibility_center === $cr) $cr = 'DG001';
                 $org->update([
                     'parent_id' => $rcAsIndex[$cr]

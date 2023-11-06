@@ -52,10 +52,10 @@ const userNavigation = [
                     <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
                         <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                             <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                                <Link :href="item.href" :class="[active ? 'bg-cyan-500 text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']">{{ item.name }}</Link>
+                                <Link :href="item.href" :class="[active ? 'bg-cyan-500 text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']" as="span">{{ item.name }}</Link>
                             </MenuItem>
                             <MenuItem v-slot="{active}">
-	                            <Link :href="route('logout')" method="post" :class="[active ? 'bg-cyan-500 text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']">
+	                            <Link :href="route('logout')" method="post" :class="[active ? 'bg-cyan-500 text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']" as="span">
                                     Déconnexion
                                 </Link>
                             </MenuItem>

@@ -48,34 +48,58 @@ return new class extends Migration
             $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->foreign('rating_id')->references('rating_id')->on('ratings');
             $table->foreign('training_type_id')->references('training_type_id')->on('training_types');
+            $table->timestamps();
         });
-//
-//        Schema::create('evaluation_claims', function (Blueprint $table) {
-//            $table->increments('evaluation_claim_id');
-//            $table->unsignedInteger('evaluation_id');
-//            $table->unsignedInteger('updated_by')->nullable();
-//            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
-//            $table->foreign('evaluation_id')->references('evaluation_id')->on('evaluations');
-//
-//        });
-//
-//        Schema::create('evaluation_mobilities', function (Blueprint $table) {
-//            $table->increments('evaluation_mobility_id');
-//            $table->unsignedInteger('evaluation_id');
-//            $table->unsignedInteger('updated_by')->nullable();
-//            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
-//            $table->foreign('evaluation_id')->references('evaluation_id')->on('evaluations');
-//
-//        });
-//
-//        Schema::create('evaluation_sanctions', function (Blueprint $table) {
-//            $table->increments('evaluation_sanction_id');
-//            $table->unsignedInteger('evaluation_id');
-//            $table->unsignedInteger('updated_by')->nullable();
-//            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
-//            $table->foreign('evaluation_id')->references('evaluation_id')->on('evaluations');
-//
-//        });
+
+        Schema::create('rating_mobilities', function (Blueprint $table) {
+            $table->increments('rating_mobility_id');
+            $table->boolean('asked_by_evaluated')->nullable();
+            $table->boolean('asked_by_evaluator')->nullable();
+            $table->string('rating_mobility_title')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('rating_id');
+            $table->unsignedInteger('mobility_type_id');
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
+            $table->foreign('rating_id')->references('rating_id')->on('ratings');
+            $table->foreign('mobility_type_id')->references('mobility_type_id')->on('mobility_types');
+            $table->timestamps();
+        });
+
+        Schema::create('rating_sanctions', function (Blueprint $table) {
+            $table->increments('rating_sanction_id');
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('rating_id');
+            $table->unsignedInteger('sanction_type_id');
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
+            $table->foreign('rating_id')->references('rating_id')->on('ratings');
+            $table->foreign('sanction_type_id')->references('sanction_type_id')->on('sanction_types');
+            $table->timestamps();
+        });
+
+        Schema::create('rating_claims', function (Blueprint $table) {
+            $table->increments('rating_claim_id');
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('rating_id');
+            $table->unsignedInteger('claim_type_id');
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
+            $table->foreign('rating_id')->references('rating_id')->on('ratings');
+            $table->foreign('claim_type_id')->references('claim_type_id')->on('claim_types');
+            $table->timestamps();
+        });
+
+        Schema::create('rating_promotions',function (Blueprint $table) {
+            $table->increments('rating_promotion_id');
+            $table->boolean('evaluated_is_eligible')->default(false);
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('rating_id');
+            $table->unsignedInteger('promotion_type_id');
+            $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
+            $table->foreign('rating_id')->references('rating_id')->on('ratings');
+            $table->foreign('promotion_type_id')->references('promotion_type_id')->on('promotion_types');
+            $table->timestamps();
+        });
+
+
     }
 
     /**

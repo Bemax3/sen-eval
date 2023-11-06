@@ -2,16 +2,16 @@
 
 namespace App\Models\Rating;
 
-use App\Models\Settings\TrainingType;
+use App\Models\Settings\ClaimType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Training extends Model
+class Claim extends Model
 {
-    protected $table = 'rating_trainings';
-    protected $primaryKey = 'rating_training_id';
-    protected $fillable = ['asked_by_evaluator','asked_by_evaluated','rating_id','training_type_id'];
+    protected $table = 'rating_claims';
+    protected $primaryKey = 'rating_claim_id';
+    protected $fillable = ['rating_id','claim_type_id'];
     public function getForeignKey()
     {
         return $this->primaryKey;
@@ -20,6 +20,6 @@ class Training extends Model
         return $this->belongsTo(Rating::class,'rating_id','rating_id');
     }
     public function type(): BelongsTo {
-        return $this->belongsTo(TrainingType::class,'training_type_id','training_type_id');
+        return $this->belongsTo(ClaimType::class,'claim_type_id','claim_type_id');
     }
 }

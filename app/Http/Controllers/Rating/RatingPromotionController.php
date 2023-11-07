@@ -29,7 +29,7 @@ class RatingPromotionController extends Controller
             $data = $request->validated();
             $rating = Rating::findOrFail($rating_id);
             if ($rating->evaluator_id !== \Auth::id()) {
-                alert_error('Vous ne pouvez pas crée cette demande.');
+                alert_error('Vous ne pouvez pas créer cette demande.');
                 return redirect()->back();
             }
             $promotion = Promotion::where('promotion_type_id','=',$data['promotion_type_id'])->where('rating_id','=',$rating_id)->first();

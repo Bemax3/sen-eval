@@ -1,70 +1,69 @@
 <script setup>
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-    import Datatable from '@/Components/Common/Tables/Datatable.vue';
-    import TableHeading from '@/Components/Common/Tables/TableHeading.vue';
-    import TableData from '@/Components/Common/Tables/TableData.vue';
-    import {computed, reactive, ref, watch} from 'vue';
-    import {Head, Link, router} from '@inertiajs/vue3';
-    import DeleteModal from '@/Components/Common/DeleteModal.vue';
-    import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
-    import {ChevronDownIcon, PencilSquareIcon, TrashIcon, PlusIcon} from '@heroicons/vue/20/solid';
-    import {getPagination, hasData} from '@/helpers/helper.js';
-    import EmptyState from '@/Components/Common/EmptyState.vue';
-    import axios from 'axios';
-    import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
-    import ToggleOnDatatable from "@/Components/Forms/ToggleOnDatatable.vue";
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Datatable from '@/Components/Common/Tables/Datatable.vue';
+import TableHeading from '@/Components/Common/Tables/TableHeading.vue';
+import TableData from '@/Components/Common/Tables/TableData.vue';
+import {computed, reactive, ref, watch} from 'vue';
+import {Head, Link, router} from '@inertiajs/vue3';
+import DeleteModal from '@/Components/Common/DeleteModal.vue';
+import {PencilSquareIcon, PlusIcon} from '@heroicons/vue/20/solid';
+import {getPagination, hasData} from '@/helpers/helper.js';
+import EmptyState from '@/Components/Common/EmptyState.vue';
+import axios from 'axios';
+import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
+import ToggleOnDatatable from "@/Components/Forms/ToggleOnDatatable.vue";
 
-    const props = defineProps({
-        skills: {
-            type: Object,
-        },
-    });
+const props = defineProps({
+    skills: {
+        type: Object,
+    },
+});
 
-    const pagination = computed(() => getPagination(props.skills));
-    const openModal = ref(false);
-    let idToDestroy = hasData(props.skills.data) ? props.skills.data[0].skill_id : null;
-    const destroy = id => {
-        idToDestroy = id;
-        openModal.value = true;
-    };
+const pagination = computed(() => getPagination(props.skills));
+const openModal = ref(false);
+let idToDestroy = hasData(props.skills.data) ? props.skills.data[0].skill_id : null;
+const destroy = id => {
+    idToDestroy = id;
+    openModal.value = true;
+};
 
-    const displayedData = ref(props.skills.data);
+const displayedData = ref(props.skills.data);
 
-    const search = reactive({
-        keyword: '',
-        fields: ['skill_name','skill_desc'],
-    });
-    watch(
+const search = reactive({
+    keyword: '',
+    fields: ['skill_name', 'skill_desc'],
+});
+watch(
     () => search.keyword,
     function (next) {
-            if (next === '') {
-                displayedData.value = props.skills.data;
-            } else {
-                axios.post(route('skills.search'), search).then(res => (displayedData.value = res.data));
-            }
+        if (next === '') {
+            displayedData.value = props.skills.data;
+        } else {
+            axios.post(route('skills.search'), search).then(res => (displayedData.value = res.data));
         }
-    );
+    }
+);
 
-    watch(()=> props.skills,
+watch(() => props.skills,
     function (next) {
-            displayedData.value = next.data;
-            if(!displayedData.value.length >0) {
-                if(next.prev_page_url) router.get(next.prev_page_url)
-                else router.get(next.first_page_url);
-            }
+        displayedData.value = next.data;
+        if (!displayedData.value.length > 0) {
+            if (next.prev_page_url) router.get(next.prev_page_url)
+            else router.get(next.first_page_url);
         }
-    );
+    }
+);
 
-    const pages = [
-	    { name: 'Compétences', href: '#', current: true },
-    ]
+const pages = [
+    {name: 'Compétences', href: '#', current: true},
+]
 </script>
 
 <template>
     <AuthenticatedLayout>
         <Head title="Compétences"/>
         <div class="px-4 sm:px-6 lg:px-8">
-	        <Breadcrumbs :pages="pages"/>
+            <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
                     <h1 class="text-2xl font-semibold leading-6 text-gray-900">Compétences</h1>
@@ -75,14 +74,14 @@
                 <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <Link
                         :href="route('skills.create')"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
-                        as="button">
+                        as="button"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                         Ajouter une compétence
-                        <PlusIcon class="-mr-0.5 h-5 w-5" />
+                        <PlusIcon class="-mr-0.5 h-5 w-5"/>
                     </Link>
                 </div>
             </div>
-            <Datatable :pagination="pagination" v-if="hasData(skills.data)" v-model="search.keyword">
+            <Datatable v-if="hasData(skills.data)" v-model="search.keyword" :pagination="pagination">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                     <tr>
@@ -97,11 +96,11 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="skill in displayedData" :key="skill.skill_id">
-                        <TableData class="whitespace-pre-line" :first="true">{{ skill.skill_name }}</TableData>
+                        <TableData :first="true" class="whitespace-pre-line">{{ skill.skill_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ skill.skill_desc }}</TableData>
                         <TableData>
-                            <div class="flex space-x-4" v-if="!skill.group">
-                                <ToggleOnDatatable :link="route('skills.update',{skill: skill.skill_id})" :value="skill.skill_is_active" obj="skill_is_active" />
+                            <div v-if="!skill.group" class="flex space-x-4">
+                                <ToggleOnDatatable :link="route('skills.update',{skill: skill.skill_id})" :value="skill.skill_is_active" obj="skill_is_active"/>
                                 <span
                                     :class="skill.skill_is_active ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
                                     class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
@@ -109,7 +108,7 @@
                                 </span>
                             </div>
                         </TableData>
-                        <TableData >{{ skill.skill_marking }} points</TableData>
+                        <TableData>{{ skill.skill_marking }} points</TableData>
                         <TableData>{{ skill.type.skill_type_name }}</TableData>
                         <TableData>{{ skill.group ? skill.group.group_name : 'Commun' }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
@@ -118,28 +117,28 @@
                                     :href="route('skills.edit', {skill: skill.skill_id})"
                                     class="group flex items-center px-4 py-2 text-sm">
                                     <PencilSquareIcon
-                                        class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"
-                                        aria-hidden="true" />
+                                        aria-hidden="true"
+                                        class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
                                 </Link>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé. </div>
+                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else
-                title="Pas de Compétence"
-                message="Créer une nouvelle compétence en appuyant sur ce bouton"
                 :link="route('skills.create')"
-                action="Nouveau" />
+                action="Nouveau"
+                message="Créer une nouvelle compétence en appuyant sur ce bouton"
+                title="Pas de Compétence"/>
             <DeleteModal
-                :opened="openModal"
                 :id="idToDestroy"
-                @close-modal="openModal = false"
+                :opened="openModal"
+                link="skills.destroy"
                 name="skill"
-                link="skills.destroy" />
+                @close-modal="openModal = false"/>
         </div>
     </AuthenticatedLayout>
 </template>

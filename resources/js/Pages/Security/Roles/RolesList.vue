@@ -4,10 +4,7 @@ import Datatable from '@/Components/Common/Tables/Datatable.vue';
 import TableHeading from '@/Components/Common/Tables/TableHeading.vue';
 import TableData from '@/Components/Common/Tables/TableData.vue';
 import {computed, reactive, ref, watch} from 'vue';
-import {Head, Link, router} from '@inertiajs/vue3';
-import DeleteModal from '@/Components/Common/DeleteModal.vue';
-import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
-import {ChevronDownIcon, PencilSquareIcon, TrashIcon, PlusIcon} from '@heroicons/vue/20/solid';
+import {Head, router} from '@inertiajs/vue3';
 import {getPagination, hasData} from '@/helpers/helper.js';
 import EmptyState from '@/Components/Common/EmptyState.vue';
 import axios from 'axios';
@@ -31,7 +28,7 @@ const displayedData = ref(props.roles.data);
 
 const search = reactive({
     keyword: '',
-    fields: ['role_name','role_code'],
+    fields: ['role_name', 'role_code'],
 });
 
 watch(
@@ -45,18 +42,18 @@ watch(
     }
 );
 
-watch(()=> props.roles,
+watch(() => props.roles,
     function (next) {
         displayedData.value = next.data;
-        if(!displayedData.value.length >0) {
-            if(next.prev_page_url) router.get(next.prev_page_url)
+        if (!displayedData.value.length > 0) {
+            if (next.prev_page_url) router.get(next.prev_page_url)
             else router.get(next.first_page_url);
         }
     }
 );
 
 const pages = [
-    { name: 'Roles', href: '#', current: true },
+    {name: 'Roles', href: '#', current: true},
 ]
 </script>
 
@@ -73,7 +70,7 @@ const pages = [
                     </p>
                 </div>
             </div>
-            <Datatable :pagination="pagination" v-if="hasData(roles.data)" v-model="search.keyword">
+            <Datatable v-if="hasData(roles.data)" v-model="search.keyword" :pagination="pagination">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                     <tr>
@@ -83,19 +80,19 @@ const pages = [
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="role in displayedData" :key="role.role_id">
-                        <TableData class="whitespace-pre-line" :first="true">{{ role.role_name }}</TableData>
+                        <TableData :first="true" class="whitespace-pre-line">{{ role.role_name }}</TableData>
                         <TableData>{{ role.role_code }}</TableData>
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé. </div>
+                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else
-                title="Pas de Compétence"
-                message="Créer une nouvelle compétence en appuyant sur ce bouton"
                 :link="route('roles.create')"
-                action="Nouveau" />
+                action="Nouveau"
+                message="Créer une nouvelle compétence en appuyant sur ce bouton"
+                title="Pas de Compétence"/>
         </div>
     </AuthenticatedLayout>
 </template>

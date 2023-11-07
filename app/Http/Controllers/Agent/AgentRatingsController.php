@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Rating\SaveRatingCommentsRequest;
 use App\Http\Requests\Rating\SaveRatingRequest;
 use App\Models\Rating\Rating;
 use App\Models\Rating\Goal;
@@ -11,6 +10,7 @@ use App\Models\Phase\Phase;
 use App\Models\Settings\SkillType;
 use App\Models\User;
 use App\Services\Rating\RatingService;
+use App\Services\Security\UserService;
 use Inertia\Inertia;
 use SebastianBergmann\CodeCoverage\Exception;
 
@@ -33,6 +33,7 @@ class AgentRatingsController extends Controller
     }
 
     public function show(string $agent_id,string $rating_id) {
+        $user = User::with('n1')->findOrFail(\Auth::id());
         $rating = Rating::with('phase','evaluator','evaluated')->withSum('specific_skills','rating_skill_mark')->withSum('general_skills','rating_skill_mark')->findOrFail($rating_id);
         return Inertia::render('Agents/Rating/AgentRatingSkills',[
             'rating' => $rating,
@@ -41,6 +42,8 @@ class AgentRatingsController extends Controller
             'marking' => ['specific' => SkillType::SPECIFIC_MARKING,'general' => SkillType::GENERAL_MARKING,'perf' => SkillType::GOALS_MARKING],
             'specific_skills' => $rating->specific_skills()->get(),
             'skills' => $rating->general_skills()->get(),
+            'others' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],
+            'n1' => $user->n1,
             'goals' => Goal::where('phase_id',$rating->phase_id)->where('evaluated_id',$rating->evaluated_id)->with('period','phase')->get(),
         ]);
     }
@@ -52,7 +55,7 @@ class AgentRatingsController extends Controller
                 alert_error('Cet agent a déjà une évaluation pour l\'année choisi.');
                 return redirect()->back();
             }
-            alert_success('Rating crée avec succès.');
+            alert_success('Évaluation crée avec succès.');
             return redirect()->route('agent-ratings.show',['agent' => $agent_id,'agent_rating' => $rating->rating_id]);
         }catch (Exception) {
             alert_error('Erreur lors de la création de l\'évaluation.');

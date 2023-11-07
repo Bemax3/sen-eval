@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Rating;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Rating\SaveRatingCommentsRequest;
+use App\Http\Requests\Rating\SaveRatingRequest;
 use App\Models\Rating\Rating;
 use App\Models\Rating\Goal;
 use App\Models\Settings\SkillType;
 use App\Models\User;
 use App\Services\Rating\RatingService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use SebastianBergmann\CodeCoverage\Exception;
 
@@ -26,7 +25,7 @@ class RatingsController extends Controller
 
     public function show(string $rating_id) {
         $rating = Rating::with('phase','evaluator')->withSum('specific_skills','rating_skill_mark')->withSum('general_skills','rating_skill_mark')->findOrFail($rating_id);
-        if($rating->evaluated_id !== \Auth::id()) {
+        if($rating->evaluated_id !== \Auth::id() && $rating->validator_id !== \Auth::id()) {
             alert_error('Vous n\'êtes pas autorisé a voir cette évaluation.');
             return redirect()->back();
         }
@@ -40,13 +39,13 @@ class RatingsController extends Controller
         ]);
     }
 
-    public function update(SaveRatingCommentsRequest $request,string $rating_id) {
-        try {
-            $this->ratingService->addComment($request->validated(),$rating_id);
-            alert_success('Commentaire enregistré avec succès.');
-            return redirect()->back();
+    public function update(SaveRatingRequest $request, string $rating_id) {
+        try {;
+            $this->ratingService->update($request->validated(),$rating_id);
+            alert_success('Évaluation enregistré avec succès.');
         }catch (Exception) {
-            alert_error('Erreur lors de l\'enregistrement du commentaire.');
+            alert_error('Erreur lors de l\'enregistrement de l\'évaluation.');
+        } finally {
             return redirect()->back();
         }
     }

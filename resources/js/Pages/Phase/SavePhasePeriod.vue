@@ -23,9 +23,9 @@ const props = defineProps({
 })
 
 const pages = [
-    { name: 'Phase d\'évaluation', href: route('phases.index'), current: false },
-    { name: 'Périodes d\'évaluation', href: route('periods.show',{period: props.phase.phase_id}), current: true },
-    { name: isEmpty(props.period) ? 'Nouveau' : 'Modifier', href: '#', current: true },
+    {name: 'Phase d\'évaluation', href: route('phases.index'), current: false},
+    {name: 'Périodes d\'évaluation', href: route('periods.show', {period: props.phase.phase_id}), current: true},
+    {name: isEmpty(props.period) ? 'Nouveau' : 'Modifier', href: '#', current: true},
 ]
 
 
@@ -35,11 +35,11 @@ const setForm = () => {
         isEmpty(props.period)
             ? {
                 phase_id: props.phase.phase_id,
-                period: [new Date(),new Date()]
+                period: [new Date(), new Date()]
             }
             : {
                 phase_id: props.phase.phase_id,
-                period: [props.period.evaluation_period_start,props.period.evaluation_period_end]
+                period: [props.period.evaluation_period_start, props.period.evaluation_period_end]
             }
     );
 }
@@ -68,7 +68,7 @@ const desc = isEmpty(props.period) ? 'Ajouter une période d\'évaluation à cet
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Paramètres {{ phase.phase_name}}</h1>
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Paramètres {{ phase.phase_name }}</h1>
                     <p class="mt-2 text-sm text-gray-700">
                         Details et paramètres de l'évaluation.
                     </p>
@@ -76,20 +76,20 @@ const desc = isEmpty(props.period) ? 'Ajouter une période d\'évaluation à cet
                 <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <Link
                         :href="route('phaseSkills.show',{phaseSkill: phase.phase_id})"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
-                        as="button">
+                        as="button"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                         Compétences
                     </Link>
                     <Link
                         :href="route('periods.show',{period: phase.phase_id})"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
-                        as="button">
+                        as="button"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                         Périodes d'évaluation
                     </Link>
                 </div>
             </div>
-            <Separator title="Périodes" />
-            <SectionTitle :title="title" :desc="desc"/>
+            <Separator title="Périodes"/>
+            <SectionTitle :desc="desc" :title="title"/>
             <div class="mt-8 flow-root">
                 <form class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
                     <div class="px-4 py-6 sm:p-8">
@@ -100,15 +100,15 @@ const desc = isEmpty(props.period) ? 'Ajouter une période d\'évaluation à cet
                                     <RangePicker v-model="form.period" :invalid="form.errors.evaluation_period_end !== undefined"/>
                                 </div>
                                 <div class="flex flex-col space-y-2">
-                                    <InputError :message="form.errors.Evaluation_period_start" />
-                                    <InputError :message="form.errors.evaluation_period_end" />
+                                    <InputError :message="form.errors.Evaluation_period_start"/>
+                                    <InputError :message="form.errors.evaluation_period_end"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-                        <FormIndications />
-                        <SubmitButton :disabled="form.processing"> Enregistrer </SubmitButton>
+                        <FormIndications/>
+                        <SubmitButton :disabled="form.processing"> Enregistrer</SubmitButton>
                     </div>
                 </form>
             </div>

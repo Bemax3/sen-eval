@@ -38,13 +38,13 @@ class DatabaseSeeder extends Seeder
              PromotionTypeSeeder::class,
          ]);
 
-         User::factory()->create([
-             'user_display_name' => 'Root',
-             'email' => 'root@example.com',
-             'user_login' => 'root',
-             'user_matricule' => 'root@seneval',
-             'role_id' => Role::ROOT
-         ]);
+//         User::factory()->create([
+//             'user_display_name' => 'Root',
+//             'email' => 'root@example.com',
+//             'user_login' => 'root',
+//             'user_matricule' => 'root@seneval',
+//             'role_id' => Role::ROOT
+//         ]);
 //
 //         User::factory()->create([
 //             'user_name' => 'User',

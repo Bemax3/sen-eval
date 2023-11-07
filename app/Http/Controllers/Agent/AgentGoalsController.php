@@ -83,6 +83,16 @@ class AgentGoalsController extends Controller
         }
     }
 
+    public function destroy(string $agent_id,string $goal_id) {
+        try {
+            Goal::findOrFail($goal_id)->delete();
+            alert_success('Objectif Supprimé avec succès.');
+        }catch (Exception) {
+            alert_error('Erreur lors de la suppression de cet objectif.');
+        } finally {
+            return redirect()->back();
+        }
+    }
 
     public function search(SearchRequest $request,string $agent_id)
     {

@@ -8,12 +8,18 @@ const props = defineProps({
     evaluated: {
         type: Boolean, default: false
     },
+    validator: {
+        type: Boolean, default: false
+    }
 })
 
 const currentRoute = getCurrentRoute();
 
 const tabs = [
-    { name: 'Compétences', href: !props.evaluated ? route('agent-ratings.show',{agent: props.agent_id,agent_rating: props.rating_id}) : route('ratings.show',{rating: props.rating_id}), current: ['agent-ratings','ratings'].includes(currentRoute)},
+    !props.validator ?
+        { name: 'Compétences', href: !props.evaluated ? route('agent-ratings.show',{agent: props.agent_id,agent_rating: props.rating_id}) : route('ratings.show',{rating: props.rating_id}), current: ['agent-ratings','ratings'].includes(currentRoute)}
+        : {name: 'Compétences', href: route('validations.show',{validation:props.rating_id}), current: currentRoute === 'validations'}
+    ,
     { name: 'Réclamations', href: route('rating-claims.index',{rating: props.rating_id}), current: currentRoute === 'rating-claims' },
     { name: 'Formations', href: route('rating-trainings.index',{rating: props.rating_id}), current: currentRoute === 'rating-trainings' },
     { name: 'Mobilités', href: route('rating-mobilities.index',{rating: props.rating_id}), current: currentRoute === 'rating-mobilities' },

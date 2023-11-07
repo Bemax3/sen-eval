@@ -14,6 +14,7 @@ use App\Http\Controllers\Rating\RatingSanctionsController;
 use App\Http\Controllers\Rating\RatingsController;
 use App\Http\Controllers\Rating\RatingSkillsController;
 use App\Http\Controllers\Rating\RatingTrainingsController;
+use App\Http\Controllers\Rating\ValidationController;
 use App\Http\Controllers\Security\OrgController;
 use App\Http\Controllers\Security\ProfileController;
 use App\Http\Controllers\Security\RoleController;
@@ -48,6 +49,7 @@ Route::group(['middleware' => ['auth']],function () {
         'profile' => ProfileController::class,
         'goals' => GoalsController::class,
         'ratings' => RatingsController::class,
+        'validations' => ValidationController::class,
         'rating/rating-skills' => RatingSkillsController::class,
 
         'agents' => AgentsController::class,

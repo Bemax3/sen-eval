@@ -12,7 +12,6 @@ class ImportOrgsFromOracle
     {
 
         $orgs = array();
-//        Organisation::all();
         $oracleOrgs =  DB::connection('oracle')->select(\File::get(app_path() . '/Oracle/GetOrganisations.sql'));
         foreach ($oracleOrgs as $oracleOrg) {
             if(!str_starts_with($oracleOrg->libelle, 'EM') && preg_match('/[A-Za-z].*[0-9]/',$oracleOrg->centre_resp)) {
@@ -29,12 +28,19 @@ class ImportOrgsFromOracle
         foreach ($orgs as $org)
             try {
                 if ($org->updated_by !== null) continue;
-                $cr = substr($org->org_responsibility_center,0,2) . '001';
-                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,2) . '000';
-                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,2) . '101';
-                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,3) . '01';
-                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,3) . '01';
-                if(!isset($rcAsIndex[$cr])) $cr = substr($org->org_responsibility_center,0,3) . '00';
+                if(str_starts_with($org->org_responsibility_center, 'RH')) {
+                    $org->update(['parent_id' => $rcAsIndex['CH101']]);
+                    continue;
+                }
+                if (substr($org->org_responsibility_center,2) === '001')  {
+                    $org->update(['parent_id' => 24]);
+                    continue;
+                }
+                $cr = substr($org->org_responsibility_center,0,3) . '01';
+                if(!isset($rcAsIndex[$cr]) || $org->org_responsibility_center === $cr) $cr = substr($org->org_responsibility_center,0,3) . '00';
+                if(!isset($rcAsIndex[$cr]) || $org->org_responsibility_center === $cr) $cr = substr($org->org_responsibility_center,0,2) . '001';
+                if(!isset($rcAsIndex[$cr]) || $org->org_responsibility_center === $cr) $cr = substr($org->org_responsibility_center,0,2) . '000';
+//                if(!isset($rcAsIndex[$cr]) || $org->org_responsibility_center === $cr) $cr = substr($org->org_responsibility_center,0,3) . '00';
                 if(!isset($rcAsIndex[$cr]) || $org->org_responsibility_center === $cr) $cr = 'DG001';
                 $org->update([
                     'parent_id' => $rcAsIndex[$cr]

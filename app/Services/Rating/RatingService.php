@@ -58,10 +58,16 @@ class RatingService
         return true;
     }
 
-    public function addComment( $validated,$rating_id): void
+    public function update($validated, $rating_id): void
     {
-        $eval = Rating::findOrFail($rating_id);
-        $eval->update($validated);
+        if(isset($validated['remember'])) User::findOrFail(\Auth::id())->update(['n1_id' => $validated['validator_id']]);
+        $rating = Rating::findOrFail($rating_id);
+        if(isset($validated['evaluator_comment'])) $rating->update(['evaluator_comment' => $validated['evaluator_comment']]);
+        if(isset($validated['evaluated_comment'])) $rating->update(['evaluated_comment' => $validated['evaluated_comment']]);
+        if(isset($validated['validator_id'])) $rating->update(['validator_id' => $validated['validator_id']]);
+        if(isset($validated['validated_by_n2'])) $rating->update(['validated_by_n2' => $validated['validated_by_n2']]);
+        if(isset($validated['validated_by_n1'])) $rating->update(['validated_by_n1' => $validated['validated_by_n1']]);
+
     }
 
 }

@@ -5,9 +5,6 @@ import TableHeading from '@/Components/Common/Tables/TableHeading.vue';
 import TableData from '@/Components/Common/Tables/TableData.vue';
 import {computed, reactive, ref, watch} from 'vue';
 import {Head, Link, router} from '@inertiajs/vue3';
-import DeleteModal from '@/Components/Common/DeleteModal.vue';
-import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
-import {ChevronDownIcon, PencilSquareIcon, TrashIcon, PlusIcon} from '@heroicons/vue/20/solid';
 import {getPagination, hasData} from '@/helpers/helper.js';
 import EmptyState from '@/Components/Common/EmptyState.vue';
 import axios from 'axios';
@@ -32,7 +29,7 @@ const displayedData = ref(props.users.data);
 
 const search = reactive({
     keyword: '',
-    fields: ['user_login','user_first_name','user_last_name','user_matricule','user_display_name','user_title'],
+    fields: ['user_login', 'user_first_name', 'user_last_name', 'user_matricule', 'user_display_name', 'user_title'],
 });
 
 watch(
@@ -46,18 +43,18 @@ watch(
     }
 );
 
-watch(()=> props.users,
+watch(() => props.users,
     function (next) {
         displayedData.value = next.data;
-        if(!displayedData.value.length >0) {
-            if(next.prev_page_url) router.get(next.prev_page_url)
+        if (!displayedData.value.length > 0) {
+            if (next.prev_page_url) router.get(next.prev_page_url)
             else router.get(next.first_page_url);
         }
     }
 );
 
 const pages = [
-    { name: 'Agents', href: '#', current: true },
+    {name: 'Agents', href: '#', current: true},
 ]
 </script>
 
@@ -74,13 +71,11 @@ const pages = [
                     </p>
                 </div>
             </div>
-            <Datatable :pagination="pagination" v-if="hasData(users.data)" v-model="search.keyword">
+            <Datatable v-if="hasData(users.data)" v-model="search.keyword" :pagination="pagination">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                     <tr>
                         <TableHeading :first="true">Matricule</TableHeading>
-<!--                        <TableHeading>Prénom</TableHeading>-->
-<!--                        <TableHeading>Nom</TableHeading>-->
                         <TableHeading>Nom</TableHeading>
                         <TableHeading>Poste</TableHeading>
                         <TableHeading>GF</TableHeading>
@@ -92,32 +87,31 @@ const pages = [
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="user in displayedData" :key="user.user_id">
-                        <TableData class="whitespace-pre-line" :first="true">{{ user.user_matricule }}</TableData>
-<!--                        <TableData class="whitespace-pre-line">{{ user.user_first_name }}</TableData>-->
-                        <TableData >{{ user.user_display_name }}</TableData>
+                        <TableData :first="true" class="whitespace-pre-line">{{ user.user_matricule }}</TableData>
+                        <TableData>{{ user.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ user.user_title }}</TableData>
-                        <TableData >{{ user.user_gf }}</TableData>
-                        <TableData >{{ user.user_nr }}</TableData>
-                        <TableData >{{ user.user_responsibility_center }}</TableData>
+                        <TableData>{{ user.user_gf }}</TableData>
+                        <TableData>{{ user.user_nr }}</TableData>
+                        <TableData>{{ user.user_responsibility_center }}</TableData>
                         <TableData class="whitespace-pre-line">{{ user.org ? user.org.org_name : 'No Org' }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">
                                 <Link :href="route('users.show', {user: user.user_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <EyeIcon class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600" aria-hidden="true" />
+                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
                                 </Link>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé. </div>
+                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else
-                title="Pas de Compétence"
-                message="Créer une nouvelle compétence en appuyant sur ce bouton"
                 :link="route('users.create')"
-                action="Nouveau" />
+                action="Nouveau"
+                message="Créer une nouvelle compétence en appuyant sur ce bouton"
+                title="Pas de Compétence"/>
         </div>
     </AuthenticatedLayout>
 </template>

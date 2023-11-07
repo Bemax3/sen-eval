@@ -2,7 +2,6 @@
 
 import TextInput from "@/Components/Forms/TextInput.vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
-import SubmitButton from "@/Components/Forms/SubmitButton.vue";
 import InputError from "@/Components/Forms/InputError.vue";
 import {useForm} from "@inertiajs/vue3";
 
@@ -30,27 +29,29 @@ const submit = () => {
                     <h1 class="mb-4 font-bold text-3xl text-cyan-900">
                         Système d'Évaluation du Personnel
                     </h1>
-<!--                    <h1 class="mb-2 font-semibold text-xl text-gray-700">-->
-<!--                        Se connecter-->
-<!--                    </h1>-->
+                    <!--                    <h1 class="mb-2 font-semibold text-xl text-gray-700">-->
+                    <!--                        Se connecter-->
+                    <!--                    </h1>-->
                     <div class="w-full mt-4">
                         <form class="mb-0 space-y-6" @submit.prevent="submit">
                             <div>
                                 <InputLabel for="login">Login</InputLabel>
                                 <div class="mt-2">
-                                    <TextInput v-model="form.user_login" :invalid="form.errors.user_login !== undefined" id="user_login" placeholder="Login"  autofocus />
+                                    <TextInput id="user_login" v-model="form.user_login" :invalid="form.errors.user_login !== undefined" autofocus placeholder="Login"/>
                                 </div>
-                                <InputError :message="form.errors.user_login" />
+                                <InputError :message="form.errors.user_login"/>
                             </div>
                             <div>
                                 <InputLabel for="login">Mot de Passe</InputLabel>
                                 <div class="mt-2">
-                                    <TextInput v-model="form.password" :invalid="form.errors.password !== undefined" id="password" type="password" placeholder="********"  />
+                                    <TextInput id="password" v-model="form.password" :invalid="form.errors.password !== undefined" placeholder="********"
+                                               type="password"/>
                                 </div>
-                                <InputError :message="form.errors.password" />
+                                <InputError :message="form.errors.password"/>
                             </div>
                             <hr class="my-8">
-                            <button :disabled="form.processing" class="block w-full px-4 py-2 mt-4 text-lg font-medium leading-5 text-center text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-lg active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:shadow-outline-purple">
+                            <button :disabled="form.processing"
+                                    class="block w-full px-4 py-2 mt-4 text-lg font-medium leading-5 text-center text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-lg active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:shadow-outline-cyan">
                                 Connexion
                             </button>
                         </form>

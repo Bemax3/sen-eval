@@ -6,7 +6,7 @@ import {
     XMarkIcon,
     ChevronRightIcon,
     CalendarDaysIcon,
-    UsersIcon, LockClosedIcon, BuildingOfficeIcon, DocumentCheckIcon, UserGroupIcon, ChartBarIcon, IdentificationIcon
+    UsersIcon, LockClosedIcon, BuildingOfficeIcon, DocumentCheckIcon, UserGroupIcon, ChartBarIcon, IdentificationIcon, CheckBadgeIcon
 } from "@heroicons/vue/24/outline/index.js";
 import {
 	Dialog,
@@ -38,6 +38,7 @@ let navigation = [
     { name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents','agent-goals','agent-ratings'].includes(currentRoute) },
     { name: 'Mes Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals' },
     { name: 'Mes Evaluations', href: route('ratings.index'), icon: ChartBarIcon, current: currentRoute === 'ratings' },
+    { name: 'Validations', href: route('validations.index'), icon: CheckBadgeIcon, current: currentRoute === 'validations' },
     { name: 'Mon Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile' },
 ]
 

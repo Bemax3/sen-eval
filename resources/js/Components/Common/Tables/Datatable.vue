@@ -1,12 +1,17 @@
 <script setup>
 	import {MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon} from '@heroicons/vue/20/solid/index.js';
 	import {Link} from '@inertiajs/vue3';
+    import {onMounted} from "vue";
 	defineProps({
 		pagination: Object,
 		modelValue: {
 			type: String,
 			required: true,
 		},
+        search: {
+            type: Boolean,
+            default: true
+        }
 	});
 
 	defineEmits(['update:modelValue']);
@@ -14,7 +19,7 @@
 
 <template>
     <div class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-        <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6" v-if="search">
             <form class=" relative flex flex-1">
                 <label for="search-field" class="sr-only">Recherche</label>
                 <MagnifyingGlassIcon

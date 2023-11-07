@@ -1,21 +1,19 @@
 <script setup>
-
-defineProps({title: String,mark: Number,marking: Number})
+defineProps({title: String, mark: Number, marking: Number})
 </script>
-
 <template>
     <div class="border-cyan-600 bg-white pr-4 py-2 sm:pr-6 flex justify-between items-center border-b-2">
-        <h3 class="text-lg font-semibold leading-6 text-gray-900">{{title}}</h3>
-        <div class="flex space-x-2" v-if="marking">
+        <h3 class="text-lg font-semibold leading-6 text-gray-900">{{ title }}</h3>
+        <div v-if="marking" class="flex space-x-2">
             <span class="flex-shrink-0">
                 <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                    <span class="text-cyan-600">{{mark ?? 0 }}</span>
+                    <span class="text-cyan-600">{{ mark ?? 0 }}</span>
                 </span>
             </span>
             <span class="text-3xl">/</span>
             <span class="flex-shrink-0">
                 <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                    <span class="text-cyan-600">{{marking}}</span>
+                    <span class="text-cyan-600">{{ marking }}</span>
                 </span>
             </span>
         </div>

@@ -8,7 +8,6 @@ use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Organisation;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Searchable\ModelSearchAspect;
 use Spatie\Searchable\Search;
@@ -24,23 +23,30 @@ class OrgController extends Controller
             return Inertia::render('Security/Organisations/OrgList', [
                 'orgs' => Organisation::with('parent')->paginate(10)
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
     }
 
-    public function show(string $id) {
+    public function show(string $id)
+    {
         try {
-            return Inertia::render('Security/Organisations/Org',[
-                'org' => Organisation::with('children')->findOrFail($id),
-                'agents' => User::with('org')->whereRelation('org','org_id','=',$id)->orWhereRelation('org','parent_id','=',$id)->paginate(10)
+            $org = Organisation::with('children')->findOrFail($id);
+            return Inertia::render('Security/Organisations/Org', [
+                'org' => $org,
+                'agents' =>
+                    User::whereHas('org', function ($query) use ($org) {
+                        $query->where('organisations.org_id', '=', $org->org_id)
+                            ->orWhere('organisations.parent_id', '=', $org->org_id);
+                    })->with('org')->paginate(10)
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
     }
+
 //    /**
 //     * Show the form for creating a new resource.
 //     */
@@ -76,7 +82,7 @@ class OrgController extends Controller
                 'org' => Organisation::with('parent')->findOrFail($id),
                 'parents' => Organisation::all()
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -91,7 +97,7 @@ class OrgController extends Controller
             $org = Organisation::findOrFail($id);
             $org->update($request->validated());
             alert_success('Organisation enregistré avec succès.');
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Erreur lors de la sauvegarde de l\'organisation');
         } finally {
             return redirect()->back();
@@ -119,7 +125,7 @@ class OrgController extends Controller
         try {
             $data = $request->validated();
             $searchResults = (new Search())
-                ->registerModel(Organisation::class, function  (ModelSearchAspect $aspect) use($data) {
+                ->registerModel(Organisation::class, function (ModelSearchAspect $aspect) use ($data) {
                     foreach ($data['fields'] as $field) {
                         $aspect->addSearchableAttribute($field);
                     }

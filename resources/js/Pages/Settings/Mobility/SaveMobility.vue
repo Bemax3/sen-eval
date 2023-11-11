@@ -5,12 +5,12 @@ import InputLabel from "@/Components/Forms/InputLabel.vue";
 import TextInput from "@/Components/Forms/TextInput.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
-import {computed} from "vue";
 import {isEmpty} from "@/helpers/helper.js";
 import InputError from "@/Components/Forms/InputError.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import Switch from "@/Components/Forms/Switch.vue";
+import {computed} from "vue";
 
 const props = defineProps({
     mobility: {
@@ -18,8 +18,14 @@ const props = defineProps({
         default: {}
     }
 })
-let form;
 
+const title = computed(() => isEmpty(props.mobility) ? 'Nouveau Type de Mobilité' : 'Modifier Type de Mobilité')
+const pages = [
+    {name: 'Types de Mobilité', href: route('mobilityTypes.index'), current: false},
+    {name: isEmpty(props.mobility) ? 'Nouveau' : 'Modifier', href: '#', current: true},
+]
+
+let form;
 const setForm = () => {
     form = useForm((isEmpty(props.mobility)) ?
         {
@@ -34,9 +40,6 @@ const setForm = () => {
         }
     );
 }
-
-setForm();
-
 const submit = () => {
     if (isEmpty(props.mobility))
         form.post(route('mobilityTypes.store'), {
@@ -48,14 +51,7 @@ const submit = () => {
         });
 }
 
-const title = computed(() => {
-    return isEmpty(props.mobility) ? 'Nouveau Type de Mobilité' : 'Modifier Type de Mobilité';
-})
-
-const pages = [
-    {name: 'Types de Mobilité', href: route('mobilityTypes.index'), current: false},
-    {name: isEmpty(props.mobility) ? 'Nouveau' : 'Modifier', href: '#', current: true},
-]
+setForm();
 
 </script>
 <template>

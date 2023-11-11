@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,6 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('validator_id')->nullable();
             $table->boolean('validated_by_n1')->default(false);
             $table->boolean('validated_by_n2')->default(false);
+            $table->boolean('rating_is_contested')->default(false);
             $table->unsignedInteger('phase_id');
             $table->float('rating_mark')->default(0);
             $table->string('evaluator_comment')->nullable();
@@ -46,6 +46,8 @@ return new class extends Migration
             $table->increments('rating_training_id');
             $table->boolean('asked_by_evaluated')->nullable();
             $table->boolean('asked_by_evaluator')->nullable();
+            $table->longText('evaluator_comment')->nullable();
+            $table->longText('evaluated_comment')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('rating_id');
             $table->unsignedInteger('training_type_id');
@@ -57,13 +59,14 @@ return new class extends Migration
 
         Schema::create('rating_mobilities', function (Blueprint $table) {
             $table->increments('rating_mobility_id');
-            $table->boolean('asked_by_evaluated')->nullable();
-            $table->boolean('asked_by_evaluator')->nullable();
             $table->string('rating_mobility_title')->nullable();
+            $table->longText('rating_mobility_comment')->nullable();
+            $table->unsignedInteger('asked_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('rating_id');
             $table->unsignedInteger('mobility_type_id');
             $table->foreign('updated_by')->references('user_id')->on('users')->restrictOnDelete();
+            $table->foreign('asked_by')->references('user_id')->on('users')->restrictOnDelete();
             $table->foreign('rating_id')->references('rating_id')->on('ratings');
             $table->foreign('mobility_type_id')->references('mobility_type_id')->on('mobility_types');
             $table->timestamps();
@@ -71,6 +74,7 @@ return new class extends Migration
 
         Schema::create('rating_sanctions', function (Blueprint $table) {
             $table->increments('rating_sanction_id');
+            $table->longText('rating_sanction_comment')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('rating_id');
             $table->unsignedInteger('sanction_type_id');
@@ -82,6 +86,7 @@ return new class extends Migration
 
         Schema::create('rating_claims', function (Blueprint $table) {
             $table->increments('rating_claim_id');
+            $table->longText('rating_claim_comment')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('rating_id');
             $table->unsignedInteger('claim_type_id');
@@ -91,9 +96,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('rating_promotions',function (Blueprint $table) {
+        Schema::create('rating_promotions', function (Blueprint $table) {
             $table->increments('rating_promotion_id');
             $table->boolean('evaluated_is_eligible')->default(false);
+            $table->longText('rating_promotion_comment')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('rating_id');
             $table->unsignedInteger('promotion_type_id');

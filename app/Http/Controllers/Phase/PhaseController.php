@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Phase;
 
+use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Phase\PhaseAlreadyExistException;
+use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Phase\SavePhaseRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Phase\Phase;
 use App\Models\Settings\PeriodType;
 use App\Services\Phase\PhaseService;
-use Carbon\Carbon;
 use Exception;
 use Inertia\Inertia;
 use Spatie\Searchable\Search;
@@ -16,36 +18,18 @@ use Spatie\Searchable\Search;
 class PhaseController extends Controller
 {
 
-    public function __construct(private readonly PhaseService $phaseService){}
+    public function __construct(private readonly PhaseService $phaseService)
+    {
+    }
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        try {
-            return Inertia::render('Phase/PhasesList', [
-                'phases' => Phase::paginate(10)
-            ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
-            return redirect()->back();
-        }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        try {
-            return Inertia::render('Phase/SavePhase',[
-                'types' => PeriodType::all()
-            ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
-            return redirect()->back();
-        }
+        return Inertia::render('Phase/PhasesList', [
+            'phases' => Phase::paginate(10)
+        ]);
     }
 
     /**
@@ -54,15 +38,23 @@ class PhaseController extends Controller
     public function store(SavePhaseRequest $request)
     {
         try {
-            switch ($this->phaseService->create($request->validated())){
-                case 'exist': alert_error('Une Phase existe pour cette année.'); break;
-                default: alert_success('Phase crée avec succès.');
-            }
-        } catch (Exception $e) {
-            alert_error('Erreur lors de la création de cette phase.');
+            $this->phaseService->create($request->validated());
+            alert_success('Phase crée avec succès.');
+        } catch (PhaseAlreadyExistException|UnknownException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->route('phases.create');
         }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Phase/SavePhase', [
+            'types' => PeriodType::all()
+        ]);
     }
 
     /**
@@ -75,8 +67,8 @@ class PhaseController extends Controller
                 'phase' => Phase::findOrFail($id),
                 'types' => PeriodType::all()
             ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
             return redirect()->back();
         }
     }
@@ -87,12 +79,10 @@ class PhaseController extends Controller
     public function update(SavePhaseRequest $request, string $id)
     {
         try {
-            switch ($this->phaseService->update(intval($id),$request->validated())){
-                case 'exist': alert_error('Une Phase existe pour cette année.'); break;
-                default: alert_success('Phase modifié avec succès.');
-            }
-        } catch (Exception $e) {
-            alert_error('Erreur lors de la modification de cette phase.');
+            $this->phaseService->update(intval($id), $request->validated());
+            alert_success('Phase modifié avec succès.');
+        } catch (PhaseAlreadyExistException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->route('phases.edit', ['phase' => $id]);
         }
@@ -101,10 +91,10 @@ class PhaseController extends Controller
     public function updateStatus(SavePhaseRequest $request, string $id)
     {
         try {
-            $this->phaseService->updateStatus(intval($id),$request->validated());
-             alert_success('Phase modifié avec succès.');
-        } catch (Exception $e) {
-            alert_error('Erreur lors de la modification de cette phase.');
+            $this->phaseService->updateStatus(intval($id), $request->validated());
+            alert_success('Phase modifié avec succès.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }
@@ -118,8 +108,8 @@ class PhaseController extends Controller
         try {
             $this->phaseService->destroy(intval($id));
             alert_success('Phase supprimée avec succès.');
-        } catch (Exception) {
-            alert_error('Erreur lors de la suppression de cette phase.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
         } finally {
             redirect()->route('phases.index');
         }

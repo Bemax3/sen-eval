@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Phase;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Phase\SavePhasePeriodRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Phase\EvaluationPeriod;
 use App\Models\Phase\Phase;
-use App\Models\Settings\PeriodType;
-use App\Models\Settings\Skill;
-use Carbon\Carbon;
+use App\Services\Phase\PeriodService;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,31 +17,20 @@ use Spatie\Searchable\Search;
 
 class PeriodsController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
+    public function __construct(private readonly PeriodService $periodService)
     {
-        try{
-            return Inertia::render('Phase/SavePhasePeriod',[
-                'phase' => Phase::findOrFail($request->get('phase')),
-            ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
-            return redirect()->back();
-        }
     }
 
     public function show(string $id)
     {
         try {
             $phase = Phase::findOrFail($id);
-            return Inertia::render('Phase/PhasePeriods',[
+            return Inertia::render('Phase/PhasePeriods', [
                 'phase' => $phase,
                 'periods' => $phase->periods()->paginate(10)
             ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
             return redirect()->back();
         }
     }
@@ -53,16 +41,26 @@ class PeriodsController extends Controller
     public function store(SavePhasePeriodRequest $request)
     {
         try {
-            $data = $request->validated();
-            $phase = Phase::findOrFail($data['phase_id']);
-            $phase->periods()->create([
-                'evaluation_period_start' => Carbon::createFromDate($data['evaluation_period_start'])->toDateTimeString(),
-                'evaluation_period_end' => Carbon::createFromDate($data['evaluation_period_end'])->toDateTimeString()
-            ]);
+            $this->periodService->create($request->validated());
             alert_success('Période ajoutée avec succès.');
-        }catch (Exception) {
-            alert_error('Erreur lors de l\'enregistrement de la période');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
         } finally {
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request)
+    {
+        try {
+            return Inertia::render('Phase/SavePhasePeriod', [
+                'phase' => Phase::findOrFail($request->get('phase')),
+            ]);
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
             return redirect()->back();
         }
     }
@@ -78,8 +76,8 @@ class PeriodsController extends Controller
                 'phase' => Phase::findOrFail($period->phase_id),
                 'period' => $period
             ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
             return redirect()->back();
         }
     }
@@ -90,17 +88,10 @@ class PeriodsController extends Controller
     public function update(SavePhasePeriodRequest $request, string $id)
     {
         try {
-            $data = $request->validated();
-            $phase = Phase::findOrFail($data['phase_id']);
-            $phase->periods()->findOrFail(intval($id))
-                ->update([
-                'evaluation_period_start' => Carbon::createFromDate($data['evaluation_period_start'])->toDateTimeString(),
-                'evaluation_period_end' => Carbon::createFromDate($data['evaluation_period_end'])->toDateTimeString(),
-                'updated_by' => $data['updated_by']
-            ]);
+            $this->periodService->update($request->validated(), $id);
             alert_success('Période modifié avec succès.');
-        }catch (Exception) {
-            alert_error('Erreur lors de l\'enregistrement de la période');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }
@@ -112,10 +103,11 @@ class PeriodsController extends Controller
     public function destroy(string $id)
     {
         try {
-            EvaluationPeriod::findOrFail(intval($id))->delete();
+
+            $this->periodService->delete($id);
             alert_success('Période supprimée avec succès.');
-        } catch (Exception) {
-            alert_error('Erreur lors de la suppression de cette période.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
         } finally {
             redirect()->back();
         }
@@ -126,11 +118,11 @@ class PeriodsController extends Controller
         try {
             $data = $request->validated();
             $searchResults = (new Search())
-                ->registerModel(EvaluationPeriod::class, function  (ModelSearchAspect $aspect) use($data) {
+                ->registerModel(EvaluationPeriod::class, function (ModelSearchAspect $aspect) use ($data) {
                     foreach ($data['fields'] as $field) {
                         $aspect->addSearchableAttribute($field);
                     }
-                    $aspect->whereRelation('phase','phase_id','=',$data['phase_id']);
+                    $aspect->whereRelation('phase', 'phase_id', '=', $data['phase_id']);
                 })
                 ->search($data['keyword']);
             $result = [];

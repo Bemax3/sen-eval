@@ -10,6 +10,7 @@ class SaveRatingSanctionRequest extends FormRequest
     {
         return [
             'sanction_type_id' => ['required'],
+            'rating_sanction_comment' => ['sometimes']
         ];
     }
 

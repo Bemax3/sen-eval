@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,33 +13,36 @@ class Organisation extends Model implements Searchable
 {
     protected $table = 'organisations';
     protected $primaryKey = 'org_id';
-    protected $fillable = ['org_id','org_name','org_type','org_responsibility_center','parent_id','updated_by'];
+    protected $fillable = ['org_id', 'org_name', 'org_type', 'org_responsibility_center', 'parent_id', 'updated_by'];
 
     public function getForeignKey()
     {
         return $this->primaryKey;
     }
 
-    public function child_org_agents() : HasManyThrough {
-        return $this->hasManyThrough(User::class,$this,'parent_id','org_id','org_id','org_id');
-    }
-
-    public function org_agents(): HasMany
+    public function children(): HasMany
     {
-        return  $this->hasMany(User::class);
-    }
-
-    public function children () : HasMany {
-        return $this->hasMany($this,'parent_id','org_id');
+        return $this->hasMany($this, 'parent_id', 'org_id');
     }
 
     public function users(): array
     {
-        return array_merge($this->child_org_agents()->get()->toArray(),$this->org_agents()->get()->toArray());
+        return array_merge($this->child_org_agents()->get()->toArray(), $this->org_agents()->get()->toArray());
     }
 
-    public function parent(): BelongsTo {
-        return $this->belongsTo($this,'parent_id','org_id');
+    public function child_org_agents(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, $this, 'parent_id', 'org_id', 'org_id', 'org_id');
+    }
+
+    public function org_agents(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo($this, 'parent_id', 'org_id');
     }
 
     public function getSearchResult(): SearchResult

@@ -15,24 +15,12 @@ const props = defineProps({
         type: Object,
     },
 });
-
+const pages = [{name: 'Roles', href: '#', current: true}]
 const pagination = computed(() => getPagination(props.roles));
-const openModal = ref(false);
-let idToDestroy = hasData(props.roles.data) ? props.roles.data[0].role_id : null;
-const destroy = id => {
-    idToDestroy = id;
-    openModal.value = true;
-};
-
 const displayedData = ref(props.roles.data);
+const search = reactive({keyword: '', fields: ['role_name', 'role_code']});
 
-const search = reactive({
-    keyword: '',
-    fields: ['role_name', 'role_code'],
-});
-
-watch(
-    () => search.keyword,
+watch(() => search.keyword,
     function (next) {
         if (next === '') {
             displayedData.value = props.roles.data;
@@ -52,9 +40,6 @@ watch(() => props.roles,
     }
 );
 
-const pages = [
-    {name: 'Roles', href: '#', current: true},
-]
 </script>
 
 <template>

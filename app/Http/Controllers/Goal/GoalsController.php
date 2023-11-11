@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Goal;
 
+use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\UserCantEvaluateHimselfException;
+use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveGoalRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Rating\Goal;
-use App\Services\Rating\RatingService;
+use App\Services\Rating\GoalService;
 use Inertia\Inertia;
 use PHPUnit\Framework\MockObject\Exception;
 use Spatie\Searchable\ModelSearchAspect;
@@ -14,49 +17,48 @@ use Spatie\Searchable\Search;
 
 class GoalsController extends Controller
 {
-    public function index() {
-        return Inertia::render('Goals/GoalsList',[
-            'goals' => Goal::where('evaluated_id', '=',\Auth::id())->with('phase','period')->paginate(10)
+    public function __construct(private readonly GoalService $goalService)
+    {
+    }
+
+    public function index()
+    {
+        return Inertia::render('Goals/GoalsList', [
+            'goals' => Goal::where('evaluated_id', '=', \Auth::id())->with('phase', 'period')->paginate(10)
         ]);
     }
 
-    public function edit(string $id) {
+    public function edit(string $id)
+    {
         try {
-            return Inertia::render('Goals/SaveGoal',[
+            return Inertia::render('Goals/SaveGoal', [
                 'goal' => Goal::with('phase')->findOrFail($id)
             ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
             return redirect()->back();
         }
     }
 
-    public function update(SaveGoalRequest $request,string $id) {
+    public function updateMark(SaveGoalRequest $request, string $id)
+    {
         try {
-            $goal = Goal::findOrFail($id);
-            $goal->update($request->validated());
+            $this->goalService->updateMark($request->validated(), $id);
             alert_success('Objectif enregistré');
-        }catch (\Exception $e) {
-            alert_error('Erreur lors de l\'enregistrement, réessayer plus tard.');
+        } catch (UserCantEvaluateHimselfException|ModelNotFoundException|UnknownException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }
     }
 
-    public function updateMark(SaveGoalRequest $request,string $id) {
+    public function update(SaveGoalRequest $request, string $id)
+    {
         try {
-            $goal = Goal::findOrFail($id);
-            if($goal->evaluator_id !== \Auth::id()) {
-                alert_error('Vous ne pouvez pas vous donner de note !');
-                return redirect()->back();
-            }
-            $data = $request->validated();
-            (new RatingService())->lowerMark($data['rating_id'],$goal->goal_mark);
-            $goal->update($data);
-            (new RatingService())->raiseMark($data['rating_id'],$goal->goal_mark);
+            $this->goalService->updateAgentComment($request->validated(), $id);
             alert_success('Objectif enregistré');
-        }catch (\Exception $e) {
-            alert_error('Erreur lors de l\'enregistrement, réessayer plus tard.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }

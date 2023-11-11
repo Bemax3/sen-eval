@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
 use App\Oracle\ImportUsersFromOracle;
 use App\Providers\RouteServiceProvider;
-use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,15 +23,18 @@ class AuthController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        if(!$request->authenticateFromDb()) {
+        if (!$request->authenticateFromDb()) {
             $request->authenticate();
             $user = Auth::user();
-            $this->importOracleDataOnLogin($user);
+            if (!$user->user_matricule) return redirect()->route('profile.show', ['profile' => $user->user_id]);
+            ImportUsersFromOracle::updateUserWithOracleData($user);
+            alert_success('Connexion réussie !');
         }
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
+
 
     /**
      * Destroy an authenticated session.
@@ -49,12 +48,5 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
-    }
-
-    private function importOracleDataOnLogin($user)
-    {
-        ImportUsersFromOracle::updateUserWithOracleData($user);
-        alert_success('Connexion réussie !');
-
     }
 }

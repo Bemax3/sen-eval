@@ -5,12 +5,12 @@ import InputLabel from "@/Components/Forms/InputLabel.vue";
 import TextInput from "@/Components/Forms/TextInput.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
-import {computed} from "vue";
 import {isEmpty} from "@/helpers/helper.js";
 import InputError from "@/Components/Forms/InputError.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import Switch from "@/Components/Forms/Switch.vue";
+import {computed} from "vue";
 
 const props = defineProps({
     sanction: {
@@ -18,8 +18,13 @@ const props = defineProps({
         default: {}
     }
 })
-let form;
 
+const title = computed(() => isEmpty(props.sanction) ? 'Nouveau Type de Sanction' : 'Modifier Type de Sanction')
+const pages = [
+    {name: 'Types de Sanction', href: route('sanctionTypes.index'), current: false},
+    {name: isEmpty(props.sanction) ? 'Nouveau' : 'Modifier', href: '#', current: true},
+]
+let form;
 const setForm = () => {
     form = useForm((isEmpty(props.sanction)) ?
         {
@@ -34,8 +39,6 @@ const setForm = () => {
         }
     );
 }
-
-setForm();
 const submit = () => {
     if (isEmpty(props.sanction))
         form.post(route('sanctionTypes.store'), {
@@ -47,14 +50,7 @@ const submit = () => {
         });
 }
 
-const title = computed(() => {
-    return isEmpty(props.sanction) ? 'Nouveau Type de Sanction' : 'Modifier Type de Sanction';
-})
-
-const pages = [
-    {name: 'Types de Sanction', href: route('sanctionTypes.index'), current: false},
-    {name: isEmpty(props.sanction) ? 'Nouveau' : 'Modifier', href: '#', current: true},
-]
+setForm();
 </script>
 <template>
     <AuthenticatedLayout>

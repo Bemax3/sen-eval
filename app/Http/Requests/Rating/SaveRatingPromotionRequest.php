@@ -11,6 +11,7 @@ class SaveRatingPromotionRequest extends FormRequest
         return [
             'evaluated_is_eligible' => ['sometimes'],
             'promotion_type_id' => ['required'],
+            'rating_promotion_comment' => ['sometimes']
         ];
     }
 

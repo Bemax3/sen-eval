@@ -6,123 +6,101 @@ import TableHeading from "@/Components/Common/Tables/TableHeading.vue";
 import {Head, Link, router} from '@inertiajs/vue3';
 import {computed, reactive, ref, watch} from "vue";
 import {PencilSquareIcon, PlusIcon} from "@heroicons/vue/20/solid/index.js";
-import DeleteModal from "@/Components/Common/DeleteModal.vue";
-import {hasData} from "@/helpers/helper.js";
+import {getPagination, hasData} from "@/helpers/helper.js";
 import EmptyState from "@/Components/Common/EmptyState.vue";
 import axios from "axios";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 
 const props = defineProps({
-    skills: {
-        type: Object
-    }
+	skills: {
+		type: Object
+	}
 })
 
-const pagination = computed(() => {
-    return {
-        links: props.skills.links,
-        per_page: props.skills.per_page,
-        total: props.skills.total,
-        from: props.skills.from,
-        to: props.skills.to,
-    };
-});
-const openModal = ref(false);
-let idToDestroy = hasData(props.skills.data) ? props.skills.data[0].skill_type_id : null
-const destroy = (id) => {
-    idToDestroy = id;
-    openModal.value = true;
-}
-
+const pages = [{name: 'Types de Compétence', href: '#', current: true}]
+const pagination = computed(() => getPagination(props.skills));
 const displayedData = ref(props.skills.data);
-const search = reactive({
-    keyword: '',
-    fields: ['skill_type_name'],
-});
-watch(
-    () => search.keyword,
-    function (next) {
-        if (next === '') {
-            displayedData.value = props.skills.data;
-        } else {
-            axios.post(route('skillTypes.search'), search).then(res => (displayedData.value = res.data));
-        }
-    }
-);
-watch(
-    () => props.skills,
-    function (next) {
-        displayedData.value = next.data;
-        if (!displayedData.value.length > 0) {
-            if (next.prev_page_url) router.get(next.prev_page_url)
-            else router.get(next.first_page_url);
-        }
-    }
+const search = reactive({keyword: '', fields: ['skill_type_name']});
+
+watch(() => search.keyword,
+		function (next) {
+			if (next === '') {
+				displayedData.value = props.skills.data;
+			} else {
+				axios.post(route('skillTypes.search'), search).then(res => (displayedData.value = res.data));
+			}
+		}
 );
 
-const pages = [
-    {name: 'Types de Compétence', href: '#', current: true},
-]
+watch(() => props.skills,
+		function (next) {
+			displayedData.value = next.data;
+			if (!displayedData.value.length > 0) {
+				if (next.prev_page_url) router.get(next.prev_page_url)
+				else router.get(next.first_page_url);
+			}
+		}
+);
+
 </script>
 
 <template>
-    <AuthenticatedLayout>
-        <Head title="Types de Compétences"/>
-        <div class="px-4 sm:px-6 lg:px-8">
-            <Breadcrumbs :pages="pages"/>
-            <div class="sm:flex sm:items-center">
-                <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Types de Compétence</h1>
-                    <p class="mt-2 text-sm text-gray-700"
-                    >La liste des types de compétence.</p>
-                </div>
-                <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                    <Link
-                        :href="route('skillTypes.create')"
-                        as="button"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
-                    >Ajouter un Type
-                        <PlusIcon class="-mr-0.5 h-5 w-5"/>
-                    </Link>
-                </div>
-            </div>
-            <Datatable v-if="hasData(skills.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
-                    <tr>
-                        <TableHeading :first="true">Nom</TableHeading>
-                        <TableHeading>Description</TableHeading>
-                        <TableHeading>Barème</TableHeading>
-                        <TableHeading>Modifier</TableHeading>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
-                    <tr v-for="skill in displayedData" :key="skill.skill_type_id">
-                        <TableData :first="true">{{ skill.skill_type_name }}</TableData>
-                        <TableData>{{ skill.skill_type_desc }}</TableData>
-                        <TableData>{{ skill.skill_type_marking }} points</TableData>
-                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                            <div class="flex items-center justify-center">
-                                <Link :href="route('skillTypes.edit',{skillType: skill.skill_type_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
-                                </Link>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
-            </Datatable>
-            <EmptyState
-                v-else
-                :link="route('skillTypes.create')"
-                action="Nouveau"
-                message="Créer un nouveau type en appuyant sur ce bouton"
-                title="Pas de type de compétence"
-            />
-            <DeleteModal :id="idToDestroy" :opened="openModal" link="skillTypes.destroy" name="skillType" @close-modal="openModal=false"/>
-        </div>
-    </AuthenticatedLayout>
+	<AuthenticatedLayout>
+		<Head title="Types de Compétences"/>
+		<div class="px-4 sm:px-6 lg:px-8">
+			<Breadcrumbs :pages="pages"/>
+			<div class="sm:flex sm:items-center">
+				<div class="sm:flex-auto">
+					<h1 class="text-2xl font-semibold leading-6 text-gray-900">Types de Compétence</h1>
+					<p class="mt-2 text-sm text-gray-700"
+					>La liste des types de compétence.</p>
+				</div>
+				<div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+					<Link
+							:href="route('skillTypes.create')"
+							as="button"
+							class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+					>Ajouter un Type
+						<PlusIcon class="-mr-0.5 h-5 w-5"/>
+					</Link>
+				</div>
+			</div>
+			<Datatable v-if="hasData(skills.data)" v-model="search.keyword" :pagination="pagination">
+				<table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
+					<thead class="bg-gray-50">
+					<tr>
+						<TableHeading :first="true">Nom</TableHeading>
+						<TableHeading>Description</TableHeading>
+						<TableHeading>Barème</TableHeading>
+						<TableHeading>Modifier</TableHeading>
+					</tr>
+					</thead>
+					<tbody class="divide-y divide-gray-200 bg-white">
+					<tr v-for="skill in displayedData" :key="skill.skill_type_id">
+						<TableData :first="true">{{ skill.skill_type_name }}</TableData>
+						<TableData>{{ skill.skill_type_desc }}</TableData>
+						<TableData>{{ skill.skill_type_marking }} points</TableData>
+						<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+							<div class="flex items-center justify-center">
+								<Link :href="route('skillTypes.edit',{skillType: skill.skill_type_id})" class="group flex items-center px-4 py-2 text-sm">
+									<PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
+								</Link>
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+			</Datatable>
+			<EmptyState
+					v-else
+					:link="route('skillTypes.create')"
+					action="Nouveau"
+					message="Créer un nouveau type en appuyant sur ce bouton"
+					title="Pas de type de compétence"
+			/>
+		</div>
+	</AuthenticatedLayout>
 </template>
 
 <style scoped>

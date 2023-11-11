@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
@@ -16,10 +15,11 @@ class Role extends Model implements Searchable
     public const ROOT = 1;
     public const ADMIN = 2;
     public const USER = 3;
+    public const VIEWER = 4;
 
     protected $table = 'roles';
     protected $primaryKey = 'role_id';
-    protected $fillable = ['role_code', 'role_desc', 'role_name','updated_by'];
+    protected $fillable = ['role_code', 'role_desc', 'role_name', 'updated_by'];
 
     public function getForeignKey()
     {
@@ -28,7 +28,7 @@ class Role extends Model implements Searchable
 
     public function users(): HasMany
     {
-        return  $this->hasMany(User::class);
+        return $this->hasMany(User::class);
     }
 
     public function getSearchResult(): SearchResult

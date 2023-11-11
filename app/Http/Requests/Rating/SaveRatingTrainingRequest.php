@@ -11,7 +11,8 @@ class SaveRatingTrainingRequest extends FormRequest
         return [
             'asked_by_evaluated' => ['sometimes'],
             'asked_by_evaluator' => ['sometimes'],
-            'training_type_id' => ['required'],
+            'training_type_id' => ['sometimes'],
+            'comment' => ['sometimes']
         ];
     }
 

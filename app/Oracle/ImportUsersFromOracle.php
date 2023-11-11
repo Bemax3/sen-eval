@@ -3,7 +3,6 @@
 namespace App\Oracle;
 
 use App\Models\Group;
-use App\Models\Organisation;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -13,48 +12,41 @@ class ImportUsersFromOracle
 {
     public function __invoke(): void
     {
-        $users = User::all();
+        $users = User::where('user_first_name', '=', null)->where('user_matricule', '!=', null)->get();
         foreach ($users as $user) {
-            if($user->user_matricule == null) {
+            if ($user->user_matricule == null) {
                 $user->delete();
                 continue;
             }
-            if(!$this::updateUserWithOracleData($user)) continue;
+            if (!$this::updateUserWithOracleData($user)) $user->delete();
         }
     }
 
     public static function updateUserWithOracleData($user): bool
     {
         try {
-            $oracleUser = DB::connection('oracle')->select(\File::get(app_path() . '/Oracle/GetEmployee.sql'),['matri' => $user->user_matricule,'eff_date'=> Carbon::today()])[0];
-            dd($oracleUser);
-            if($oracleUser == null) return false;
+            $today = Carbon::today();
+            $oracleUser = DB::connection('oracle')->select(\File::get(app_path() . '/Oracle/GetEmployee.sql'), ['matri' => $user->user_matricule, 'eff_date' => $today])[0];
+            if ($oracleUser == null) return false;
             $user->update([
-                'user_id' => $oracleUser->person_id,
-    //                'user_matricule' => $oracleUser->matricule,
                 'user_first_name' => $oracleUser->prenom,
                 'user_last_name' => $oracleUser->nom,
                 'user_title' => $oracleUser->poste,
                 'user_responsibility_center' => $oracleUser->centre_de_responsabilite,
                 'user_gf' => $oracleUser->gf,
                 'user_nr' => $oracleUser->nr,
-//                'group_id' => Group::where('group_code', '=', strtolower($oracleUser->college))->first()->group_id,
-    //                'role_id' => Role::USER,
+                'role_id' => Role::USER,
             ]);
 
-//            $user->update([
-//                'user_gf_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promogf)->toDateTimeString(),
-//                'user_nr_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promonr)->toDateTimeString(),
-//                'org_id' => $oracleUser->org_id
-//            ]);
+            $user->update([
+                'user_gf_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promogf)->toDateTimeString(),
+                'user_nr_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promonr)->toDateTimeString(),
+                'org_id' => $oracleUser->org_id,
+                'group_id' => Group::where('group_code', '=', strtolower($oracleUser->college))->first()->group_id,
+            ]);
             return true;
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return false;
-//                User::updateOrCreate(['user_id' => $oracleUser->person_id],[
-//                    'user_gf_prom_date' => Carbon::createFromLocaleFormat('d-M-Y','fr' ,$oracleUser->date_promogf)->toDateTimeString(),
-//                    'user_nr_prom_date' => Carbon::createFromLocaleFormat('d-M-Y', 'fr',$oracleUser->date_promonr)->toDateTimeString(),
-//                ]);
-
         }
     }
 

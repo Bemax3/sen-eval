@@ -5,12 +5,12 @@ import InputLabel from "@/Components/Forms/InputLabel.vue";
 import TextInput from "@/Components/Forms/TextInput.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
-import {computed} from "vue";
 import {isEmpty} from "@/helpers/helper.js";
 import InputError from "@/Components/Forms/InputError.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import NumberInput from "@/Components/Forms/NumberInput.vue";
+import {computed} from "vue";
 
 const props = defineProps({
     skill: {
@@ -18,8 +18,13 @@ const props = defineProps({
         default: {}
     }
 })
-let form;
 
+const title = computed(() => isEmpty(props.skill) ? 'Nouveau Type de Compétence' : 'Modifier Type de Compétence')
+const pages = [
+    {name: 'Types de Compétence', href: route('skillTypes.index'), current: false},
+    {name: isEmpty(props.skill) ? 'Nouveau' : 'Modifier', href: '#', current: true},
+]
+let form;
 const setForm = () => {
     form = useForm((isEmpty(props.skill)) ?
         {
@@ -34,8 +39,6 @@ const setForm = () => {
         }
     );
 }
-setForm()
-
 
 const submit = () => {
     if (isEmpty(props.skill))
@@ -48,14 +51,8 @@ const submit = () => {
         });
 }
 
-const title = computed(() => {
-    return isEmpty(props.skill) ? 'Nouveau Type de Compétence' : 'Modifier Type de Compétence';
-})
+setForm()
 
-const pages = [
-    {name: 'Types de Compétence', href: route('skillTypes.index'), current: false},
-    {name: isEmpty(props.skill) ? 'Nouveau' : 'Modifier', href: '#', current: true},
-]
 </script>
 <template>
     <AuthenticatedLayout>

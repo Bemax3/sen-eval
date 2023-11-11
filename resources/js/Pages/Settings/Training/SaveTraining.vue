@@ -5,12 +5,12 @@ import InputLabel from "@/Components/Forms/InputLabel.vue";
 import TextInput from "@/Components/Forms/TextInput.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
-import {computed} from "vue";
 import {isEmpty} from "@/helpers/helper.js";
 import InputError from "@/Components/Forms/InputError.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import Switch from "@/Components/Forms/Switch.vue";
+import {computed} from "vue";
 
 const props = defineProps({
     training: {
@@ -18,8 +18,13 @@ const props = defineProps({
         default: {}
     }
 })
-let form;
 
+const title = computed(() => isEmpty(props.training) ? 'Nouveau Type de Formation' : 'Modifier Type de Formation')
+const pages = [
+    {name: 'Types de Formation', href: route('trainingTypes.index'), current: false},
+    {name: isEmpty(props.training) ? 'Nouveau' : 'Modifier', href: '#', current: true},
+]
+let form;
 const setForm = () => {
     form = useForm((isEmpty(props.training)) ?
         {
@@ -34,7 +39,6 @@ const setForm = () => {
         }
     );
 }
-setForm()
 const submit = () => {
     if (isEmpty(props.training))
         form.post(route('trainingTypes.store'), {
@@ -46,13 +50,7 @@ const submit = () => {
         });
 }
 
-const title = computed(() => {
-    return isEmpty(props.training) ? 'Nouveau Type de Formation' : 'Modifier Type de Formation';
-})
-const pages = [
-    {name: 'Types de Formation', href: route('trainingTypes.index'), current: false},
-    {name: isEmpty(props.training) ? 'Nouveau' : 'Modifier', href: '#', current: true},
-]
+setForm()
 </script>
 <template>
     <AuthenticatedLayout>
@@ -80,7 +78,6 @@ const pages = [
                                 </div>
                                 <InputError :message="form.errors.training_type_name"/>
                             </div>
-
                             <div class="col-span-full">
                                 <InputLabel for="description">Description</InputLabel>
                                 <div class="mt-2">
@@ -91,11 +88,11 @@ const pages = [
                                     placeholder="Description"
                                 />
                                 </div>
-                                <!--                            <p class="mt-3 text-sm leading-6 text-gray-600">Optionnel</p>-->
                             </div>
                             <div class="col-span-full">
                                 <div class="mt-2">
-                                    <Switch v-model="form.training_type_is_active" desc="Sera t-il possible de proposer ou demander ce type de formation lors des évaluations"
+                                    <Switch v-model="form.training_type_is_active"
+                                            desc="Sera t-il possible de proposer ou demander ce type de formation lors des évaluations"
                                             label="Actif"/>
                                 </div>
                             </div>

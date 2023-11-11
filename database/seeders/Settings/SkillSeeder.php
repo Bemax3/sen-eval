@@ -5,7 +5,6 @@ namespace Database\Seeders\Settings;
 
 use App\Models\Group;
 use App\Models\Settings\Skill;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SkillSeeder extends Seeder
@@ -17,23 +16,65 @@ class SkillSeeder extends Seeder
     {
         $skill_types = [
             [
-                'skill_name' => 'Savoir',
+                'skill_name' => 'Bonne Gouvernance des SI',
                 'skill_marking' => 5,
                 'skill_desc' => '',
                 'skill_type_id' => 1
             ],
             [
-                'skill_name' => 'Savoir Être',
+                'skill_name' => 'Gestion de Projet',
                 'skill_marking' => 5,
                 'skill_desc' => '',
                 'skill_type_id' => 1
             ],
             [
-                'skill_name' => 'Savoir Faire',
+                'skill_name' => 'Gestion des opérations',
                 'skill_marking' => 5,
                 'skill_desc' => '',
                 'skill_type_id' => 1
             ],
+            [
+                'skill_name' => 'Ref Compétence v',
+                'skill_marking' => 5,
+                'skill_desc' => '',
+                'skill_type_id' => 1
+            ],
+            [
+                'skill_name' => 'Ref Compétence w',
+                'skill_marking' => 5,
+                'skill_desc' => '',
+                'skill_type_id' => 1
+            ],
+            [
+                'skill_name' => 'Ref Compétence x',
+                'skill_marking' => 5,
+                'skill_desc' => '',
+                'skill_type_id' => 1
+            ],
+            [
+                'skill_name' => 'Ref Compétence y',
+                'skill_marking' => 5,
+                'skill_desc' => '',
+                'skill_type_id' => 1
+            ],
+            [
+                'skill_name' => 'Ref Compétence z',
+                'skill_marking' => 5,
+                'skill_desc' => '',
+                'skill_type_id' => 1
+            ],
+//            [
+//                'skill_name' => 'Savoir Être',
+//                'skill_marking' => 5,
+//                'skill_desc' => '',
+//                'skill_type_id' => 1
+//            ],
+//            [
+//                'skill_name' => 'Savoir Faire',
+//                'skill_marking' => 5,
+//                'skill_desc' => '',
+//                'skill_type_id' => 1
+//            ],
             [
                 'skill_name' => 'Management',
                 'skill_marking' => 15,
@@ -62,12 +103,12 @@ class SkillSeeder extends Seeder
                 'skill_type_id' => 2,
                 'group_id' => Group::MAITRISE
             ],
-             [
+            [
                 'skill_name' => 'Relation Humaines',
-                 'skill_marking' => 5,
+                'skill_marking' => 5,
                 'skill_desc' => 'Ouverture d\'esprit, Esprit d\'équipe, Convivialité, Communication, Persuasion',
                 'skill_type_id' => 2,
-                 'group_id' => Group::MAITRISE
+                'group_id' => Group::MAITRISE
             ],
             [
                 'skill_name' => 'Esprit d\'organisation',

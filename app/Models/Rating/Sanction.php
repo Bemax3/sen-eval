@@ -10,15 +10,20 @@ class Sanction extends Model
 {
     protected $table = 'rating_sanctions';
     protected $primaryKey = 'rating_sanction_id';
-    protected $fillable = ['rating_id','sanction_type_id'];
+    protected $fillable = ['rating_id', 'sanction_type_id', 'rating_sanction_comment'];
+
     public function getForeignKey()
     {
         return $this->primaryKey;
     }
-    public function rating(): BelongsTo {
-        return $this->belongsTo(Rating::class,'rating_id','rating_id');
+
+    public function rating(): BelongsTo
+    {
+        return $this->belongsTo(Rating::class, 'rating_id', 'rating_id');
     }
-    public function type(): BelongsTo {
-        return $this->belongsTo(SanctionType::class,'sanction_type_id','sanction_type_id');
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(SanctionType::class, 'sanction_type_id', 'sanction_type_id');
     }
 }

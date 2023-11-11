@@ -3,7 +3,6 @@
 namespace Database\Seeders\Settings;
 
 use App\Models\Settings\ClaimType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ClaimTypeSeeder extends Seeder
@@ -20,6 +19,7 @@ class ClaimTypeSeeder extends Seeder
             ['claim_type_name' => 'Problème de moyen'],
             ['claim_type_name' => 'Problème d\'effectif'],
             ['claim_type_name' => 'Problème de motivation'],
+            ['claim_type_name' => 'Contestation de l\'évaluation des performances'],
         ];
 
         foreach ($claim_types as $claim_type) {

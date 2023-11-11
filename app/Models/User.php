@@ -4,10 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Rating\Goal;
+use App\Models\Rating\Mobility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,7 +17,7 @@ use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements LdapAuthenticatable,Searchable
+class User extends Authenticatable implements LdapAuthenticatable, Searchable
 {
     use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap, HasLdapUser;
 
@@ -81,32 +81,42 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
 
     public function role(): BelongsTo
     {
-        return $this->belongsTo(Role::class,'role_id','role_id');
+        return $this->belongsTo(Role::class, 'role_id', 'role_id');
     }
 
-    public function org(): BelongsTo {
-        return $this->belongsTo(Organisation::class,'org_id','org_id');
-    }
-    public function group(): BelongsTo {
-        return $this->belongsTo(Group::class,'group_id','group_id');
+    public function org(): BelongsTo
+    {
+        return $this->belongsTo(Organisation::class, 'org_id', 'org_id');
     }
 
-    public function n1(): BelongsTo {
-        return $this->belongsTo(User::class,'n1_id','user_id');
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class, 'group_id', 'group_id');
     }
+
+    public function n1(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'n1_id', 'user_id');
+    }
+
     public function agents(): HasMany
     {
-        return $this->hasMany(User::class,'n1_id','user_id');
+        return $this->hasMany(User::class, 'n1_id', 'user_id');
     }
 
     public function goals(): HasMany
     {
-        return $this->hasMany(Goal::class,'evaluated_id','user_id');
+        return $this->hasMany(Goal::class, 'evaluated_id', 'user_id');
     }
 
     public function agents_goals(): HasMany
     {
-        return $this->hasMany(Goal::class,'evaluator_id','user_id');
+        return $this->hasMany(Goal::class, 'evaluator_id', 'user_id');
+    }
+
+    public function mobilities(): HasMany
+    {
+        return $this->hasMany(Mobility::class, 'asked_by', 'user_id');
     }
 
 //    public function parent_org: Belongs
@@ -121,9 +131,16 @@ class User extends Authenticatable implements LdapAuthenticatable,Searchable
         return $this->role_id === Role::ADMIN;
     }
 
-    public function isCadre(): bool {
+    public function isViewer(): bool
+    {
+        return $this->role_id === Role::VIEWER;
+    }
+
+    public function isCadre(): bool
+    {
         return $this->group_id === Group::CADRE;
     }
+    
     public function isUser(): bool
     {
         return $this->role_id === Role::USER;

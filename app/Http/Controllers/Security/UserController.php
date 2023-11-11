@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Security;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Security\SaveUserRequest;
 use App\Http\Requests\Utilities\SearchRequest;
+use App\Models\Organisation;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\Security\UserService;
@@ -22,29 +23,30 @@ class UserController extends Controller
     {
         try {
             return Inertia::render('Security/Users/UsersList', [
-                'users' => User::with('role')->with('org')->whereRelation('role','role_code','!=','root')->paginate(10)
+                'users' => User::with('role')->with('org')->whereRelation('role', 'role_code', '!=', 'root')->paginate(10)
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
     }
 
-        /**
+    /**
      * Show the form for editing the specified resource.
      */
     public function show(string $id)
     {
         try {
             $user = User::with('role')
-//                ->with('org')
+                ->with('org')
                 ->with('n1')->with('group')->findOrFail($id);
-            return Inertia::render('Security/Users/UserProfile', [
+            return Inertia::render('Security/Profile/Profile', [
                 'user' => $user,
                 'n1s' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],
+                'orgs' => Organisation::limit(100)->get(),
                 'roles' => Role::all()
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -93,7 +95,7 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            if($request->get('n1_id') == $user->user_id) {
+            if ($request->get('n1_id') == $user->user_id) {
                 alert_error('Ahh Nonn! Vous ne pouver pas vous evaluer quand même.');
                 return redirect()->back();
             }
@@ -129,13 +131,13 @@ class UserController extends Controller
 //            ray()->queries();
             $data = $request->validated();
             $searchResults = (new Search())
-                ->registerModel(User::class, function  (ModelSearchAspect $aspect) use($data) {
+                ->registerModel(User::class, function (ModelSearchAspect $aspect) use ($data) {
                     foreach ($data['fields'] as $field) {
-                        $aspect->addSearchableAttribute($field);
+                        $aspect->addMixedSearchableAttribute($field);
                     }
-                    if(isset($data['org_id'])) {
+                    if (isset($data['org_id'])) {
                         $aspect->whereHas('org', function ($query) use ($data) {
-                            $query->where('organisations.org_id', '=', $data['org_id'])->orWhere('organisations.parent_id','=',$data['org_id']);
+                            $query->where('organisations.org_id', '=', $data['org_id'])->orWhere('organisations.parent_id', '=', $data['org_id']);
                         });
                     }
                     $aspect->with('org');

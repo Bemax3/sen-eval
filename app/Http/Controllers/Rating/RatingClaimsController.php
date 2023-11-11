@@ -2,56 +2,72 @@
 
 namespace App\Http\Controllers\Rating;
 
+use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\ClaimAlreadyExistException;
+use App\Exceptions\UnauthorizedActionException;
+use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveRatingClaimRequest;
-use App\Models\Rating\Claim;
 use App\Models\Rating\Rating;
 use App\Models\Settings\ClaimType;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\Rating\ClaimService;
 use Inertia\Inertia;
 
 class RatingClaimsController extends Controller
 {
-    public function index(string $rating_id) {
-        $rating = Rating::with('phase','evaluator','evaluated')->findOrFail($rating_id);
-        return Inertia::render('Rating/RatingClaims',[
-            'agent' => User::with('org')->findOrFail($rating->evaluated_id),
-            'rating' => $rating,
-            'types' => ClaimType::where('claim_type_is_active','=',1)->get(),
-            'claims' => $rating->claims()->with('type')->paginate(10)
-        ]);
+    public function __construct(private readonly ClaimService $claimService)
+    {
+    }
+
+    public function index(string $rating_id)
+    {
+        try {
+            $rating = Rating::with('phase', 'evaluator', 'evaluated', 'validator')->findOrFail($rating_id);
+            return Inertia::render('Rating/RatingClaims', [
+                'agent' => User::with('org')->findOrFail($rating->evaluated_id),
+                'rating' => $rating,
+                'types' => ClaimType::where('claim_type_is_active', '=', 1)->get(),
+                'claims' => $rating->claims()->with('type')->paginate(10)
+            ]);
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
+            return redirect()->back();
+        }
     }
 
 
-    public function store(SaveRatingClaimRequest $request,string $rating_id) {
+    public function store(SaveRatingClaimRequest $request, string $rating_id)
+    {
         try {
-            $data = $request->validated();
-            $sanction = Claim::where('claim_type_id','=',$data['claim_type_id'])->where('rating_id','=',$rating_id)->first();
-            $rating = Rating::findOrFail($rating_id);
-            if ($rating->evaluated_id !== \Auth::id()) {
-                alert_error('Vous ne pouvez pas faire de réclamation.');
-                return redirect()->back();
-            }
-            if(!$sanction)
-                $sanction = Claim::create([
-                    'rating_id' => $rating_id,
-                    'claim_type_id' => $data['claim_type_id'],
-                ]);
+            $this->claimService->create($request->validated(), $rating_id);
             alert_success('Réclamation enregistré avec succès.');
-        }catch (\Exception $e) {
-            alert_error('Erreur lors de l\'enregistrement de la réclamation');
+        } catch (UnauthorizedActionException|ClaimAlreadyExistException|UnknownException $e) {
+            alert_error($e);
         } finally {
             return redirect()->back();
         }
     }
 
-    public function destroy(string $rating_id,string $sanction_id) {
+    public function update(SaveRatingClaimRequest $request, string $rating_id, string $rating_claim_id)
+    {
         try {
-            Claim::findOrFail($sanction_id)->delete();
+            $this->claimService->update($request->validated(), $rating_claim_id);
+            alert_success('Réclamation enregistré avec succès.');
+        } catch (ModelNotFoundException|UnauthorizedActionException|ClaimAlreadyExistException|UnknownException $e) {
+            alert_error($e);
+        } finally {
+            return redirect()->back();
+        }
+    }
+
+    public function destroy(string $rating_id, string $claim_id)
+    {
+        try {
+            $this->claimService->delete($claim_id);
             alert_success('Vous avez annuler la réclamation.');
-        }catch(\Exception) {
-            alert_error('Erreur lors de l\'annulation de la réclamation');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }

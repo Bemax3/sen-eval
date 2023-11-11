@@ -12,108 +12,102 @@ import {computed, reactive, ref, watch} from "vue";
 import axios from "axios";
 
 const props = defineProps({
-    goals: {
-        type: Object
-    }
+	goals: {
+		type: Object
+	}
 });
-
-const pagination = computed(() => getPagination(props.goals));
-const displayedData = ref(props.goals.data);
-const search = reactive({
-    keyword: '',
-    fields: ['goal_name', 'goal_expected_result'],
-});
-
-watch(() => search.keyword,
-    function (next) {
-        if (next === '') {
-            displayedData.value = props.goals.data;
-        } else {
-            axios.post(route('goals.search'), search).then(res => (displayedData.value = res.data));
-        }
-    }
-);
 
 const pages = [
-    {name: 'Mes Objectifs', href: '#', current: true},
-
+	{name: 'Mes Objectifs', href: '#', current: true},
 ]
+const pagination = computed(() => getPagination(props.goals));
+const displayedData = ref(props.goals.data);
+const search = reactive({keyword: '', fields: ['goal_name', 'goal_expected_result']});
+
+watch(() => search.keyword, function (next) {
+	if (next === '') {
+		displayedData.value = props.goals.data;
+	} else {
+		axios.post(route('goals.search'), search).then(res => (displayedData.value = res.data));
+	}
+});
+
 
 </script>
 
 <template>
-    <AuthenticatedLayout>
-        <Head title="Profil"/>
-        <div class="px-4 sm:px-6 lg:px-8">
-            <Breadcrumbs :pages="pages"/>
-            <div class="sm:flex sm:items-center">
-                <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Mes Objectifs</h1>
-                    <p class="mt-2 text-sm text-gray-700">
-                        Liste de mes objectifs
-                    </p>
-                </div>
-            </div>
-            <Datatable v-if="hasData(goals.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
-                    <tr>
-                        <TableHeading :first="true">Libelle</TableHeading>
-                        <TableHeading>Valeur Cible</TableHeading>
-                        <TableHeading>Disponibilité des Moyens</TableHeading>
-                        <TableHeading>Échéance</TableHeading>
-                        <TableHeading>Année d'évaluation</TableHeading>
-                        <TableHeading>Période</TableHeading>
-                        <TableHeading>Barème</TableHeading>
-                        <TableHeading>Accepté / Contesté</TableHeading>
-                        <TableHeading></TableHeading>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
-                    <tr v-for="goal in displayedData" :key="goal.goal_id">
-                        <TableData :first="true" class="whitespace-pre-line">{{ goal.goal_name }}</TableData>
-                        <TableData class="whitespace-pre-line">{{ goal.goal_expected_result }}</TableData>
-                        <TableData>
+	<AuthenticatedLayout>
+		<Head title="Profil"/>
+		<div class="px-4 sm:px-6 lg:px-8">
+			<Breadcrumbs :pages="pages"/>
+			<div class="sm:flex sm:items-center">
+				<div class="sm:flex-auto">
+					<h1 class="text-2xl font-semibold leading-6 text-gray-900">Mes Objectifs</h1>
+					<p class="mt-2 text-sm text-gray-700">
+						Liste de mes objectifs
+					</p>
+				</div>
+			</div>
+			<Datatable v-if="hasData(goals.data)" v-model="search.keyword" :pagination="pagination">
+				<table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
+					<thead class="bg-gray-50">
+					<tr>
+						<TableHeading :first="true">Libelle</TableHeading>
+						<TableHeading>Valeur Cible</TableHeading>
+						<TableHeading>Disponibilité des Moyens</TableHeading>
+						<TableHeading>Échéance</TableHeading>
+						<TableHeading>Année d'évaluation</TableHeading>
+						<TableHeading>Période</TableHeading>
+						<TableHeading>Barème</TableHeading>
+						<TableHeading>Accepté / Contesté</TableHeading>
+						<TableHeading></TableHeading>
+					</tr>
+					</thead>
+					<tbody class="divide-y divide-gray-200 bg-white">
+					<tr v-for="goal in displayedData" :key="goal.goal_id">
+						<TableData :first="true" class="whitespace-pre-line">{{ goal.goal_name }}</TableData>
+						<TableData class="whitespace-pre-line">{{ goal.goal_expected_result }}</TableData>
+						<TableData>
                             <span :class="goal.goal_means_available ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
                                   class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ goal.goal_means_available ? 'Disponible' : 'Indisponible' }}
                             </span>
-                        </TableData>
-                        <TableData>{{ capitalized(moment(goal.goal_expected_date).format('DD MMMM YYYY')) }}</TableData>
-                        <TableData>{{ goal.phase.phase_year }}</TableData>
-                        <TableData>{{ goal.period.evaluation_period_name }}</TableData>
-                        <TableData>
+						</TableData>
+						<TableData>{{ capitalized(moment(goal.goal_expected_date).format('DD MMMM YYYY')) }}</TableData>
+						<TableData>{{ goal.phase.phase_year }}</TableData>
+						<TableData>{{ goal.period.evaluation_period_name }}</TableData>
+						<TableData>
                             <span class="flex-shrink-0">
                                 <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
                                     <span class="text-cyan-600">{{ goal.goal_marking }}</span>
                                 </span>
                             </span>
-                        </TableData>
-                        <TableData>
+						</TableData>
+						<TableData>
                             <span :class="goal.goal_is_accepted ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
                                   class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ goal.goal_is_accepted ? 'Accepté' : 'Contesté' }}
                             </span>
-                        </TableData>
-                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                            <div class="flex items-center justify-center">
-                                <Link :href="route('goals.edit', {goal: goal.goal_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
-                                </Link>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
-            </Datatable>
-            <EmptyState
-                v-else
-                message="Votre supérieur hiérarchique ne vous a pas encore proposer d'objectifs"
-                title="Pas d'objectifs"
-            />
-        </div>
-    </AuthenticatedLayout>
+						</TableData>
+						<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+							<div class="flex items-center justify-center">
+								<Link :href="route('goals.edit', {goal: goal.goal_id})" class="group flex items-center px-4 py-2 text-sm">
+									<EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
+								</Link>
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+			</Datatable>
+			<EmptyState
+					v-else
+					message="Votre supérieur hiérarchique ne vous a pas encore proposer d'objectifs"
+					title="Pas d'objectifs"
+			/>
+		</div>
+	</AuthenticatedLayout>
 </template>
 
 <style scoped></style>

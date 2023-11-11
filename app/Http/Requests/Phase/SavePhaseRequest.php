@@ -14,12 +14,7 @@ class SavePhaseRequest extends FormRequest
     {
         return true;
     }
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'updated_by' => \Auth::id()
-        ]);
-    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,10 +23,11 @@ class SavePhaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phase_name' => ['sometimes','required'],
-            'phase_year' => ['sometimes','required','digits:4','integer','min:' . date('Y')],
-            'period_type_id' => ['sometimes','required'],
+            'phase_name' => ['sometimes', 'required'],
+            'phase_year' => ['sometimes', 'required', 'digits:4', 'integer', 'min:' . date('Y')],
+            'period_type_id' => ['sometimes', 'required'],
             'phase_is_active' => ['sometimes'],
+            'phase_min_goals' => ['sometimes', 'required', 'gt:0', 'lte:10'],
             'updated_by' => ['sometimes']
         ];
     }
@@ -43,5 +39,12 @@ class SavePhaseRequest extends FormRequest
             'phase_year.required' => 'Ce champ est obligatoire.',
             'period_type_id.required' => 'Ce champ est obligatoire.',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

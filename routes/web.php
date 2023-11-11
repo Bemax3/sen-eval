@@ -41,10 +41,11 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Home/Index');
-})->middleware('auth')->name('home');
+})->middleware('auth', 'viewer')->name('home');
 
-Route::group(['middleware' => ['auth']],function () {
-    Route::put('/goals/{goal}/updateMark',[GoalsController::class,'updateMark'])->name('goals.update-mark');
+Route::group(['middleware' => ['auth']], function () {
+    Route::put('/goals/{goal}/updateMark', [GoalsController::class, 'updateMark'])->name('goals.update-mark');
+    Route::post('/profile/setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::resources([
         'profile' => ProfileController::class,
         'goals' => GoalsController::class,
@@ -81,7 +82,7 @@ Route::group(['middleware' => ['auth']],function () {
 });
 
 Route::group(['middleware' => ['auth', 'root']], function () {
-    Route::put('/phases/{phase}/updateStatus',[PhaseController::class,'updateStatus'])->name('phases.update-status');
+    Route::put('/phases/{phase}/updateStatus', [PhaseController::class, 'updateStatus'])->name('phases.update-status');
     Route::resources([
         'claimTypes' => ClaimTypeController::class,
         'mobilityTypes' => MobilityTypeController::class,

@@ -4,25 +4,25 @@ import colors from 'tailwindcss/colors';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
-        './resources/js/**/*.vue',
-        './node_modules/vue-tailwind-datepicker/**/*.js'
-    ],
+	content: [
+		'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+		'./storage/framework/views/*.php',
+		'./resources/views/**/*.blade.php',
+		'./resources/js/**/*.vue',
+		'./node_modules/vue-tailwind-datepicker/**/*.js'
+	],
 
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
-            colors: {
-                "vtd-primary": colors.cyan,
-            }
-        },
+	theme: {
+		extend: {
+			fontFamily: {
+				sans: ['Oswald', ...defaultTheme.fontFamily.sans],
+			},
+			colors: {
+				"vtd-primary": colors.cyan,
+			}
+		},
 
-    },
+	},
 
-    plugins: [forms],
+	plugins: [forms],
 };

@@ -5,12 +5,12 @@ import InputLabel from '@/Components/Forms/InputLabel.vue';
 import TextInput from '@/Components/Forms/TextInput.vue';
 import TextArea from '@/Components/Forms/TextArea.vue';
 import SubmitButton from '@/Components/Forms/SubmitButton.vue';
-import {computed,} from 'vue';
 import {isEmpty} from '@/helpers/helper.js';
 import InputError from "@/Components/Forms/InputError.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import Switch from "@/Components/Forms/Switch.vue";
+import {computed} from "vue";
 
 const props = defineProps({
     claim: {
@@ -18,6 +18,12 @@ const props = defineProps({
         default: {},
     },
 });
+
+const title = computed(() => isEmpty(props.claim) ? 'Nouveau Type de Réclamation' : 'Modifier Type de Réclamation');
+const pages = [
+    {name: 'Types de Réclamation', href: route('claimTypes.index'), current: false},
+    {name: isEmpty(props.claim) ? 'Nouveau' : 'Modifier', href: '#', current: true},
+]
 
 let form;
 const setForm = () => {
@@ -35,8 +41,6 @@ const setForm = () => {
             }
     );
 }
-
-setForm();
 const submit = () => {
     if (isEmpty(props.claim))
         form.post(route('claimTypes.store'), {
@@ -48,14 +52,8 @@ const submit = () => {
         });
 };
 
-const title = computed(() => {
-    return isEmpty(props.claim) ? 'Nouveau Type de Réclamation' : 'Modifier Type de Réclamation';
-});
+setForm();
 
-const pages = [
-    {name: 'Types de Réclamation', href: route('claimTypes.index'), current: false},
-    {name: isEmpty(props.claim) ? 'Nouveau' : 'Modifier', href: '#', current: true},
-]
 </script>
 <template>
     <AuthenticatedLayout>

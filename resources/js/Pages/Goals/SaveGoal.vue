@@ -19,6 +19,8 @@ const props = defineProps({
     },
 })
 
+const title = 'Modifier l\'objectif.';
+const desc = 'Accepter ou Contester un objectif.';
 const pages = [
     {name: 'Mes Objectifs', href: route('goals.index'), current: false},
     {name: 'Modifier', href: '#', current: true},
@@ -31,17 +33,13 @@ const setForm = () => {
         goal_comment: props.goal.goal_comment || ''
     });
 }
-
-setForm();
-
-
 const submit = () => {
     form.put(route('goals.update', {goal: props.goal.goal_id}), {
         onSuccess: () => setForm(),
     });
 }
-const title = 'Modifier l\'objectif.';
-const desc = 'Accepter ou Contester un objectif.';
+
+setForm();
 </script>
 
 <template>

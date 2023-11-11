@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Agent;
 
+use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\UserCantEvaluateHimselfException;
+use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveAgentRequest;
 use App\Http\Requests\Utilities\SearchRequest;
+use App\Models\Organisation;
 use App\Models\User;
 use App\Services\Security\UserService;
 use Exception;
@@ -14,15 +18,16 @@ use Spatie\Searchable\Search;
 
 class AgentsController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         try {
             $user = User::findOrFail(\Auth::id());
-            return Inertia::render('Agents/AgentsList',[
-                'agents' => $user->agents()->paginate(10),
+            return Inertia::render('Agents/AgentsList', [
+                'agents' => $user->agents()->with('org')->paginate(10),
                 'others' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : []
             ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
             return redirect()->back();
         }
     }
@@ -30,45 +35,40 @@ class AgentsController extends Controller
     public function show(string $id)
     {
         try {
-            $user = User::with('role')->with('org')->with('n1')->with('group')->findOrFail($id);
+            $user = User::with('role', 'org', 'n1', 'group')->findOrFail($id);
             return Inertia::render('Security/Profile/Profile', [
                 'user' => $user,
-                'n1s' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : []
+                'n1s' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],
+                'orgs' => Organisation::limit(100)->get()
             ]);
-        }catch (Exception) {
-            alert_error('Resource Introuvable.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
             return redirect()->back();
         }
     }
 
-    public function store(SaveAgentRequest $request) {
+    public function store(SaveAgentRequest $request)
+    {
         try {
-            if($request->get('agent_id') == \Auth::id()) {
-                alert_error('Ahh Nonn! Vous ne pouver pas vous evaluer quand même.');
-                return redirect()->back();
-            }
-            (new UserService())->setUserN1($request->validated(),\Auth::id());
+            (new UserService())->setUserN1($request->validated(), \Auth::id());
             alert_success('Agents Enregistré avec succès.');
-        }catch (Exception $e) {
-            ray($e);
-            alert_error('Erreur lors de l\'enregistrement de l\'agent.');
+        } catch (UserCantEvaluateHimselfException|UnknownException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->route('agents.index');
         }
-//        ray($request->validated());
     }
 
     public function search(SearchRequest $request)
     {
         try {
-//            ray()->queries();
             $data = $request->validated();
             $searchResults = (new Search())
-                ->registerModel(User::class, function  (ModelSearchAspect $aspect) use($data) {
+                ->registerModel(User::class, function (ModelSearchAspect $aspect) use ($data) {
                     foreach ($data['fields'] as $field) {
-                        $aspect->addSearchableAttribute($field);
+                        $aspect->addMixedSearchableAttribute($field);
                     }
-                    $aspect->where('n1_id','=',\Auth::id());
+                    $aspect->where('n1_id', '=', \Auth::id());
                     $aspect->with('org');
                 })
                 ->limitAspectResults(50)

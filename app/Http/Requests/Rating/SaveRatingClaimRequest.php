@@ -10,6 +10,7 @@ class SaveRatingClaimRequest extends FormRequest
     {
         return [
             'claim_type_id' => ['required'],
+            'rating_claim_comment' => ['sometimes']
         ];
     }
 

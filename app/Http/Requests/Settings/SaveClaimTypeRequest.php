@@ -4,7 +4,6 @@ namespace App\Http\Requests\Settings;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class SaveClaimTypeRequest extends FormRequest
 {
@@ -16,13 +15,6 @@ class SaveClaimTypeRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'updated_by' => \Auth::id()
-        ]);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -31,16 +23,24 @@ class SaveClaimTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'claim_type_name' => [Rule::when($this->method() === self::METHOD_PUT,'sometimes') ,'required', 'string'],
+            'claim_type_name' => ['sometimes', 'required', 'string'],
             'claim_type_is_active' => ['nullable'],
             'claim_type_desc' => ['nullable'],
             'updated_by' => ['sometimes']
         ];
     }
+
     public function messages(): array
     {
         return [
             'claim_type_name.required' => 'Ce champ est obligatoire.',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

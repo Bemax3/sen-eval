@@ -3,6 +3,7 @@
 use App\Http\Controllers\Agent\AgentGoalsController;
 use App\Http\Controllers\Agent\AgentRatingsController;
 use App\Http\Controllers\Agent\AgentsController;
+use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Goal\GoalsController;
 use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
@@ -83,6 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::group(['middleware' => ['auth', 'root']], function () {
     Route::put('/phases/{phase}/updateStatus', [PhaseController::class, 'updateStatus'])->name('phases.update-status');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard.index');
     Route::resources([
         'claimTypes' => ClaimTypeController::class,
         'mobilityTypes' => MobilityTypeController::class,

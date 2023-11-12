@@ -4,8 +4,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 </script>
 
 <template>
-    <AuthenticatedLayout>
-        Home
-    </AuthenticatedLayout>
+	<AuthenticatedLayout>
+		Home
+	</AuthenticatedLayout>
 </template>
 

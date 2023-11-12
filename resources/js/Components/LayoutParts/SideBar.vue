@@ -33,7 +33,12 @@ const currentRoute = getCurrentRoute();
 
 let navigation = []
 
-if ([1, 4].includes(user.value.role_id)) navigation.push({name: 'Dashboard', href: route('home'), icon: HomeIcon, current: currentRoute === 'home'});
+if ([1, 2, 4].includes(user.value.role_id)) navigation.push({
+	name: 'Dashboard',
+	href: route('admin-dashboard.index'),
+	icon: HomeIcon,
+	current: currentRoute === 'admin-dashboard'
+});
 
 navigation.push(
 		{name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents', 'agent-goals', 'agent-ratings'].includes(currentRoute)},

@@ -9,7 +9,7 @@ class SaveAgentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'agent_id' => ['required'],
+            'agent_id' => ['required', 'sometimes'],
         ];
     }
 

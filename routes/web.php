@@ -84,7 +84,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::group(['middleware' => ['auth', 'root']], function () {
     Route::put('/phases/{phase}/updateStatus', [PhaseController::class, 'updateStatus'])->name('phases.update-status');
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard.index');
     Route::resources([
         'claimTypes' => ClaimTypeController::class,
         'mobilityTypes' => MobilityTypeController::class,
@@ -100,5 +99,7 @@ Route::group(['middleware' => ['auth', 'root']], function () {
         'orgs' => OrgController::class
     ]);
 });
-
+Route::group(['middleware' => ['auth', 'viewer']], function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard.index');
+});
 require __DIR__ . '/auth.php';

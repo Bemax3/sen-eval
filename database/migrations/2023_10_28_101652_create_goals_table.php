@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,10 +17,9 @@ return new class extends Migration
             $table->boolean('goal_is_accepted')->default(true);
             $table->boolean('goal_mark_is_claimed')->default(false);
             $table->dateTime('goal_expected_date');
+            $table->dateTime('goal_reached_at')->nullable();
             $table->text('goal_expected_result');
             $table->float('goal_rate')->default(0);
-            $table->text('goal_evaluated_comment')->nullable();
-            $table->text('goal_evaluator_comment')->nullable();
             $table->text('goal_comment')->nullable();
             $table->integer('goal_marking')->default(5);
             $table->float('goal_mark')->default(0);

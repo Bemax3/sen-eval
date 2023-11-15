@@ -9,6 +9,7 @@ use App\Http\Requests\Rating\SaveRatingRequest;
 use App\Models\Phase\Phase;
 use App\Models\Rating\Goal;
 use App\Models\Rating\Rating;
+use App\Models\Rating\Validator;
 use App\Models\Settings\SkillType;
 use App\Models\User;
 use App\Services\Rating\RatingService;
@@ -38,7 +39,7 @@ class AgentRatingsController extends Controller
     {
         try {
             $user = User::with('n1')->findOrFail(\Auth::id());
-            $rating = Rating::with('phase', 'evaluator', 'evaluated', 'validator')->withSum('specific_skills', 'rating_skill_mark')->withSum('general_skills', 'rating_skill_mark')->findOrFail($rating_id);
+            $rating = Rating::with('phase', 'evaluator', 'evaluated')->withSum('specific_skills', 'rating_skill_mark')->withSum('general_skills', 'rating_skill_mark')->findOrFail($rating_id);
             return Inertia::render('Agents/Rating/AgentRatingSkills', [
                 'rating' => $rating,
                 'agent' => $rating->evaluated,
@@ -48,6 +49,7 @@ class AgentRatingsController extends Controller
                 'skills' => $rating->general_skills()->get(),
                 'others' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],
                 'n1' => $user->n1,
+                'validators' => Validator::where('rating_id', '=', $rating->rating_id)->with('user')->get(),
                 'goals' => Goal::where('phase_id', $rating->phase_id)->where('evaluated_id', $rating->evaluated_id)->with('period', 'phase')->get(),
             ]);
         } catch (ModelNotFoundException $e) {

@@ -44,19 +44,12 @@ const color = computed(() => {
 				<p class="text-sm text-gray-700">
 					{{ rating.evaluator.user_display_name }}. Matricule : {{ rating.evaluator.user_matricule }}.
 				</p>
-				<p v-if="rating.validated_by_n1"
-				   class="text-white bg-green-600 ring-green-600/20 rounded-md mt-0.5 px-1.5 py-0.5 text-xs font-bold ring-1 ring-inset max-w-fit">
-					Validée
-				</p>
+
 			</div>
 			<div v-if="rating.validated_by_n2" class="sm:flex sm:items-center gap-2">
 				(N + 2):
 				<p class="text-sm text-gray-700">
 					{{ rating.validator.user_display_name }}. Matricule : {{ rating.validator.user_matricule }}.
-				</p>
-				<p v-if="rating.validated_by_n2"
-				   class="text-white bg-green-600 ring-green-600/20 rounded-md mt-0.5 px-1.5 py-0.5 text-xs font-bold ring-1 ring-inset max-w-fit">
-					Validée
 				</p>
 			</div>
 		</div>

@@ -25,5 +25,11 @@ class UserService
                 ->orWhere('organisations.parent_id', '=', $user->org->parent_id);
         })->limit(30)->get();
     }
-    
+
+    public function unsetUserN1(string $agent_id): void
+    {
+        $user = User::where('user_id', $agent_id)->firstOrFail();
+        $user->update(['n1_id' => null]);
+    }
+
 }

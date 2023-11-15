@@ -3,7 +3,6 @@
 namespace Database\Seeders\Settings;
 
 use App\Models\Settings\TrainingType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TrainingTypeSeeder extends Seeder
@@ -14,6 +13,7 @@ class TrainingTypeSeeder extends Seeder
     public function run(): void
     {
         $training_types = [
+            ['training_type_name' => 'Aucune'],
             ['training_type_name' => 'Informatique'],
             ['training_type_name' => 'Finances et Comptabilité'],
             ['training_type_name' => 'Audit et Contrôle'],

@@ -18,6 +18,7 @@ import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui
 import {CheckIcon, ChevronDoubleRightIcon, ChevronUpDownIcon} from "@heroicons/vue/20/solid/index.js";
 import NumberInput from "@/Components/Forms/NumberInput.vue";
 import {ref, watch} from "vue";
+import GoalActivity from "@/Components/Rating/GoalActivity.vue";
 
 const props = defineProps({
 	agent: {type: Object},
@@ -27,6 +28,7 @@ const props = defineProps({
 		required: false,
 		default: {}
 	},
+	history: {}
 });
 
 const title = isEmpty(props.goal) ? 'Nouvel objectif' : 'Modifier l\'objectif';
@@ -58,6 +60,7 @@ const setForm = () => {
 						goal_marking: props.goal.goal_marking,
 						phase_id: props.goal.phase_id,
 						goal_rate: props.goal.goal_rate,
+						comment: '',
 						evaluation_period_id: props.goal.evaluation_period_id
 					}
 	);
@@ -71,6 +74,7 @@ const submit = () => {
 	else
 		form.put(route('agent-goals.update', {agent: props.agent.user_id, agent_goal: props.goal.goal_id}), {
 			onSuccess: () => setForm(),
+			preserveScroll: true
 		});
 }
 
@@ -109,11 +113,16 @@ watch(() => form.phase_id, function (next) {
 			</div>
 			<Separator title="Objectifs"/>
 			<SectionTitle :desc="desc" :title="title"/>
-			<div class="mt-8 flow-root">
-				<form class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
-					<div class="px-4 py-6 sm:p-8">
-						<div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-							<div class="col-span-full">
+
+			<form class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white" @submit.prevent="submit">
+				<div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+					<div>
+						<h2 class="text-base font-semibold leading-7 text-gray-900">Libellé et Valeur Cible</h2>
+						<p class="mt-1 text-sm leading-6 text-gray-400">Renseigner le libellé de l'objectif ainsi que la valeur cible.</p>
+					</div>
+					<div class="md:col-span-2">
+						<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+							<div class="sm:col-span-full">
 								<InputLabel for="start_date" required>Libelle</InputLabel>
 								<div class="mt-2">
 									<TextInput v-model="form.goal_name" :invalid="form.errors.goal_name !== undefined"/>
@@ -122,7 +131,7 @@ watch(() => form.phase_id, function (next) {
 									<InputError :message="form.errors.goal_name"/>
 								</div>
 							</div>
-							<div class="col-span-full">
+							<div class="sm:col-span-full">
 								<InputLabel for="start_date" required>Valeur Cible</InputLabel>
 								<div class="mt-2">
 									<TextArea v-model="form.goal_expected_result" :invalid="form.errors.goal_expected_result !== undefined"/>
@@ -131,13 +140,18 @@ watch(() => form.phase_id, function (next) {
 									<InputError :message="form.errors.goal_expected_result"/>
 								</div>
 							</div>
-							<div class="col-span-full">
-								<div class="mt-2">
-									<Switch v-model="form.goal_means_available" desc="Les moyens pour accomplir cette objectif sont t-il disponible ?"
-									        label="Disponibilité des moyens"/>
-								</div>
-							</div>
-							<div class="col-span-full">
+						</div>
+					</div>
+				</div>
+				<div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
+					<div>
+						<h2 class="text-base font-semibold leading-7 text-gray-900">Disponibilité et Échéance</h2>
+						<p class="mt-1 text-sm leading-6 text-gray-400">Les moyens pour atteindre l'objectif sont ils réunis ? Qu'elle sera l'échéance pour cette
+							objectif. </p>
+					</div>
+					<div class="md:col-span-2">
+						<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+							<div class="sm:col-span-3">
 								<InputLabel for="start_date" required>Échéance</InputLabel>
 								<div class="mt-2">
 									<DatePicker v-model="form.goal_expected_date" :invalid="form.errors.goal_expected_date !== undefined"/>
@@ -147,6 +161,22 @@ watch(() => form.phase_id, function (next) {
 								</div>
 							</div>
 							<div class="sm:col-span-3">
+								<div class="mt-2">
+									<Switch v-model="form.goal_means_available" desc="Les moyens pour accomplir cette objectif sont t-il disponible ?"
+									        label="Disponibilité des moyens"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
+					<div>
+						<h2 class="text-base font-semibold leading-7 text-gray-900">Évaluation</h2>
+						<p class="mt-1 text-sm leading-6 text-gray-400">Renseigner les informations relatives á l'évaluation de cet objectif.</p>
+					</div>
+					<div class="md:col-span-2">
+						<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+							<div class="mt-8 sm:col-span-3">
 								<InputLabel>Année d'évaluation</InputLabel>
 								<div class="mt-2">
 									<Listbox v-model="form.phase_id" as="div">
@@ -177,7 +207,7 @@ watch(() => form.phase_id, function (next) {
 									</Listbox>
 								</div>
 							</div>
-							<div class="sm:col-span-3">
+							<div class="mt-8 sm:col-span-3">
 								<InputLabel>Période</InputLabel>
 								<div class="mt-2">
 									<Listbox v-model="form.evaluation_period_id" as="div">
@@ -211,7 +241,7 @@ watch(() => form.phase_id, function (next) {
 									</Listbox>
 								</div>
 							</div>
-							<div class="col-span-full">
+							<div class="mt-8 col-span-full">
 								<InputLabel for="start_date" required>Barème</InputLabel>
 								<div class="mt-2">
 									<NumberInput v-model="form.goal_marking" :invalid="form.errors.goal_marking !== undefined" maxlength="2"/>
@@ -220,7 +250,18 @@ watch(() => form.phase_id, function (next) {
 									<InputError :message="form.errors.goal_marking"/>
 								</div>
 							</div>
-							<div v-if="!isEmpty(goal)" class="col-span-full">
+						</div>
+					</div>
+				</div>
+				<div v-if="!isEmpty(goal)" class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 border-t-2">
+					<div>
+						<h2 class="text-base font-semibold leading-7 text-gray-900">Suivi de l'objectif</h2>
+						<p class="mt-1 text-sm leading-6 text-gray-400">Faites le suivi de cet objectif en renseignant le taux réalisé et en laissant un commentaire.</p>
+						<GoalActivity :history="history"/>
+					</div>
+					<div class="md:col-span-1">
+						<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+							<div class="col-span-full">
 								<InputLabel for="start_date" required>Taux d'avancement</InputLabel>
 								<div class="mt-2">
 									<NumberInput v-model="form.goal_rate" :invalid="form.errors.goal_rate !== undefined" maxlength="3"/>
@@ -229,14 +270,24 @@ watch(() => form.phase_id, function (next) {
 									<InputError :message="form.errors.goal_rate"/>
 								</div>
 							</div>
+							<div class="sm:col-span-full">
+								<InputLabel for="start_date">Commentaire</InputLabel>
+								<div class="mt-2">
+									<TextArea v-model="form.comment" :invalid="form.errors.comment !== undefined"/>
+								</div>
+								<div class="flex flex-col space-y-2">
+									<InputError :message="form.errors.comment"/>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-						<FormIndications/>
-						<SubmitButton :disabled="form.processing"> Enregistrer</SubmitButton>
-					</div>
-				</form>
-			</div>
+				</div>
+
+				<div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+					<FormIndications/>
+					<SubmitButton :disabled="form.processing"> Enregistrer</SubmitButton>
+				</div>
+			</form>
 		</div>
 	</AuthenticatedLayout>
 </template>

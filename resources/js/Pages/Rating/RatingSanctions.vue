@@ -27,8 +27,9 @@ const props = defineProps({
 	types: {type: Array},
 	sanctions: {}
 })
-const isEvaluated = computed(() => usePage().props.auth.user.user_id === props.rating.evaluated_id)
-const isValidator = computed(() => usePage().props.auth.user.user_id === props.rating.validator_id)
+const authenticated = usePage().props.auth.user;
+const isEvaluated = computed(() => authenticated.user_id === props.rating.evaluated_id)
+const isValidator = computed(() => authenticated.user_id !== props.rating.evaluated_id && authenticated.user_id !== props.rating.evaluator_id)
 const pages = isEvaluated.value ? [
 	{name: 'Mes Evaluations', href: route('ratings.index', {agent_rating: props.rating.rating_id}), current: false},
 	{name: 'Evaluation', href: '#', current: true},

@@ -181,7 +181,7 @@ const total = computed(() => {
 						<TableHeading :first="true">Domaine</TableHeading>
 						<TableHeading class="whitespace-nowrap">Proposée par la hiérarchie</TableHeading>
 						<TableHeading class="whitespace-pre-line">Souhaitée par les agents</TableHeading>
-						<TableHeading class="whitespace-pre-line">Besoins exprimés par les deux parties</TableHeading>
+						<TableHeading class="whitespace-pre-line">Exprimés par les deux parties</TableHeading>
 						<TableHeading>Totaux</TableHeading>
 					</tr>
 					</thead>

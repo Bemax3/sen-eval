@@ -58,7 +58,7 @@ class AdminDashboardController extends Controller
             }])->get();
         }
 
-
+//        alert_success('Filtered');
         return Inertia::render('Dashboards/AdminDashboard', [
             'users' => $users_count,
             'rated' => $rated,
@@ -69,6 +69,5 @@ class AdminDashboardController extends Controller
             'org' => $org_id,
             'trainings' => $trainings
         ]);
-        alert_success('Filtered');
     }
 }

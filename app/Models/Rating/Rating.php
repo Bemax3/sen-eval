@@ -32,9 +32,9 @@ class Rating extends Model implements Searchable
         return $this->belongsTo(User::class, 'evaluator_id', 'user_id');
     }
 
-    public function validator(): BelongsTo
+    public function validators(): HasMany
     {
-        return $this->belongsTo(User::class, 'validator_id', 'user_id');
+        return $this->hasMany(Validator::class, 'rating_id', 'rating_id');
     }
 
     public function general_skills(): HasMany
@@ -84,6 +84,11 @@ class Rating extends Model implements Searchable
     public function promotions(): HasMany
     {
         return $this->hasMany(Promotion::class, 'rating_id', 'rating_id');
+    }
+
+    public function goals()
+    {
+        return Goal::where('phase_id', '=', $this->phase_id)->where('evaluator_id', '=', $this->evaluator_id)->where('evaluated_id', '=', $this->evaluated_id);
     }
 
     public function getSearchResult(): SearchResult

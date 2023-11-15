@@ -16,6 +16,12 @@ class SkillSeeder extends Seeder
     {
         $skill_types = [
             [
+                'skill_name' => 'Autre',
+                'skill_marking' => 5,
+                'skill_desc' => '',
+                'skill_type_id' => 1
+            ],
+            [
                 'skill_name' => 'Bonne Gouvernance des SI',
                 'skill_marking' => 5,
                 'skill_desc' => '',

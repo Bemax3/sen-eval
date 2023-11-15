@@ -2,7 +2,6 @@
 
 namespace App\Services\Rating;
 
-use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Rating\AgentHasRatingForCurrentPhaseException;
 use App\Models\Group;
 use App\Models\Phase\PhaseSkill;
@@ -14,30 +13,6 @@ use Auth;
 
 class RatingService
 {
-    /**
-     * @throws AgentHasRatingForCurrentPhaseException
-     */
-    public function create($validated)
-    {
-        if (Rating::where('evaluated_id', '=', $validated['evaluated_id'])->where('phase_id', '=', $validated['phase_id'])->exists())
-            throw new AgentHasRatingForCurrentPhaseException();
-        $rating = Rating::create($validated);
-        $user = User::findOrFail($validated['evaluated_id']);
-        $operator = $user->isCadre() ? '=' : '!=';
-        $skills = PhaseSkill::where('phase_id', '=', $validated['phase_id'])->whereRelation('skill', 'group_id', $operator, Group::CADRE)->get();
-        foreach ($skills as $skill)
-            $this->createSkills($rating, $skill);
-        return $rating;
-    }
-
-    private function createSkills(Rating $rating, mixed $skill): void
-    {
-        RatingSkill::create([
-            'rating_id' => $rating->rating_id,
-            'phase_skill_id' => $skill->phase_skill_id
-        ]);
-    }
-
     public function raiseMark($rating_id, $mark): void
     {
         $eval = Rating::findOrFail($rating_id);
@@ -58,28 +33,37 @@ class RatingService
         if ($total >= SkillType::SPECIFIC_MARKING) return false;
         return true;
     }
+    
+    public function update($data, $rating_id): void
+    {
+        if (isset($data['remember'])) User::findOrFail(Auth::id())->update(['n1_id' => $data['validator_id']]);
+        $rating = Rating::findOrFail($rating_id);
+        if (isset($data['rating_is_contested'])) $rating->update(['rating_is_contested' => $data['rating_is_contested']]);
+    }
 
     /**
-     * @throws NotEnoughGoalsException
+     * @throws AgentHasRatingForCurrentPhaseException
      */
-    public function update($validated, $rating_id): void
+    public function create($validated)
     {
-        if (isset($validated['remember'])) User::findOrFail(Auth::id())->update(['n1_id' => $validated['validator_id']]);
-        $rating = Rating::findOrFail($rating_id);
-        if (isset($validated['evaluator_comment'])) $rating->update(['evaluator_comment' => $validated['evaluator_comment']]);
-        if (isset($validated['evaluated_comment'])) $rating->update(['evaluated_comment' => $validated['evaluated_comment']]);
-        if (isset($validated['rating_is_contested'])) $rating->update(['rating_is_contested' => $validated['rating_is_contested']]);
-        if (isset($validated['validator_id'])) $rating->update(['validator_id' => $validated['validator_id'], 'validated_by_n2' => false]);
-        if (isset($validated['validated_by_n2'])) {
-            if ((new GoalService())->checkGoals($rating)) $rating->update(['validated_by_n2' => $validated['validated_by_n2']]);
-            else throw new NotEnoughGoalsException();
-        }
+        if (Rating::where('evaluated_id', '=', $validated['evaluated_id'])->where('phase_id', '=', $validated['phase_id'])->exists())
+            throw new AgentHasRatingForCurrentPhaseException();
+        $rating = Rating::create($validated);
+        $user = User::findOrFail($validated['evaluated_id']);
+        $operator = $user->isCadre() ? '=' : '!=';
+        $skills = PhaseSkill::where('phase_id', '=', $validated['phase_id'])->whereRelation('skill', 'group_id', $operator, Group::CADRE)->get();
+        (new ValidatorService())->createMultiple([$validated['evaluated_id'], $validated['evaluator_id']], $rating->rating_id);
+        foreach ($skills as $skill)
+            $this->createSkills($rating, $skill);
+        return $rating;
+    }
 
-        if (isset($validated['validated_by_n1'])) {
-            if ((new GoalService())->checkGoals($rating)) $rating->update(['validated_by_n1' => $validated['validated_by_n1']]);
-            else throw new NotEnoughGoalsException();
-        }
-
+    private function createSkills(Rating $rating, mixed $skill): void
+    {
+        RatingSkill::create([
+            'rating_id' => $rating->rating_id,
+            'phase_skill_id' => $skill->phase_skill_id
+        ]);
     }
 
 }

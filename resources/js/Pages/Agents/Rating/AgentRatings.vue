@@ -58,11 +58,9 @@ watch(() => search.keyword, function (next) {
 					</Link>
 				</div>
 			</div>
-			<Separator title="Evaluations"/>
-			<div class="sm:flex sm:items-center">
-				<div class="sm:flex-auto">
-					<SectionTitle desc="Cette liste est un descriptif des évaluations." title="Évaluations"/>
-				</div>
+			<Separator title="Évaluations"/>
+			<div class="sm:flex sm:items-center border-b border-gray-400 pb-5">
+				<SectionTitle desc="Cette liste est un descriptif des évaluations." title="Évaluations"/>
 				<div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
 					<Link
 							:href="route('agent-ratings.create',{agent: agent.user_id})"

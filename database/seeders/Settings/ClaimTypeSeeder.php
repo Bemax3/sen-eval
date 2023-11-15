@@ -13,6 +13,7 @@ class ClaimTypeSeeder extends Seeder
     public function run(): void
     {
         $claim_types = [
+            ['claim_type_name' => 'Aucune'],
             ['claim_type_name' => 'Problème d\'organisation'],
             ['claim_type_name' => 'Problème de formation'],
             ['claim_type_name' => 'Problème de carrière'],

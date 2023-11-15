@@ -8,8 +8,10 @@ use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveGoalRequest;
 use App\Http\Requests\Utilities\SearchRequest;
+use App\Models\Phase\Phase;
 use App\Models\Rating\Goal;
 use App\Services\Rating\GoalService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use PHPUnit\Framework\MockObject\Exception;
 use Spatie\Searchable\ModelSearchAspect;
@@ -21,18 +23,25 @@ class GoalsController extends Controller
     {
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $phase = $request->get('phase_id');
+        if (!isset($phase) || $phase == -1) $goals = Goal::where('evaluated_id', '=', \Auth::id())->with('phase', 'period')->paginate(10);
+        else $goals = Goal::where('evaluated_id', '=', \Auth::id())->where('phase_id', '=', $phase)->with('phase', 'period')->paginate(10);
         return Inertia::render('Goals/GoalsList', [
-            'goals' => Goal::where('evaluated_id', '=', \Auth::id())->with('phase', 'period')->paginate(10)
+            'goals' => $goals,
+            'phases' => Phase::all(),
+            'phase_id' => $phase
         ]);
     }
 
     public function edit(string $id)
     {
         try {
+            $goal = Goal::with('phase', 'period')->findOrFail($id);
             return Inertia::render('Goals/SaveGoal', [
-                'goal' => Goal::with('phase')->findOrFail($id)
+                'goal' => $goal,
+                'history' => $goal->history()->with('updated_by')->get()
             ]);
         } catch (ModelNotFoundException $e) {
             alert_error($e->getMessage());

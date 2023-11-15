@@ -23,7 +23,7 @@ class RatingSanctionsController extends Controller
     public function index(string $rating_id)
     {
         try {
-            $rating = Rating::with('phase', 'evaluator', 'evaluated', 'validator')->findOrFail($rating_id);
+            $rating = Rating::with('phase', 'evaluator', 'evaluated')->findOrFail($rating_id);
             return Inertia::render('Rating/RatingSanctions', [
                 'agent' => User::with('org')->findOrFail($rating->evaluated_id),
                 'rating' => $rating,

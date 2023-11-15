@@ -20,7 +20,6 @@ const props = defineProps({
 	}
 });
 
-
 const pages = [{name: 'Mes Evaluations', href: '#', current: true}]
 const pagination = computed(() => getPagination(props.ratings));
 const displayedData = ref(props.ratings.data);

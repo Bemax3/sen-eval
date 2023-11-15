@@ -17,6 +17,7 @@ class SaveAgentGoalRequest extends FormRequest
             'goal_rate' => ['sometimes', 'required', 'gte:0', 'lte:100'],
             'evaluation_period_id' => ['required'],
             'phase_id' => ['required'],
+            'comment' => ['sometimes'],
         ];
     }
 

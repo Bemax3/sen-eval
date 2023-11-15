@@ -28,8 +28,10 @@ const props = defineProps({
 	trainings: {}
 })
 
-const isEvaluated = computed(() => usePage().props.auth.user.user_id === props.rating.evaluated_id)
-const isValidator = computed(() => usePage().props.auth.user.user_id === props.rating.validator_id)
+const authenticated = usePage().props.auth.user;
+const isEvaluated = computed(() => authenticated.user_id === props.rating.evaluated_id)
+const isValidator = computed(() => authenticated.user_id !== props.rating.evaluated_id && authenticated.user_id !== props.rating.evaluator_id)
+
 const pages = isEvaluated.value ? [
 	{name: 'Mes Evaluations', href: route('ratings.index', {agent_rating: props.rating.rating_id}), current: false},
 	{name: 'Evaluation', href: '#', current: true},
@@ -38,6 +40,7 @@ const pages = isEvaluated.value ? [
 	{name: 'Evaluations', href: route('agent-ratings.index', {agent: props.agent.user_id}), current: false},
 	{name: 'Evaluation', href: '#', current: true},
 ]
+
 const search = '';
 const pagination = computed(() => getPagination(props.trainings));
 const displayedData = ref(props.trainings.data);

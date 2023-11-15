@@ -7,6 +7,7 @@ use App\Models\Phase\Phase;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
@@ -27,7 +28,8 @@ class Goal extends Model implements Searchable
         'goal_marking',
         'evaluation_period_id',
         'goal_mark',
-        'goal_rate'
+        'goal_rate',
+        'goal_reached_at'
     ];
 
     public function getForeignKey()
@@ -53,6 +55,11 @@ class Goal extends Model implements Searchable
     public function period(): BelongsTo
     {
         return $this->belongsTo(EvaluationPeriod::class, 'evaluation_period_id', 'evaluation_period_id');
+    }
+
+    public function history(): HasMany
+    {
+        return $this->hasMany(GoalHistory::class, 'goal_id', 'goal_id');
     }
 
     public function getSearchResult(): SearchResult

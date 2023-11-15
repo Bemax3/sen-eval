@@ -59,6 +59,18 @@ class AgentsController extends Controller
         }
     }
 
+    public function update(SaveAgentRequest $request, string $agent_id)
+    {
+        try {
+            (new UserService())->unsetUserN1($agent_id);
+            alert_success('Agent retiré avec succès.');
+        } catch (ModelNotFoundException $e) {
+            alert_error($e->getMessage());
+        } finally {
+            return redirect()->route('agents.index');
+        }
+    }
+
     public function search(SearchRequest $request)
     {
         try {

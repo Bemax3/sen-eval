@@ -27,8 +27,10 @@ const props = defineProps({
 	claims: {}
 })
 
-const isEvaluated = computed(() => usePage().props.auth.user.user_id === props.rating.evaluated_id)
-const isValidator = computed(() => usePage().props.auth.user.user_id === props.rating.validator_id)
+const user = usePage().props.auth.user;
+
+const isEvaluated = computed(() => user.user_id === props.rating.evaluated_id)
+const isValidator = computed(() => user.user_id !== props.rating.evaluated_id && user.user_id !== props.rating.evaluator_id)
 
 const pages = isEvaluated.value ? [
 	{name: 'Mes Evaluations', href: route('ratings.index', {agent_rating: props.rating.rating_id}), current: false},
@@ -142,14 +144,14 @@ watch(() => props.claims,
 					<thead class="bg-gray-50">
 					<tr>
 						<TableHeading :first="true">Type</TableHeading>
-						<TableHeading class="whitespace-nowrap">Demandée par</TableHeading>
+						<!--						<TableHeading class="whitespace-nowrap">Demandée par</TableHeading>-->
 						<TableHeading class="whitespace-pre-line">Commentaire</TableHeading>
 					</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 bg-white">
 					<tr v-for="claim in displayedData" :key="claim.rating_claim_id">
 						<TableData :first="true">{{ claim.type.claim_type_name }}</TableData>
-						<TableData>{{ rating.evaluated.user_display_name }}</TableData>
+						<!--						<TableData>{{ rating.evaluated.user_display_name }}</TableData>-->
 						<TableData class="whitespace-pre-line">{{ claim.rating_claim_comment || '__' }}</TableData>
 						<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
 							<div v-if="isEvaluated" class="flex items-center justify-center gap-2">

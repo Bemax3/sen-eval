@@ -9,7 +9,7 @@ import {getPagination, hasData} from '@/helpers/helper.js';
 import EmptyState from '@/Components/Common/EmptyState.vue';
 import axios from 'axios';
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
-import {CheckIcon, ChevronUpDownIcon, EyeIcon, IdentificationIcon} from "@heroicons/vue/20/solid/index.js";
+import {CheckIcon, ChevronUpDownIcon, EyeIcon, IdentificationIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
 import Separator from "@/Components/LayoutParts/Separator.vue";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
@@ -168,6 +168,9 @@ watch(() => props.agents, function (next) {
 								<Link :href="route('agents.show', {agent: user.user_id})" class="group flex items-center px-4 py-2 text-sm">
 									<IdentificationIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
 								</Link>
+								<button class="group flex items-center px-4 py-2 text-sm" @click="router.put(route('agents.update',{agent: user.user_id}))">
+									<TrashIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-red-600"/>
+								</button>
 							</div>
 						</td>
 					</tr>

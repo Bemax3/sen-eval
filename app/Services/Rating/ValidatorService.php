@@ -50,7 +50,7 @@ class ValidatorService
                 'rating_validator_comment' => $validated['rating_validator_comment']
             ]);
 
-        if (isset($validated['new_validator'])) {
+        if (isset($validated['new_validator']) && $validated['new_validator'] !== -1) {
             if (Validator::where('rating_id', '=', $validator->rating_id)->where('validator_id', '=', $validated['new_validator'])->exists()) throw new ValidatorAlreadyExistException();
             $this->create($validated['new_validator'], $validator->rating_id);
         }

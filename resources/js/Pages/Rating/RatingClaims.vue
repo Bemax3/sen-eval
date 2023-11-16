@@ -33,14 +33,14 @@ const isEvaluated = computed(() => user.user_id === props.rating.evaluated_id)
 const isValidator = computed(() => user.user_id !== props.rating.evaluated_id && user.user_id !== props.rating.evaluator_id)
 
 const pages = isEvaluated.value ? [
-    {name: 'Mes Evaluations', href: route('ratings.index', {agent_rating: props.rating.rating_id}), current: false},
+    {name: 'Mes Évaluations', href: route('ratings.index', {agent_rating: props.rating.rating_id}), current: false},
     {name: 'Evaluation', href: '#', current: true},
 ] : isValidator ? [
     {name: 'Mes validations', href: route('validations.index'), current: false},
     {name: 'Évaluation', href: '#', current: true},
 ] : [
     {name: 'Mes Agents', href: route('agents.index'), current: false},
-    {name: 'Evaluations', href: route('agent-ratings.index', {agent: props.agent.user_id}), current: false},
+    {name: 'Évaluations', href: route('agent-ratings.index', {agent: props.agent.user_id}), current: false},
     {name: 'Evaluation', href: '#', current: true},
 ]
 
@@ -92,7 +92,7 @@ watch(() => props.claims,
                   @submit.prevent="submit">
                 <h3 class="text-base font-semibold leading-6 text-gray-900">Faire une réclamation</h3>
                 <div class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>Rechercher une réclamation et ajouter la á la liste des réclamation pour cette évaluation.</p>
+                    <p>Rechercher une réclamation et ajouter la à la liste des réclamation pour cette évaluation.</p>
                 </div>
                 <div class="px-4 py-6 sm:p-8">
                     <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

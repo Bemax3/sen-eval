@@ -45,7 +45,7 @@ defineEmits(['update:modelValue']);
                             :key="link.label"
                             :href="link.url ? link.url : '#'"
                             class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-cyan-600 hover:text-white"
-                        >Précedent
+                        >Précédent
                         </Link>
                         <Link
                             v-if="link.label === 'n'"

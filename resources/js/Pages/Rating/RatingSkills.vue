@@ -35,7 +35,7 @@ const props = defineProps({
 const user = usePage().props.auth.user;
 
 const pages = [
-    {name: 'Mes Evaluations', href: route('ratings.index'), current: false},
+    {name: 'Mes Évaluations', href: route('ratings.index'), current: false},
     {name: 'Rating', href: '#', current: true},
 ]
 
@@ -202,7 +202,7 @@ watch(() => query.value, function (next) {
                 <SectionMark title="Validation"/>
                 <div class="mt-8 bg-white shadow sm:rounded-lg">
                     <form @submit.prevent="save">
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-2 gap-2 sm:grid-cols-2">
                             <div class="px-4 py-5 sm:p-6">
                                 <h3 class="text-base font-semibold leading-6 text-gray-900">Commentaire</h3>
                                 <div class="mt-2 max-w-xl text-sm text-gray-500">

@@ -38,7 +38,7 @@ const user = usePage().props.auth.user;
 
 const pages = [
     {name: 'Mes Agents', href: route('agents.index'), current: false},
-    {name: 'Evaluations', href: route('agent-ratings.index', {agent: props.agent.user_id}), current: false},
+    {name: 'Évaluations', href: route('agent-ratings.index', {agent: props.agent.user_id}), current: false},
 ]
 
 const form = useForm({
@@ -176,7 +176,7 @@ watch(() => query.value, function (next) {
             <div role="list">
                 <div class="px-4 py-4 sm:px-0">
                     <div v-if="!rating.rating_is_validated" class="pr-4 py-5 sm:pr-6 bg-white mb-4 px-5 rounded-lg shadow">
-                        <InputLabel>Ajouter une compétence spécifique á évaluer</InputLabel>
+                        <InputLabel>Ajouter une compétence spécifique à évaluer</InputLabel>
                         <form class="mt-5 sm:flex sm:items-center gap-x-6" @submit.prevent="addSpecificSkill">
                             <div :class="form.errors.rating_skill_name ? 'mb-4' : ''" class="w-full sm:max-w-xl">
                                 <Listbox v-model="form.phase_skill_id" as="div">
@@ -240,7 +240,7 @@ watch(() => query.value, function (next) {
                                     </p>
                                 </div>
                                 <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
-                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY á HH:mm')) }}</p>
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
@@ -285,7 +285,7 @@ watch(() => query.value, function (next) {
                         </li>
                     </ul>
                     <EmptyState v-else message="Ajouter des compétences à évaluer en utilisant la liste déroulante plus haut."
-                                title="Vous n'avez pas ajouter de compétences spécifiques á évaluer."/>
+                                title="Vous n'avez pas ajouter de compétences spécifiques à évaluer."/>
                 </div>
                 <div class="px-4 py-4 sm:px-0">
                     <SectionMark :mark="rating.general_skills_sum_rating_skill_mark" :marking="marking.general" title="Compétences Générales"/>
@@ -304,7 +304,7 @@ watch(() => query.value, function (next) {
                                     </p>
                                 </div>
                                 <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
-                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY á HH:mm')) }}</p>
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
@@ -364,7 +364,7 @@ watch(() => query.value, function (next) {
                                     </p>
                                 </div>
                                 <div v-if="goal.goal_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
-                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(goal.updated_at).format('DD MMMM YYYY á HH:mm')) }}</p>
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(goal.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
@@ -404,7 +404,7 @@ watch(() => query.value, function (next) {
                     </ul>
                     <EmptyState v-else :link="route('agent-goals.create',{agent: agent.user_id})"
                                 action="Nouvel Objectif" message="Les objectifs que vous aurez crée pour lui s'afficherons automatiquement ici."
-                                title="Vous n'avez pas donner d'objectif á cette agent."/>
+                                title="Vous n'avez pas donner d'objectif à cette agent."/>
                 </div>
             </div>
             <div class="px-4 py-4 sm:px-0">

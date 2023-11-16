@@ -123,7 +123,7 @@ watch(() => queryOrgs.value, function (next) {
                 <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div>
                         <h2 class="text-base font-semibold leading-7 text-gray-900">Informations Personnelles</h2>
-                        <p class="mt-1 text-sm leading-6 text-gray-400">Changer les informations personnelles de cet agent</p>
+                        <p class="mt-1 text-sm leading-6 text-gray-400">Vous ne pouvez pas modifier ces informations.</p>
                     </div>
                     <form class="md:col-span-2">
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
@@ -158,20 +158,20 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-8 flex">
-                            <button :disabled="true"
-                                    class="inline-flex gap-x-1.5 disabled:opacity-70 rounded-md bg-cyan-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
-                                    type="submit">
-                                Enregistrer
-                                <CheckIcon class="text-white -mr-0.5 h-5 w-5"/>
-                            </button>
-                        </div>
+                        <!--                        <div class="mt-8 flex">-->
+                        <!--                            <button :disabled="true"-->
+                        <!--                                    class="inline-flex gap-x-1.5 disabled:opacity-70 rounded-md bg-cyan-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"-->
+                        <!--                                    type="submit">-->
+                        <!--                                Enregistrer-->
+                        <!--                                <CheckIcon class="text-white -mr-0.5 h-5 w-5"/>-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
                     </form>
                 </div>
                 <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
                     <div>
                         <h2 class="text-base font-semibold leading-7 text-gray-900">Informations Administratives</h2>
-                        <p class="mt-1 text-sm leading-6 text-gray-400">Modifier les informations administrative.</p>
+                        <p class="mt-1 text-sm leading-6 text-gray-400">Changer le supérieur hiérarchique de l'agent ou son organisation.</p>
                     </div>
                     <form class="md:col-span-2" @submit.prevent="submitForm">
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">

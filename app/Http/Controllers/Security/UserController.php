@@ -133,7 +133,7 @@ class UserController extends Controller
             $searchResults = (new Search())
                 ->registerModel(User::class, function (ModelSearchAspect $aspect) use ($data) {
                     foreach ($data['fields'] as $field) {
-                        $aspect->addMixedSearchableAttribute($field);
+                        $aspect->addSearchableAttribute($field);
                     }
                     if (isset($data['org_id'])) {
                         $aspect->whereHas('org', function ($query) use ($data) {

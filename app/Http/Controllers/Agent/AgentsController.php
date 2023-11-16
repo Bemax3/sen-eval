@@ -78,7 +78,7 @@ class AgentsController extends Controller
             $searchResults = (new Search())
                 ->registerModel(User::class, function (ModelSearchAspect $aspect) use ($data) {
                     foreach ($data['fields'] as $field) {
-                        $aspect->addMixedSearchableAttribute($field);
+                        $aspect->addSearchableAttribute($field);
                     }
                     $aspect->where('n1_id', '=', \Auth::id());
                     $aspect->with('org');

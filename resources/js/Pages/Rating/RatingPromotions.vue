@@ -93,7 +93,7 @@ watch(() => props.promotions,
                   @submit.prevent="submit">
                 <h3 class="text-base font-semibold leading-6 text-gray-900">Demander une promotion ou un avancement</h3>
                 <div class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>Demander une promotion ou un avancement et ajouter la à la liste des demandes pour cette évaluation. </p>
+                    <p>Rechercher une promotion ou un avancement et ajouter la à la liste des demandes pour cette évaluation. </p>
                 </div>
                 <div class="mt-2 max-w-xl text-sm text-gray-500">
                     <p>GF: {{ agent.user_gf }} promu le {{ capitalize(moment(agent.user_gf_prom_date).format('DD MMMM YYYY')) }}</p>

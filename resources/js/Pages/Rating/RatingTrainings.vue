@@ -86,7 +86,7 @@ watch(() => props.trainings,
                   @submit.prevent="submit">
                 <h3 class="text-base font-semibold leading-6 text-gray-900">Demander une formation</h3>
                 <div class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>Demander une formation et ajouter la à la liste des demandes pour cette évaluation. </p>
+                    <p>Rechercher une formation et ajouter la à la liste des demandes pour cette évaluation. </p>
                 </div>
                 <div class="px-4 py-6 sm:p-8">
                     <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

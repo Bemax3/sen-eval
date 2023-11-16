@@ -25,7 +25,7 @@ const notification = computed(() => usePage().props.flash.notify);
         <div class="lg:pl-64">
             <NavBar @open-sidebar="openSidebar"/>
             <main class="py-5">
-                <div class="px-4 sm:px-6 lg:px-8">
+                <div class="px-2 sm:px-3 lg:px-4">
                     <slot/>
                     <Alert :notification="notification"/>
                 </div>

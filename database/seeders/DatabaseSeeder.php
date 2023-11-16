@@ -24,27 +24,27 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-         $this->call([
-             GroupSeeder::class,
-             RoleSeeder::class,
-             ClaimTypeSeeder::class,
-             MobilityTypeSeeder::class,
-             SanctionTypeSeeder::class,
-             SkillTypeSeeder::class,
-             SkillSeeder::class,
-             TrainingTypeSeeder::class,
-             PeriodTypeSeeder::class,
-             PhaseSeeder::class,
-             PromotionTypeSeeder::class,
-         ]);
+        $this->call([
+            GroupSeeder::class,
+            RoleSeeder::class,
+            ClaimTypeSeeder::class,
+            MobilityTypeSeeder::class,
+            SanctionTypeSeeder::class,
+            SkillTypeSeeder::class,
+            SkillSeeder::class,
+            TrainingTypeSeeder::class,
+            PeriodTypeSeeder::class,
+            PhaseSeeder::class,
+            PromotionTypeSeeder::class,
+        ]);
 
-//         User::factory()->create([
-//             'user_display_name' => 'Root',
-//             'email' => 'root@example.com',
-//             'user_login' => 'root',
-//             'user_matricule' => 'root@seneval',
-//             'role_id' => Role::ROOT
-//         ]);
+        User::factory()->create([
+            'user_display_name' => 'Root',
+            'email' => 'root@example.com',
+            'user_login' => 'root',
+            'user_matricule' => 'root@seneval',
+            'role_id' => Role::ROOT
+        ]);
 //
 //         User::factory()->create([
 //             'user_name' => 'User',

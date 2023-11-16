@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Goal;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\UserCantEvaluateHimselfException;
-use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveGoalRequest;
 use App\Http\Requests\Utilities\SearchRequest;
@@ -54,7 +54,7 @@ class GoalsController extends Controller
         try {
             $this->goalService->updateMark($request->validated(), $id);
             alert_success('Objectif enregistré');
-        } catch (UserCantEvaluateHimselfException|ModelNotFoundException|UnknownException $e) {
+        } catch (UserCantEvaluateHimselfException|ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();

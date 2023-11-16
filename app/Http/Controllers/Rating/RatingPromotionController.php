@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Rating;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\PromotionAlreadyExistException;
 use App\Exceptions\UnauthorizedActionException;
-use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveRatingPromotionRequest;
 use App\Models\Rating\Rating;
@@ -37,7 +37,7 @@ class RatingPromotionController extends Controller
         try {
             $this->promotionService->create($request->validated(), $rating_id);
             alert_success('Promotion enregistré avec succès.');
-        } catch (UnauthorizedActionException|PromotionAlreadyExistException|UnknownException $e) {
+        } catch (UnauthorizedActionException|PromotionAlreadyExistException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();
@@ -49,7 +49,7 @@ class RatingPromotionController extends Controller
         try {
             $this->promotionService->update($request->validated(), $rating_promotion_id);
             alert_success('Promotion enregistré avec succès.');
-        } catch (ModelNotFoundException|UnauthorizedActionException|PromotionAlreadyExistException|UnknownException $e) {
+        } catch (ModelNotFoundException|UnauthorizedActionException|PromotionAlreadyExistException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();
@@ -61,7 +61,7 @@ class RatingPromotionController extends Controller
         try {
             $this->promotionService->delete($promotion_id);
             alert_success('Vous avez annuler la promotion.');
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();

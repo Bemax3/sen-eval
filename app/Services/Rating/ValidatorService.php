@@ -3,6 +3,7 @@
 namespace App\Services\Rating;
 
 use App\Exceptions\Goal\NotEnoughGoalsException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\EvaluatedHasNotValidatedException;
 use App\Exceptions\Rating\NotEnoughSpecificSkillsException;
 use App\Exceptions\Rating\NotRatedCorrectlyException;
@@ -38,10 +39,12 @@ class ValidatorService
      * @throws NotEnoughGoalsException
      * @throws NotEnoughSpecificSkillsException
      * @throws NotRatedCorrectlyException
+     * @throws CantUpdateValidatedRatingException
      */
     public function update(string $validation, mixed $validated): void
     {
         $validator = Validator::findOrFail($validation);
+        if ((new ValidatorService())->checkForAllValidation(Rating::findOrFail($validator->rating_id))) throw new CantUpdateValidatedRatingException();
 
         if (isset($validated['remember']) && $validated['remember']) User::findOrFail(\Auth::id())->update(['n1_id' => $validated['new_validator']]);
 
@@ -65,7 +68,16 @@ class ValidatorService
                 'has_validated' => true,
                 'validated_at' => Carbon::now()->toDateTimeString()
             ]);
+            if ($this->checkForAllValidation($rating)) $rating->update(['rating_is_validated' => true]);
         }
+
+    }
+
+    public function checkForAllValidation($rating): bool
+    {
+        if (Validator::where('rating_id', '=', $rating->rating_id)
+            ->where('has_validated', '=', 0)->exists()) return false;
+        return true;
     }
 
     public function checkForEvaluatedValidation($rating): bool

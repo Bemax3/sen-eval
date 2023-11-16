@@ -6,5 +6,5 @@ use Exception;
 
 class ClaimAlreadyExistException extends Exception
 {
-    protected $message = 'Cette réclamation existe déja';
+    protected $message = 'Cette réclamation existe déjà';
 }

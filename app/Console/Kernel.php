@@ -15,12 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->call(new ImportOrgsFromOracle())->everyMinute();
-//        $schedule->command('ldap:import users',[
-//            '--chunk' => 500,
-//            '--attributes' => "company,mail,name,samaccountname"
-//        ])->everyFourHours();
-        $schedule->call(new ImportUsersFromOracle())->everyFourHours();
+        $schedule->call(new ImportOrgsFromOracle())->weekly();
+        $schedule->call(new ImportUsersFromOracle())->dailyAt(1);
     }
 
     /**

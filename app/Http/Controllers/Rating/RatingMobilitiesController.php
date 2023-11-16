@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Rating;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveRatingMobilityRequest;
 use App\Models\Rating\Rating;
@@ -39,8 +40,8 @@ class RatingMobilitiesController extends Controller
         try {
             $this->mobilityService->create($request->validated(), $rating_id);
             alert_success('Demande de mobilité enregistré avec succès.');
-        } catch (\Exception $e) {
-            alert_error('Erreur lors de l\'enregistrement de la demande');
+        } catch (CantUpdateValidatedRatingException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }
@@ -51,7 +52,7 @@ class RatingMobilitiesController extends Controller
         try {
             $this->mobilityService->update($request->validated(), $mobility_id);
             alert_success('Demande de mobilité modifié.');
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();
@@ -63,7 +64,7 @@ class RatingMobilitiesController extends Controller
         try {
             $this->mobilityService->delete($mobility_id);
             alert_success('Vous avez annuler votre demande pour cette mobilité.');
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Rating;
 
 use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\EvaluatedHasNotValidatedException;
 use App\Exceptions\Rating\NotEnoughSpecificSkillsException;
 use App\Exceptions\Rating\NotRatedCorrectlyException;
@@ -58,7 +59,7 @@ class ValidationController extends Controller
         try {
             $this->validatorService->update($validation, $request->validated());
             alert_success('Évaluation enregistrée.');
-        } catch (ModelNotFoundException|EvaluatedHasNotValidatedException|NotEnoughGoalsException|NotEnoughSpecificSkillsException|NotRatedCorrectlyException $e) {
+        } catch (ModelNotFoundException|EvaluatedHasNotValidatedException|NotEnoughGoalsException|NotEnoughSpecificSkillsException|NotRatedCorrectlyException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } catch (ValidatorAlreadyExistException $e) {
             alert_success('Commentaire enregistré avec succès. ' . $e->getMessage());

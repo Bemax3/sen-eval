@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Rating;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\ClaimAlreadyExistException;
 use App\Exceptions\UnauthorizedActionException;
-use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveRatingClaimRequest;
 use App\Models\Rating\Rating;
@@ -42,8 +42,8 @@ class RatingClaimsController extends Controller
         try {
             $this->claimService->create($request->validated(), $rating_id);
             alert_success('Réclamation enregistré avec succès.');
-        } catch (UnauthorizedActionException|ClaimAlreadyExistException|UnknownException $e) {
-            alert_error($e);
+        } catch (UnauthorizedActionException|ClaimAlreadyExistException|CantUpdateValidatedRatingException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }
@@ -54,8 +54,8 @@ class RatingClaimsController extends Controller
         try {
             $this->claimService->update($request->validated(), $rating_claim_id);
             alert_success('Réclamation enregistré avec succès.');
-        } catch (ModelNotFoundException|UnauthorizedActionException|ClaimAlreadyExistException|UnknownException $e) {
-            alert_error($e);
+        } catch (ModelNotFoundException|UnauthorizedActionException|ClaimAlreadyExistException|CantUpdateValidatedRatingException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }
@@ -66,7 +66,7 @@ class RatingClaimsController extends Controller
         try {
             $this->claimService->delete($claim_id);
             alert_success('Vous avez annuler la réclamation.');
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();

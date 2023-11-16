@@ -6,6 +6,7 @@ use App\Exceptions\Goal\GoalMarkExceedMarkingException;
 use App\Exceptions\Goal\GoalsMarkingExceededException;
 use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Goal\PeriodGoalsCountLimitReachedException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\GoalRateCantBeLowerThanBeforeException;
 use App\Exceptions\Rating\UserCantEvaluateHimselfException;
 use App\Models\Phase\EvaluationPeriod;
@@ -20,10 +21,12 @@ class GoalService
 
     /**
      * @throws UserCantEvaluateHimselfException
+     * @throws CantUpdateValidatedRatingException
      */
     public function updateMark($validated, $goal_id): void
     {
         $goal = Goal::findOrFail($goal_id);
+        if ((new ValidatorService())->checkForAllValidation(Rating::findOrFail($validated['rating_id']))) throw new CantUpdateValidatedRatingException();
         if ($goal->evaluator_id !== \Auth::id()) throw new UserCantEvaluateHimselfException();
         (new RatingService())->lowerMark($validated['rating_id'], $goal->goal_mark);
         $goal->update($validated);
@@ -41,9 +44,9 @@ class GoalService
         if (!$this->checkMarking($goal->evaluated_id, $validated['phase_id'], $validated['goal_marking'] - $goal->goal_marking)) {
             throw new GoalsMarkingExceededException();
         }
-        if ($validated['goal_marking'] <= $goal->goal_mark) throw new GoalMarkExceedMarkingException();
+        if ($validated['goal_marking'] < $goal->goal_mark) throw new GoalMarkExceedMarkingException();
 
-        if ($validated['goal_rate'] <= $goal->goal_rate) throw new GoalRateCantBeLowerThanBeforeException();
+        if ($validated['goal_rate'] < $goal->goal_rate) throw new GoalRateCantBeLowerThanBeforeException();
         $goal->update([
             'goal_name' => $validated['goal_name'],
             'goal_expected_result' => $validated['goal_expected_result'],

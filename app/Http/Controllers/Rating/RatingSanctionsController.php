@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Rating;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\SanctionAlreadyExistException;
 use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
@@ -42,7 +43,7 @@ class RatingSanctionsController extends Controller
         try {
             $this->sanctionService->create($request->validated(), $rating_id);
             alert_success('Sanction enregistré avec succès.');
-        } catch (UnauthorizedActionException|SanctionAlreadyExistException $e) {
+        } catch (UnauthorizedActionException|SanctionAlreadyExistException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();
@@ -54,7 +55,7 @@ class RatingSanctionsController extends Controller
         try {
             $this->sanctionService->update($request->validated(), $rating_claim_id);
             alert_success('Sanction enregistré avec succès.');
-        } catch (ModelNotFoundException|UnauthorizedActionException|SanctionAlreadyExistException $e) {
+        } catch (ModelNotFoundException|UnauthorizedActionException|SanctionAlreadyExistException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();
@@ -67,7 +68,7 @@ class RatingSanctionsController extends Controller
         try {
             $this->sanctionService->delete($sanction_id);
             alert_success('Vous avez annuler la sanction.');
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();

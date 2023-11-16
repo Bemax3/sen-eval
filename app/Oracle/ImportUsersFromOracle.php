@@ -3,7 +3,6 @@
 namespace App\Oracle;
 
 use App\Models\Group;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -35,13 +34,12 @@ class ImportUsersFromOracle
                 'user_responsibility_center' => $oracleUser->centre_de_responsabilite,
                 'user_gf' => $oracleUser->gf,
                 'user_nr' => $oracleUser->nr,
-                'role_id' => Role::USER,
+                'org_id' => $oracleUser->org_id,
             ]);
 
             $user->update([
                 'user_gf_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promogf)->toDateTimeString(),
                 'user_nr_prom_date' => Carbon::createFromFormat('d-M-Y', $oracleUser->date_promonr)->toDateTimeString(),
-                'org_id' => $oracleUser->org_id,
                 'group_id' => Group::where('group_code', '=', strtolower($oracleUser->college))->first()->group_id,
             ]);
             return true;

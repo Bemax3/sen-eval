@@ -13,7 +13,7 @@ class SaveRatingSkillRequest extends FormRequest
             'rating_skill_marking' => ['sometimes', 'required', 'integer'],
             'rating_id' => ['sometimes', 'required'],
             'phase_skill_id' => ['sometimes', 'required'],
-            'rating_skill_name' => ['sometimes', 'required']
+            'rating_skill_name' => ['sometimes', 'nullable']
         ];
     }
 

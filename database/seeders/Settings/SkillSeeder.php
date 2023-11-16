@@ -22,69 +22,63 @@ class SkillSeeder extends Seeder
                 'skill_type_id' => 1
             ],
             [
-                'skill_name' => 'Bonne Gouvernance des SI',
+                'skill_name' => 'Rigueur et Discrétion',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
             [
-                'skill_name' => 'Gestion de Projet',
+                'skill_name' => 'Impartialité et Équité',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
             [
-                'skill_name' => 'Gestion des opérations',
+                'skill_name' => 'Créativité et Esprit Innovant',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
             [
-                'skill_name' => 'Ref Compétence v',
+                'skill_name' => 'Courtoisie et Convivialité',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
             [
-                'skill_name' => 'Ref Compétence w',
+                'skill_name' => 'Moralité et Intégrité',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
             [
-                'skill_name' => 'Ref Compétence x',
+                'skill_name' => 'Méthodologie et Organisation',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
             [
-                'skill_name' => 'Ref Compétence y',
+                'skill_name' => 'Réactivité et Proactivité',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
             [
-                'skill_name' => 'Ref Compétence z',
+                'skill_name' => 'Ouverture d\'ésprit',
                 'skill_marking' => 5,
                 'skill_desc' => '',
-                'skill_type_id' => 1
+                'skill_type_id' => 1,
             ],
-//            [
-//                'skill_name' => 'Savoir Être',
-//                'skill_marking' => 5,
-//                'skill_desc' => '',
-//                'skill_type_id' => 1
-//            ],
-//            [
-//                'skill_name' => 'Savoir Faire',
-//                'skill_marking' => 5,
-//                'skill_desc' => '',
-//                'skill_type_id' => 1
-//            ],
+            [
+                'skill_name' => 'Discipline',
+                'skill_marking' => 5,
+                'skill_desc' => '',
+                'skill_type_id' => 1,
+            ],
             [
                 'skill_name' => 'Management',
                 'skill_marking' => 15,
-                'skill_desc' => 'Communication, Leadership, Organisation, Planification, Motivation, Délégation, Rating, Résolution de problèmes, Innovation, Persuasion',
+                'skill_desc' => 'Communication, Leadership, Organisation, Planification, Motivation, Délégation, Évaluation, Résolution de problèmes, Innovation, Persuasion',
                 'skill_type_id' => 2,
                 'group_id' => Group::CADRE
             ],

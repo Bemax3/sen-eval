@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Rating;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveRatingTrainingRequest;
 use App\Models\Rating\Rating;
 use App\Models\Settings\TrainingType;
 use App\Models\User;
 use App\Services\Rating\TrainingService;
-use Exception;
 use Inertia\Inertia;
 
 class RatingTrainingsController extends Controller
@@ -36,8 +36,8 @@ class RatingTrainingsController extends Controller
         try {
             $this->trainingService->create($request->validated(), $rating_id);
             alert_success('Demande de formation enregistré avec succès.');
-        } catch (Exception $e) {
-            alert_error('Erreur lors de l\'enregistrement de la demande');
+        } catch (CantUpdateValidatedRatingException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }
@@ -48,8 +48,8 @@ class RatingTrainingsController extends Controller
         try {
             $this->trainingService->update($request->validated(), $training_id);
             alert_success('Vous avez annuler votre demande pour cette formation.');
-        } catch (ModelNotFoundException|Exception) {
-            alert_error('Erreur lors de l\'annulation de la demande');
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
+            alert_error($e->getMessage());
         } finally {
             return redirect()->back();
         }

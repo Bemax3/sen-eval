@@ -6,5 +6,5 @@ use Exception;
 
 class GoalRateCantBeLowerThanBeforeException extends Exception
 {
-    protected $message = 'Le taux de réalisation ne peut pas être inférieur ou égal au dernier taux.';
+    protected $message = 'Le taux de réalisation ne peut pas être inférieur au dernier taux.';
 }

@@ -2,6 +2,7 @@ version: "3.8"
 services:
   #   PHP
   php:
+    #    image: arlissilva/php8.2_oci8:1.0
     build:
       context: .
       target: php
@@ -16,7 +17,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - database
+      database:
+        condition: service_healthy
   # Mysql Server
   database:
     image: mysql:8.1
@@ -30,6 +32,12 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 40
 
 volumes:
   db-data: ~
@@ -37,7 +45,7 @@ volumes:
     #    container_name: blog_app
     #    build:
     #      context: .
-    #      dockerfile: ./docker/php/Dockerfile
+    #      dockerfile: ./docker/php/DockerfileTest
     #    expose:
     #      - 9000
     #    volumes:
@@ -46,22 +54,22 @@ volumes:
     #    depends_on:
     #      - blog_db
     #    networks:
-    #      - app_network
-    #
-    #  blog_nginx:
-    #    container_name: blog_nginx
-    #    build:
-    #      context: .
-    #      dockerfile: ./docker/nginx/Dockerfile
-    #    volumes:
-    #      - ./public:/usr/src/app/public
-    #    ports:
-    #      - "8000:80"
-    #    depends_on:
-    #      - blog_app
-    #    environment:
-    #      NGINX_FPM_HOST: blog_app
-    #      NGINX_ROOT: /usr/src/app/public
+  #      - app_network
+  #
+  #  blog_nginx:
+  #    container_name: blog_nginx
+  #    build:
+  #      context: .
+  #      dockerfile: ./docker/nginx/DockerfileTest
+  #    volumes:
+  #      - ./public:/usr/src/app/public
+  #    ports:
+  #      - "8000:80"
+  #    depends_on:
+  #      - blog_app
+  #    environment:
+  #      NGINX_FPM_HOST: blog_app
+  #      NGINX_ROOT: /usr/src/app/public
   #    networks:
   #      - app_network
   #

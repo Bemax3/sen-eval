@@ -46,7 +46,7 @@ readonly class RatingSkillService
             $validated['rating_skill_name'] = '';
             if (RatingSkill::where('rating_id', '=', $validated['rating_id'])->where('phase_skill_id', '=', $validated['phase_skill_id'])->exists()) throw new SkillAlreadyExistException();
         } else {
-            if (!isset($validated['phase_skill_name'])) throw new DefaultSkillNeedsANameException();
+            if (!isset($validated['rating_skill_name'])) throw new DefaultSkillNeedsANameException();
             if (RatingSkill::where('rating_id', '=', $validated['rating_id'])->where('rating_skill_name', '=', $validated['rating_skill_name'])->exists()) throw new SkillAlreadyExistException();
 
         }

@@ -53,7 +53,7 @@ class AgentGoalsController extends Controller
             $goal = Goal::findOrFail($goal_id);
             return Inertia::render('Agents/Goal/SaveAgentGoal', [
                 'agent' => User::with('org')->findOrFail($agent_id),
-                'phases' => Phase::where('phase_is_active', '=', 1)->with('periods')->get(),
+                'phases' => Phase::with('periods')->get(),
                 'goal' => $goal,
                 'history' => $goal->history()->with('updated_by')->get()
             ]);

@@ -250,7 +250,7 @@ watch(() => query.value, function (next) {
                                     </template>
                                     <template v-else>
                                         <input :ref="el => {inputs[skill.rating_skill_id] = el}" :value="skill.rating_skill_mark"
-                                               class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                                               class="w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
                                                type="text"/>
                                     </template>
                                     <p class="ml-0.5 font-bold">
@@ -314,7 +314,7 @@ watch(() => query.value, function (next) {
                                     </template>
                                     <template v-else>
                                         <input :ref="el => {inputs[skill.rating_skill_id] = el}" :value="skill.rating_skill_mark"
-                                               class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                                               class=" w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
                                                type="text"/>
                                     </template>
                                     <p class="ml-0.5 font-bold">
@@ -374,7 +374,7 @@ watch(() => query.value, function (next) {
                                     </template>
                                     <template v-else>
                                         <input :ref="el => {inputs['goal_' + goal.goal_id] = el}" :value="goal.goal_mark"
-                                               class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                                               class=" w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
                                                type="text"/>
                                     </template>
                                     <p class="ml-0.5 font-bold">

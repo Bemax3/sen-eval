@@ -20,7 +20,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
-  # Mysql Server
+  # Nginx Server
   webserver:
     image: nginx:alpine
     container_name: webserver
@@ -34,6 +34,7 @@ services:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - app-network
+  # Mysql Server
   database:
     image: mysql:8.1
     restart: always

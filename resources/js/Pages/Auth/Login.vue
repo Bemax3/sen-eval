@@ -26,7 +26,7 @@ const submit = () => {
                 </div>
                 <div class="flex items-center justify-center flex-col p-12 sm:p-12 md:w-2/3">
                     <h1 class="mb-4 font-bold text-3xl text-cyan-900">
-                        Système d'Évaluation du Personnel
+                        Système d'Évaluation
                     </h1>
                     <!--                    <h1 class="mb-2 font-semibold text-xl text-gray-700">-->
                     <!--                        Se connecter-->

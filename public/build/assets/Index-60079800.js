@@ -1,1 +1,0 @@
-import{_ as e}from"./AuthenticatedLayout-ec823edb.js";import{o as t,e as a,f as o,k as r}from"./app-3b2f3c0c.js";import"./logo1637145113-11387d37.js";const f={__name:"Index",setup(_){return(s,c)=>(t(),a(e,null,{default:o(()=>[r(" Home ")]),_:1}))}};export{f as default};

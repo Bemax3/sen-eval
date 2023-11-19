@@ -1,25 +1,39 @@
 version: "3.8"
 services:
   #   PHP
-  php:
-    #    image: arlissilva/php8.2_oci8:1.0
+  app:
     build:
       context: .
-      target: php
-      args:
-        - APP_ENV=${APP_ENV}
+      dockerfile: Dockerfile
+    container_name: app
+    restart: unless-stopped
+    tty: true
     environment:
-      - APP_ENV=${APP_ENV}
-      - CONTAINER_ROLE=app
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
     working_dir: /var/www
     volumes:
       - ./:/var/www
-    ports:
-      - "8000:8000"
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
     depends_on:
       database:
         condition: service_healthy
   # Mysql Server
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
   database:
     image: mysql:8.1
     restart: always
@@ -32,59 +46,20 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       start_period: 5s
       interval: 5s
       timeout: 5s
       retries: 40
-
+    networks:
+      - app-network
+# Network
+networks:
+  app-network:
+    driver: bridge
+#Volumes
 volumes:
-  db-data: ~
-    #  blog_app:
-    #    container_name: blog_app
-    #    build:
-    #      context: .
-    #      dockerfile: ./docker/php/DockerfileTest
-    #    expose:
-    #      - 9000
-    #    volumes:
-    #      - .:/usr/src/app
-    #      - ./public:/usr/src/app/public
-    #    depends_on:
-    #      - blog_db
-    #    networks:
-  #      - app_network
-  #
-  #  blog_nginx:
-  #    container_name: blog_nginx
-  #    build:
-  #      context: .
-  #      dockerfile: ./docker/nginx/DockerfileTest
-  #    volumes:
-  #      - ./public:/usr/src/app/public
-  #    ports:
-  #      - "8000:80"
-  #    depends_on:
-  #      - blog_app
-  #    environment:
-  #      NGINX_FPM_HOST: blog_app
-  #      NGINX_ROOT: /usr/src/app/public
-  #    networks:
-  #      - app_network
-  #
-  #  blog_db:
-  #    container_name: blog_db
-  #    image: mysql:8.0.20
-  #    restart: always
-  #    volumes:
-  #      - ./storage/db-data:/var/lib/mysql
-  #    ports:
-  #      - "3306:3306"
-  #    environment:
-  #      MYSQL_DATABASE: blog
-  #      MYSQL_ROOT_PASSWORD: root
-  #      MYSQL_USER: root
-  #      MYSQL_PASSWORD: root
-  #    networks:
-  #      - app_network
+  db-data:
+    driver: local

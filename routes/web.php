@@ -5,6 +5,7 @@ use App\Http\Controllers\Agent\AgentRatingsController;
 use App\Http\Controllers\Agent\AgentsController;
 use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Goal\GoalsController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
 use App\Http\Controllers\Phase\PhaseSkillController;
@@ -27,7 +28,6 @@ use App\Http\Controllers\Settings\SkillController;
 use App\Http\Controllers\Settings\SkillTypeController;
 use App\Http\Controllers\Settings\TrainingTypeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,9 +40,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home/Index');
-})->middleware('auth', 'viewer')->name('home');
+Route::get('/', [HomeController::class, 'index'])->middleware('auth', 'viewer')->name('home');
+Route::get('/ldap', [HomeController::class, 'ldap'])->middleware('auth', 'viewer')->name('home.ldap');
+Route::get('/oracle', [HomeController::class, 'oracle'])->middleware('auth', 'viewer')->name('home.oracle');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::put('/goals/{goal}/updateMark', [GoalsController::class, 'updateMark'])->name('goals.update-mark');

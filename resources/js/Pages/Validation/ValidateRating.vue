@@ -9,7 +9,7 @@ import SubmitButton from "@/Components/Forms/SubmitButton.vue";
 import Tabs from "@/Components/Rating/Tabs.vue";
 import Title from "@/Components/Rating/Title.vue";
 import SectionMark from "@/Components/Rating/SectionMark.vue";
-import {hasData} from "@/helpers/helper.js";
+import {capitalized, hasData, moment} from "@/helpers/helper.js";
 import EmptyState from "@/Components/Common/EmptyState.vue";
 import {CheckIcon, ChevronUpDownIcon} from "@heroicons/vue/20/solid/index.js";
 import InputError from "@/Components/Forms/InputError.vue";
@@ -116,6 +116,9 @@ watch(() => query.value, function (next) {
                                         {{ skill.phase_skill.skill.skill_desc }}
                                     </p>
                                 </div>
+                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
+                                </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
                                 <div class="flex items-center justify-center space-x-4">
@@ -149,6 +152,9 @@ watch(() => query.value, function (next) {
                                         {{ skill.phase_skill.skill.skill_desc }}
                                     </p>
                                 </div>
+                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
+                                </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
                                 <div class="flex items-center justify-center space-x-4">
@@ -180,6 +186,9 @@ watch(() => query.value, function (next) {
                                     <p class="whitespace-break-spaces">
                                         {{ goal.goal_expected_result }}
                                     </p>
+                                </div>
+                                <div v-if="goal.goal_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(goal.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">

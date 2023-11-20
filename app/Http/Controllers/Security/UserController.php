@@ -36,6 +36,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        
         try {
             $user = User::with('role')
                 ->with('org')

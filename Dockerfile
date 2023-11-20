@@ -57,10 +57,10 @@ RUN apt-get update && apt-get install -y libaio1 wget unzip \
     && rm /opt/oracle/instantclient-sdk.zip \
     && echo /opt/oracle/instantclient_19_10 > /etc/ld.so.conf.d/oracle-instantclient.conf \
     && ldconfig -v \
-          # Install libaio1 -- when missing was preventing the extension from loading.
+    # Install libaio1
     && apt update \
     && apt install libaio1 \
-          # Install and enable OCI8
+    # Install and enable OCI8
     && echo "instantclient,/opt/oracle/instantclient_19_10" | pecl install oci8-3.2.1 \
     && docker-php-ext-enable oci8
 
@@ -78,8 +78,6 @@ RUN composer install
 RUN cp .env.example .env
 
 RUN php artisan key:generate
-
-RUN #php artisan migrate
 
 RUN php artisan route:cache
 

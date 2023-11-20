@@ -151,6 +151,7 @@ watch(() => props.claims,
                         <TableHeading :first="true">Type</TableHeading>
                         <!--						<TableHeading class="whitespace-nowrap">Demandée par</TableHeading>-->
                         <TableHeading class="whitespace-pre-line">Commentaire</TableHeading>
+                        <TableHeading></TableHeading>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">

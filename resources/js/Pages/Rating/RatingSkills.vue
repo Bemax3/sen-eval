@@ -11,7 +11,7 @@ import Tabs from "@/Components/Rating/Tabs.vue";
 import Title from "@/Components/Rating/Title.vue";
 import SectionMark from "@/Components/Rating/SectionMark.vue";
 import EmptyState from "@/Components/Common/EmptyState.vue";
-import {hasData} from "@/helpers/helper.js";
+import {capitalized, hasData, moment} from "@/helpers/helper.js";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/vue";
 import axios from "axios";
 import TextArea from "@/Components/Forms/TextArea.vue";
@@ -123,6 +123,9 @@ watch(() => query.value, function (next) {
                                         {{ skill.phase_skill.skill.skill_desc }}
                                     </p>
                                 </div>
+                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
+                                </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
                                 <div class="flex items-center justify-center space-x-4">
@@ -142,12 +145,16 @@ watch(() => query.value, function (next) {
                                     <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
                                     <p v-if="skill.rating_skill_mark_is_claimed"
                                        class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
-                                        Contesté</p>
+                                        Contesté
+                                    </p>
                                 </div>
                                 <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
                                     <p class="whitespace-break-spaces">
                                         {{ skill.phase_skill.skill.skill_desc }}
                                     </p>
+                                </div>
+                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
@@ -177,6 +184,9 @@ watch(() => query.value, function (next) {
                                     <p class="whitespace-break-spaces">
                                         {{ goal.goal_expected_result }}
                                     </p>
+                                </div>
+                                <div v-if="goal.goal_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                    <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(goal.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">

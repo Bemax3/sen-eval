@@ -99,8 +99,8 @@ watch(() => props.users,
                 v-else
                 :link="route('users.create')"
                 action="Nouveau"
-                message="Créer une nouvelle compétence en appuyant sur ce bouton"
-                title="Pas de Compétence"/>
+                message="Les agents seront importés bientôt."
+                title="Pas d'agents pour l'instant."/>
         </div>
     </AuthenticatedLayout>
 </template>

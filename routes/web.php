@@ -41,9 +41,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth', 'viewer')->name('home');
-Route::get('/ldap', [HomeController::class, 'ldap'])->middleware('auth', 'viewer')->name('home.ldap');
-Route::get('/oracle', [HomeController::class, 'oracle'])->middleware('auth', 'viewer')->name('home.oracle');
-
 Route::group(['middleware' => ['auth']], function () {
     Route::put('/goals/{goal}/updateMark', [GoalsController::class, 'updateMark'])->name('goals.update-mark');
     Route::post('/profile/setup', [ProfileController::class, 'setup'])->name('profile.setup');

@@ -47,23 +47,29 @@ RUN apt-get update \
 ENV LD_LIBRARY_PATH /opt/oracle/instantclient_21_1:$LD_LIBRARY_PATH
 
 RUN apt-get update && apt-get install -y libaio1 wget unzip \
-    && mkdir -p /opt/oracle \
-    && cd /opt/oracle \
-    && curl https://download.oracle.com/otn_software/linux/instantclient/191000/instantclient-basic-linux.arm64-19.10.0.0.0dbru-2.zip > /opt/oracle/instantclient-basic.zip \
-    && curl https://download.oracle.com/otn_software/linux/instantclient/191000/instantclient-sdk-linux.arm64-19.10.0.0.0dbru.zip > /opt/oracle/instantclient-sdk.zip \
-    && unzip /opt/oracle/instantclient-basic.zip -d /opt/oracle \
-    && unzip /opt/oracle/instantclient-sdk.zip -d /opt/oracle \
-    && rm /opt/oracle/instantclient-basic.zip \
-    && rm /opt/oracle/instantclient-sdk.zip \
-    && echo /opt/oracle/instantclient_19_10 > /etc/ld.so.conf.d/oracle-instantclient.conf \
-    && ldconfig -v \
-    # Install libaio1
-    && apt update \
-    && apt install libaio1 \
-    # Install and enable OCI8
-    && echo "instantclient,/opt/oracle/instantclient_19_10" | pecl install oci8-3.2.1 \
-    && docker-php-ext-enable oci8
+    && mkdir /opt/oracle
 
+# Install Oracle Instantclient
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/216000/instantclient-basic-linux.x64-21.6.0.0.0dbru.zip \
+    && wget https://download.oracle.com/otn_software/linux/instantclient/216000/instantclient-sdk-linux.x64-21.6.0.0.0dbru.zip \
+    && wget https://download.oracle.com/otn_software/linux/instantclient/216000/instantclient-sqlplus-linux.x64-21.6.0.0.0dbru.zip \
+    && unzip instantclient-basic-linux.x64-21.6.0.0.0dbru.zip -d /opt/oracle \
+    && unzip instantclient-sdk-linux.x64-21.6.0.0.0dbru.zip -d /opt/oracle \
+    && unzip instantclient-sqlplus-linux.x64-21.6.0.0.0dbru.zip -d /opt/oracle \
+    && rm -rf *.zip \
+    && mv /opt/oracle/instantclient_21_6 /opt/oracle/instantclient
+
+#add oracle instantclient path to environment
+ENV LD_LIBRARY_PATH /opt/oracle/instantclient/
+RUN ldconfig
+
+# Install Oracle extensions
+RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient,21.1 \
+&& echo 'instantclient,/opt/oracle/instantclient/' | pecl install oci8 \
+&& docker-php-ext-install \
+        pdo_oci \
+&& docker-php-ext-enable \
+        oci8
 
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www

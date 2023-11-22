@@ -12,6 +12,10 @@ class Validator extends Model
     protected $primaryKey = 'rating_validator_id';
     protected $fillable = ['rating_validator_comment', 'has_validated', 'validator_id', 'rating_id', 'validated_at'];
 
+    protected $casts = [
+        'validated_at' => 'datetime'
+    ];
+
     public function getForeignKey()
     {
         return $this->primaryKey;

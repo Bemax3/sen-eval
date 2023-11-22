@@ -6,6 +6,7 @@ use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\Rating\AgentHasRatingForCurrentPhaseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveRatingRequest;
+use App\Mail\RatingCreated;
 use App\Models\Phase\Phase;
 use App\Models\Rating\Goal;
 use App\Models\Rating\Rating;
@@ -14,6 +15,7 @@ use App\Models\Settings\SkillType;
 use App\Models\User;
 use App\Services\Rating\RatingService;
 use App\Services\Security\UserService;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class AgentRatingsController extends Controller
@@ -62,6 +64,7 @@ class AgentRatingsController extends Controller
     {
         try {
             $rating = $this->ratingService->create($request->validated());
+            Mail::to($rating->evaluated->email)->queue(new RatingCreated($rating));
             alert_success('Évaluation crée avec succès.');
             return redirect()->route('agent-ratings.show', ['agent' => $agent_id, 'agent_rating' => $rating->rating_id]);
         } catch (AgentHasRatingForCurrentPhaseException|ModelNotFoundException $e) {

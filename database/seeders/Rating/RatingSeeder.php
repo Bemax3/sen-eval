@@ -13,6 +13,7 @@ use App\Models\Rating\Rating;
 use App\Models\Rating\RatingSkill;
 use App\Models\Rating\Sanction;
 use App\Models\Rating\Training;
+use App\Models\Rating\Validator;
 use App\Models\Settings\ClaimType;
 use App\Models\Settings\MobilityType;
 use App\Models\Settings\PromotionType;
@@ -34,8 +35,11 @@ class RatingSeeder extends Seeder
         foreach ($users as $user) {
             if (!$user->org_id) continue;
             $possibleN1s = (new UserService())->findSameOrgUsers($user);
+            do {
+                $possibleN1 = $possibleN1s[rand(0, count($possibleN1s) - 1)]->user_id;
+            } while ($possibleN1 == $user->user_id);
             $user->update([
-                'n1_id' => $possibleN1s[rand(0, count($possibleN1s) - 1)]->user_id
+                'n1_id' => $possibleN1
             ]);
         }
 
@@ -46,16 +50,39 @@ class RatingSeeder extends Seeder
                 $skills = PhaseSkill::where('phase_id', '=', $phase->phase_id)->whereRelation('skill', 'group_id', $operator, Group::CADRE)->get();
 
                 $rating = Rating::create([
-                    'evaluator_comment' => fake()->realText,
-                    'evaluated_comment' => fake()->realText,
-                    'validator_id' => $user->n1->n1_id,
                     'phase_id' => $phase->phase_id,
                     'evaluated_id' => $user->user_id,
                     'evaluator_id' => $user->n1_id,
-                    'validated_by_n2' => rand(0, 1),
-                    'validated_by_n1' => rand(0, 1),
-                    'rating_is_contested' => rand(0, 1)
                 ]);
+
+                $rand1 = rand(0, 1);
+                $validation1 = Validator::create([
+                    'validator_id' => $rating->evaluated_id,
+                    'rating_id' => $rating->rating_id,
+                    'has_validated' => $rand1,
+                    'rating_validator_comment' => fake()->realText,
+                ]);
+                if ($rand1) $validation1->update(['validated_at' => Carbon::now()->toDateTimeString()]);
+
+                $rand2 = rand(0, 1);
+                $validation2 = Validator::create([
+                    'validator_id' => $rating->evaluator_id,
+                    'rating_id' => $rating->rating_id,
+                    'has_validated' => $rand2,
+                    'rating_validator_comment' => fake()->realText,
+                ]);
+                if ($rand2) $validation2->update(['validated_at' => Carbon::now()->toDateTimeString()]);
+
+                $rand3 = rand(0, 1);
+                $validation3 = Validator::create([
+                    'validator_id' => $user->n1->n1_id,
+                    'rating_id' => $rating->rating_id,
+                    'has_validated' => $rand3,
+                    'rating_validator_comment' => fake()->realText,
+                ]);
+                if ($rand3) $validation3->update(['validated_at' => Carbon::now()->toDateTimeString()]);
+
+                if ($rand1 && $rand2 && $rand3) $rating->update(['rating_is_validated' => 1]);
 
                 foreach ($skills as $skill) {
                     $randMark = rand(3, $skill->phase_skill_marking);

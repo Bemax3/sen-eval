@@ -64,31 +64,6 @@ class LoginRequest extends FormRequest
         RateLimiter::clear($this->throttleKey());
     }
 
-    public function authenticateFromDb(): bool
-    {
-        $this->ensureIsNotRateLimited();
-        try {
-            $user = User::where('user_login',$this->get('user_login'))->firstOrFail();
-            if(Hash::check($this->get('password'),$user->password)) {
-                Auth::login($user);
-                RateLimiter::clear($this->throttleKey());
-                return true;
-            }
-            else {
-                return false;
-            }
-        }catch (\Exception) {
-            return false;
-        }
-    }
-
-    private function throwLoginError()
-    {
-        RateLimiter::hit($this->throttleKey());
-        throw ValidationException::withMessages([
-            'user_login' => trans('auth.failed'),
-        ]);
-    }
     /**
      * Ensure the login request is not rate limited.
      *
@@ -96,7 +71,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -117,6 +92,31 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->input('user_login')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('user_login')) . '|' . $this->ip());
+    }
+
+    private function throwLoginError()
+    {
+        RateLimiter::hit($this->throttleKey());
+        throw ValidationException::withMessages([
+            'user_login' => trans('auth.failed'),
+        ]);
+    }
+
+    public function authenticateFromDb(): bool
+    {
+        $this->ensureIsNotRateLimited();
+        try {
+            $user = User::where('user_login', $this->get('user_login'))->firstOrFail();
+            if (Hash::check($this->get('password'), $user->password)) {
+                Auth::login($user);
+                RateLimiter::clear($this->throttleKey());
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception) {
+            return false;
+        }
     }
 }

@@ -46,7 +46,7 @@ setForm();
 
 <template>
     <AuthenticatedLayout>
-        <Head title="Paramètre de Phase"/>
+        <Head title="Suivi Objectif"/>
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
@@ -172,7 +172,7 @@ setForm();
 
                 <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
                     <FormIndications/>
-                    <SubmitButton :disabled="form.processing">Enregistrer</SubmitButton>
+                    <SubmitButton :processing="form.processing">Enregistrer</SubmitButton>
                 </div>
             </form>
         </div>

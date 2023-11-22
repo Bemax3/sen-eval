@@ -52,7 +52,7 @@ const emit = defineEmits(['update:modelValue']);
     <VueTailwindDatePicker
         v-model="dateValue"
         :formatter="formatter"
-        :input-classes="[invalid ? 'ring-red-400 focus:ring-red-600' : 'focus:ring-cyan-600', 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']"
+        :input-classes="[invalid ? 'ring-red-400 focus:ring-red-600' : 'focus:ring-s-pink-800', 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']"
         :options="options"
         i18n="fr"
         separator=" au "

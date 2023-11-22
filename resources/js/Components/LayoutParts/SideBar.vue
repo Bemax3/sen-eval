@@ -125,7 +125,7 @@ defineEmits(['closeSidebar'])
                             </div>
                         </TransitionChild>
                         <!-- Sidebar component, swap this element with another sidebar if you like -->
-                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 px-6 pb-4">
+                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-s-pink-900  px-6 pb-4">
                             <div class="flex h-16 shrink-0 items-center">
                                 <img alt="Your Company" class="h-8 w-auto" src="../../assets/logo1637145113.png"/>
                             </div>
@@ -135,7 +135,7 @@ defineEmits(['closeSidebar'])
                                         <ul class="-mx-2 space-y-1" role="list">
                                             <li v-for="item in navigation" :key="item.name">
                                                 <Link v-if="!item.children"
-                                                      :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']"
+                                                      :class="[item.current ? 'bg-s-pink-800  text-white' : 'text-white hover:text-white hover:bg-s-pink-800    ', 'group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']"
                                                       :href="item.href">
                                                     <component :is="item.icon"
                                                                :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']"
@@ -144,7 +144,7 @@ defineEmits(['closeSidebar'])
                                                 </Link>
                                                 <Disclosure v-else v-slot="{ open }" as="div">
                                                     <DisclosureButton
-                                                        :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
+                                                        :class="[item.current ? 'bg-s-pink-800  text-white' : 'text-white hover:text-white hover:bg-s-pink-800    ', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
                                                         <component :is="item.icon"
                                                                    :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']"
                                                                    aria-hidden="true"/>
@@ -156,7 +156,7 @@ defineEmits(['closeSidebar'])
                                                         <li v-for="subItem in item.children" :key="subItem.name">
                                                             <!-- 44px -->
                                                             <DisclosureButton
-                                                                :class="[subItem.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'block rounded-md py-2 pr-2 pl-9 font-semibold text-base leading-6 text-gray-700']"
+                                                                :class="[subItem.current ? 'bg-s-pink-800  text-white' : 'text-white hover:text-white hover:bg-s-pink-900    ', 'block rounded-md py-2 pr-2 pl-9 font-semibold text-base leading-6 text-gray-700']"
                                                                 :href="subItem.href"
                                                                 as="a">
                                                                 {{ subItem.name }}
@@ -180,17 +180,17 @@ defineEmits(['closeSidebar'])
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 px-3 pb-4">
-            <div class="flex h-24 shrink-0 items-center justify-center">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-s-pink-900  px-3 pb-4">
+            <div class="mt-2 flex h-24 shrink-0 items-center justify-center p-6">
                 <img alt="Your Company" class="h-24 w-auto" src="../../assets/logo1637145113.png"/>
             </div>
-            <nav class="flex flex-1 flex-col ">
+            <nav class="flex flex-1 flex-col">
                 <ul class="flex flex-1 flex-col gap-y-7" role="list">
                     <li>
                         <ul class="-mx-2 space-y-1" role="list">
                             <li v-for="item in navigation" :key="item.name">
                                 <Link v-if="!item.children"
-                                      :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', ' group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']"
+                                      :class="[item.current ? 'bg-s-pink-800  text-white' : 'text-white hover:text-white hover:bg-s-pink-800    ', ' group flex gap-x-3 rounded-md p-2 text-base leading-6 font-semibold']"
                                       :href="item.href">
                                     <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']"
                                                aria-hidden="true"/>
@@ -198,7 +198,7 @@ defineEmits(['closeSidebar'])
                                 </Link>
                                 <Disclosure v-else v-slot="{ open }" as="div">
                                     <DisclosureButton
-                                        :class="[item.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
+                                        :class="[item.current ? 'bg-s-pink-800  text-white' : 'text-white hover:text-white hover:bg-s-pink-800   ', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-base leading-6 font-semibold text-white']">
                                         <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-white group-hover:text-white', 'h-6 w-6 shrink-0']"
                                                    aria-hidden="true"/>
                                         {{ item.name }}
@@ -208,7 +208,7 @@ defineEmits(['closeSidebar'])
                                         <li v-for="subItem in item.children" :key="subItem.name">
                                             <!-- 44px -->
                                             <DisclosureButton
-                                                :class="[subItem.current ? 'bg-cyan-500 text-white' : 'text-white hover:text-white hover:bg-cyan-500', 'block rounded-md py-2 pr-2 pl-9 text-base font-semibold leading-6 text-gray-700']"
+                                                :class="[subItem.current ? 'bg-s-pink-800  text-white' : 'text-white hover:text-white hover:bg-s-pink-900    ', 'block rounded-md py-2 pr-2 pl-9 text-base font-semibold leading-6 text-gray-700']"
                                                 :href="subItem.href"
                                                 as="a">
                                                 {{ subItem.name }}

@@ -44,7 +44,7 @@ watch(() => props.roles,
 
 <template>
     <AuthenticatedLayout>
-        <Head title="Roles"/>
+        <Head title="Rôles"/>
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">

@@ -100,7 +100,7 @@ setForm()
                     </div>
                     <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
                         <FormIndications/>
-                        <SubmitButton :disabled="form.processing">
+                        <SubmitButton :processing="form.processing">
                             Enregistrer
                         </SubmitButton>
                     </div>

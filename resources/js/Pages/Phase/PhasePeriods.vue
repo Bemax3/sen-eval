@@ -71,13 +71,13 @@ watch(() => props.periods, function (next) {
                     <Link
                         :href="route('phaseSkills.show',{phaseSkill: phase.phase_id})"
                         as="button"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
                         Compétences
                     </Link>
                     <Link
                         :href="route('periods.show',{period: phase.phase_id})"
                         as="button"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
                         Périodes d'évaluation
                     </Link>
                 </div>
@@ -90,7 +90,7 @@ watch(() => props.periods, function (next) {
                     <Link
                         :href="route('periods.create',{phase: phase.phase_id})"
                         as="button"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
                         Nouvelle Période
                         <PlusIcon class="-mr-0.5 h-5 w-5"/>
                     </Link>
@@ -116,7 +116,7 @@ watch(() => props.periods, function (next) {
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">
                                 <Link :href="route('periods.edit', {period: period.evaluation_period_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
+                                    <PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-s-pink-600"/>
                                 </Link>
                                 <a class="group flex items-center px-4 py-2 text-sm" href="#" @click="destroy(period.evaluation_period_id)">
                                     <TrashIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-red-600"/>

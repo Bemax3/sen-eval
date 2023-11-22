@@ -22,7 +22,7 @@ const submit = () => {
                     <img aria-hidden="true" class="object-cover w-30 h-30 alt=Office" src="../../assets/logo1637145113.png">
                 </div>
                 <div class="flex items-center justify-center flex-col p-12 sm:p-12 md:w-2/3">
-                    <h1 class="mb-4 font-bold text-3xl text-cyan-900">
+                    <h1 class="mb-4 font-bold text-3xl text-s-pink-900">
                         Système d'Évaluation du Personnel
                     </h1>
                     <h1 class="mb-2 font-semibold text-xl text-gray-700">
@@ -40,7 +40,7 @@ const submit = () => {
                             </div>
                             <hr class="my-8">
                             <button :disabled="form.processing"
-                                    class="block w-full px-4 py-2 mt-4 text-lg font-medium leading-5 text-center text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-lg active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:shadow-outline-cyan">
+                                    class="block w-full px-4 py-2 mt-4 text-lg font-medium leading-5 text-center text-white transition-colors duration-150 bg-s-pink-800  border border-transparent rounded-lg active:bg-s-pink-800  hover:bg-s-pink-900     focus:outline-none focus:shadow-outline-s-pink">
                                 Enregistrer
                             </button>
                         </form>

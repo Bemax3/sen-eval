@@ -56,7 +56,7 @@ setForm();
 
 <template>
     <AuthenticatedLayout>
-        <Head title="Paramètre de Phase"/>
+        <Head title="Nouvelle Période de Phase"/>
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
@@ -70,13 +70,13 @@ setForm();
                     <Link
                         :href="route('phaseSkills.show',{phaseSkill: phase.phase_id})"
                         as="button"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
                         Compétences
                     </Link>
                     <Link
                         :href="route('periods.show',{period: phase.phase_id})"
                         as="button"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
                         Périodes d'évaluation
                     </Link>
                 </div>
@@ -101,7 +101,7 @@ setForm();
                     </div>
                     <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
                         <FormIndications/>
-                        <SubmitButton :disabled="form.processing"> Enregistrer</SubmitButton>
+                        <SubmitButton :processing="form.processing"> Enregistrer</SubmitButton>
                     </div>
                 </form>
             </div>

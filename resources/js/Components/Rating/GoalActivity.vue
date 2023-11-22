@@ -40,14 +40,14 @@ const activity = computed(() => {
             </div>
             <template v-if="activityItem.type === 'commented'">
                 <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
-                    <ChatBubbleOvalLeftEllipsisIcon aria-hidden="true" class="h-6 w-6 text-cyan-600"/>
+                    <ChatBubbleOvalLeftEllipsisIcon aria-hidden="true" class="h-6 w-6 text-s-pink-600"/>
                 </div>
                 <div class="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                     <div class="flex justify-between gap-x-4">
                         <div class="py-0.5 text-xs leading-5 text-gray-500">
                             <span class="font-medium text-gray-900">{{ activityItem.person.name }}</span> a commenté
                             <br><span class="font-medium text-gray-900">Taux de réalisation</span>
-                            <span class="ml-1 text-sm font-semibold text-cyan-700"> {{ activityItem.rate }} % </span>
+                            <span class="ml-1 text-sm font-semibold text-s-pink-700"> {{ activityItem.rate }} % </span>
                         </div>
                         <time :datetime="activityItem.dateTime" class="flex-auto text-right py-0.5 text-xs leading-5 text-gray-500">
                             {{ activityItem.date }}
@@ -66,7 +66,7 @@ const activity = computed(() => {
                         <div class="py-0.5 text-xs leading-5 text-gray-500">
                             <span class="font-medium text-gray-900">{{ activityItem.person.name }}</span> {{ activityItem.type }} l'objectif.
                             <br><span class="font-medium text-gray-900">Taux de réalisation</span>
-                            <span class="ml-1 text-sm font-semibold text-cyan-700"> {{ activityItem.rate }} % </span>
+                            <span class="ml-1 text-sm font-semibold text-s-pink-700"> {{ activityItem.rate }} % </span>
                         </div>
                         <time :datetime="activityItem.dateTime" class="flex-auto text-right py-0.5 text-xs leading-5 text-gray-500">{{ activityItem.date }}</time>
                     </div>

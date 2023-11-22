@@ -19,7 +19,8 @@ class UserService
 
     public function findSameOrgUsers($user): \Illuminate\Database\Eloquent\Collection|array|\LaravelIdea\Helper\App\Models\_IH_User_C
     {
-        return User::where('user_id', '!=', $user->user_id)->whereHas('org', function ($query) use ($user) {
+        return User::where('user_id', '!=', $user->user_id)->
+        whereHas('org', function ($query) use ($user) {
             $query->where('organisations.org_id', '=', $user->org->org_id)
                 ->orWhere('organisations.org_id', '=', $user->org->parent_id)
                 ->orWhere('organisations.parent_id', '=', $user->org->parent_id);

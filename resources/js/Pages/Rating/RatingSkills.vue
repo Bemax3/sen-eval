@@ -50,7 +50,7 @@ const validation = computed(() => props.validators.filter(v => v.validator_id ==
 const commentForm = useForm({
     validator_id: validation.value?.validator_id,
     rating_validator_comment: validation.value?.rating_validator_comment || '',
-    new_validator: props.agent_n2.user_id || null
+    new_validator: props.agent_n2?.user_id || props.others[0].user_id
 })
 
 const others = props.others;
@@ -100,7 +100,7 @@ watch(() => query.value, function (next) {
 
 <template>
     <AuthenticatedLayout>
-        <Head title="Profil"/>
+        <Head title="Évaluation"/>
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
@@ -243,7 +243,7 @@ watch(() => query.value, function (next) {
                                                 :class="commentForm.errors.validator_id !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"
                                                 :display-value="(id) => { let selected = filteredN1.filter(n => n.user_id === id)[0];
                                                                     return selected ? selected.user_matricule + ' ' + selected.user_display_name : agent_n2.user_matricule + ' ' + agent_n2.user_display_name}"
-                                                class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                                                class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
                                                 placeholder="Trouver votre N + 1"
                                                 @change="searchAgent.keyword = query = $event.target.value; "/>
                                             <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
@@ -253,14 +253,14 @@ watch(() => query.value, function (next) {
                                                              class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" v-slot="{ active, selected }" :value="n1.user_id"
                                                                 as="template">
-                                                    <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600 text-white' : 'text-gray-900']">
+                                                    <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-s-pink-800  text-white' : 'text-gray-900']">
                                                         <div class="flex">
                                                         <span :class="['truncate', selected && 'font-semibold']">
                                                             {{ n1?.user_matricule + ' ' + n1?.user_display_name }}
                                                         </span>
                                                         </div>
                                                         <span v-if="selected"
-                                                              :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">
+                                                              :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-s-pink-600']">
                                                         <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                     </span>
                                                     </li>
@@ -279,7 +279,7 @@ watch(() => query.value, function (next) {
                                     Enregistrer
                                 </SubmitButton>
                                 <button
-                                    :class="rating.rating_is_validated ? 'bg-gray-600' : 'bg-cyan-600 focus-visible:outline-cyan-600 hover:bg-cyan-500'"
+                                    :class="rating.rating_is_validated ? 'bg-gray-600' : 'bg-s-pink-800  focus-visible:outline-s-pink-600 hover:bg-s-pink-900    '"
                                     :disabled="rating.rating_is_validated"
                                     class="inline-flex gap-x-1.5 disabled:opacity-70 rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  mt-3 sm:ml-3 sm:mt-0 sm:w-auto"
                                     @click.prevent="open = true">Valider

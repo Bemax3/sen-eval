@@ -128,7 +128,7 @@ watch(() => queryOrgs.value, function (next) {
                     <form class="md:col-span-2">
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                             <div class="col-span-full flex items-center gap-x-8">
-                                <img alt="" class="h-24 w-24 flex-none rounded-lg bg-cyan-600 object-cover"/>
+                                <img alt="" class="h-24 w-24 flex-none rounded-lg bg-s-pink-800  object-cover"/>
                             </div>
                             <div class="sm:col-span-3">
                                 <label class="block text-sm font-medium leading-6 text-gray-900" for="first-name">Prénom</label>
@@ -160,7 +160,7 @@ watch(() => queryOrgs.value, function (next) {
                         </div>
                         <!--                        <div class="mt-8 flex">-->
                         <!--                            <button :disabled="true"-->
-                        <!--                                    class="inline-flex gap-x-1.5 disabled:opacity-70 rounded-md bg-cyan-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"-->
+                        <!--                                    class="inline-flex gap-x-1.5 disabled:opacity-70 rounded-md bg-s-pink-800  px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"-->
                         <!--                                    type="submit">-->
                         <!--                                Enregistrer-->
                         <!--                                <CheckIcon class="text-white -mr-0.5 h-5 w-5"/>-->
@@ -182,7 +182,7 @@ watch(() => queryOrgs.value, function (next) {
                                         <ComboboxInput
                                             :display-value="(id) => { let selected = filteredOrgs.filter(org => org.org_id === id)[0] || user.org ;
                                                 return selected ? selected.org_name + ' ' + selected.org_responsibility_center : 'Non défini'}"
-                                            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                                            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
                                             @change="searchOrgs.keyword = queryOrgs = $event.target.value; "/>
                                         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                             <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -191,14 +191,14 @@ watch(() => queryOrgs.value, function (next) {
                                                          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                             <ComboboxOption v-for="org in filteredOrgs" :key="org.org_id" v-slot="{ active, selected }" :value="org.org_id"
                                                             as="template">
-                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600 text-white' : 'text-gray-900']">
+                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-s-pink-800  text-white' : 'text-gray-900']">
                                                     <div class="flex">
                                                         <span :class="['truncate', selected && 'font-semibold']">
                                                             {{ org?.org_name + ' --> ' + org?.org_responsibility_center }}
                                                         </span>
                                                     </div>
                                                     <span v-if="selected"
-                                                          :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">
+                                                          :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-s-pink-600']">
                                                     <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                 </span>
                                                 </li>
@@ -291,7 +291,7 @@ watch(() => queryOrgs.value, function (next) {
                                     <Listbox v-model="form.role_id" as="div">
                                         <div class="relative mt-2">
                                             <ListboxButton
-                                                class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6">
+                                                class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-s-pink-800 sm:text-sm sm:leading-6">
                                                 <span class="block truncate">{{ roles.filter((type) => type.role_id === form.role_id)[0].role_name }}</span>
                                                 <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                                 <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -302,10 +302,10 @@ watch(() => queryOrgs.value, function (next) {
                                                     class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                     <ListboxOption v-for="type in roles" :key="type.role_id" v-slot="{ active, selected }" :value="type.role_id"
                                                                    as="template">
-                                                        <li :class="[active ? 'bg-cyan-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                        <li :class="[active ? 'bg-s-pink-800  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.role_name }}</span>
                                                             <span v-if="selected"
-                                                                  :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                                  :class="[active ? 'text-white' : 'text-s-pink-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                                             <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                         </span>
                                                         </li>
@@ -323,7 +323,7 @@ watch(() => queryOrgs.value, function (next) {
                                         <ComboboxInput
                                             :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0] || user.n1 ;
                                                 return selected ? selected.user_matricule + ' ' + selected.user_display_name : 'Non défini'}"
-                                            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                                            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
                                             @change="search.keyword = query = $event.target.value; "/>
                                         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                             <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -331,14 +331,14 @@ watch(() => queryOrgs.value, function (next) {
                                         <ComboboxOptions v-if="filteredN1.length > 0"
                                                          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                             <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" v-slot="{ active, selected }" :value="n1.user_id" as="template">
-                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600 text-white' : 'text-gray-900']">
+                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-s-pink-800  text-white' : 'text-gray-900']">
                                                     <div class="flex">
                                                         <span :class="['truncate', selected && 'font-semibold']">
                                                             {{ n1?.user_matricule + ' ' + n1?.user_display_name }}
                                                         </span>
                                                     </div>
                                                     <span v-if="selected"
-                                                          :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">
+                                                          :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-s-pink-600']">
                                                     <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                 </span>
                                                 </li>
@@ -349,7 +349,7 @@ watch(() => queryOrgs.value, function (next) {
                             </div>
                         </div>
                         <div class="mt-8 flex">
-                            <SubmitButton>Enregistrer</SubmitButton>
+                            <SubmitButton :processing="form.processing">Enregistrer</SubmitButton>
                         </div>
                     </form>
                 </div>

@@ -49,12 +49,14 @@ const userNavigation = [
                         <MenuItems
                             class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                             <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                                <Link :class="[active ? 'bg-cyan-500 text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']" :href="item.href" as="span">
+                                <Link :class="[active ? 'bg-s-pink-800  text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']" :href="item.href"
+                                      as="span">
                                     {{ item.name }}
                                 </Link>
                             </MenuItem>
                             <MenuItem v-slot="{active}">
-                                <Link :class="[active ? 'bg-cyan-500 text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']" :href="route('logout')"
+                                <Link :class="[active ? 'bg-s-pink-800  text-white' : 'text-gray-900', 'block px-3 py-1 text-sm leading-6 ']"
+                                      :href="route('logout')"
                                       as="span" method="post">
                                     Déconnexion
                                 </Link>

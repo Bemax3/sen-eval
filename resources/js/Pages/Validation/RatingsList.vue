@@ -36,7 +36,7 @@ watch(() => search.keyword,
 
 <template>
     <AuthenticatedLayout>
-        <Head title="Profil"/>
+        <Head title="À Valider"/>
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
@@ -55,6 +55,7 @@ watch(() => search.keyword,
                         <TableHeading>Évalué</TableHeading>
                         <TableHeading>Année</TableHeading>
                         <TableHeading>Note</TableHeading>
+                        <TableHeading>Validation</TableHeading>
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
@@ -70,9 +71,15 @@ watch(() => search.keyword,
                         <TableData>
                             <span class="flex-shrink-0">
                                 <span
-                                    class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
-                                    <span class="text-cyan-600">{{ e.rating_mark }}</span>
+                                    class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-s-pink-600">
+                                    <span class="text-s-pink-600">{{ e.rating_mark }}</span>
                                 </span>
+                            </span>
+                        </TableData>
+                        <TableData>
+                            <span :class="e.rating_is_validated ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
+                                  class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
+                                {{ e.rating_is_validated ? 'Validé' : 'En attende' }}
                             </span>
                         </TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

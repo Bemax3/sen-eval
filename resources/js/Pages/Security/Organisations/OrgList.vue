@@ -83,7 +83,7 @@ watch(() => props.orgs,
                                     <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
                                 </Link>
                                 <Link :href="route('orgs.edit', {org: org.org_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
+                                    <PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-s-pink-600"/>
                                 </Link>
                             </div>
                         </td>

@@ -40,6 +40,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/mailable', function () {
+    $rating = \App\Models\Rating\Rating::where('evaluator_id', '=', 65)->first();
+//    Mail::to('st_massamba.niang@senelec.sn')->send(new \App\Mail\RatingCreated($rating));
+//    return new App\Mail\RatingValidatedBy($rating, $rating->validators()->offset(1)->first());
+    return new App\Mail\RatingValidatedBy($rating, $rating->validators()->first());
+});
+
 Route::get('/', [HomeController::class, 'index'])->middleware('auth', 'viewer')->name('home');
 Route::group(['middleware' => ['auth']], function () {
     Route::put('/goals/{goal}/updateMark', [GoalsController::class, 'updateMark'])->name('goals.update-mark');

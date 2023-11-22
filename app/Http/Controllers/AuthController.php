@@ -23,13 +23,14 @@ class AuthController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        if (!$request->authenticateFromDb()) {
-            $request->authenticate();
-            $user = Auth::user();
-            if (!$user->user_matricule) return redirect()->route('profile.show', ['profile' => $user->user_id]);
-            ImportUsersFromOracle::updateUserWithOracleData($user);
-            alert_success('Connexion réussie !');
-        }
+        if (!Auth::viaRemember())
+            if (!$request->authenticateFromDb()) {
+                $request->authenticate();
+                $user = Auth::user();
+                if (!$user->user_matricule) return redirect()->route('profile.show', ['profile' => $user->user_id]);
+                ImportUsersFromOracle::updateUserWithOracleData($user);
+                alert_success('Connexion réussie !');
+            }
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);

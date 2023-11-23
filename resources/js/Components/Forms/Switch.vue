@@ -40,7 +40,7 @@ const emit = defineEmits(['update:modelValue']);
             <SwitchDescription as="span" class="text-sm text-gray-500">{{ desc }}</SwitchDescription>
         </span>
         <Switch v-model="enabled"
-                :class="[enabled ? 'bg-s-pink-800 ' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-s-pink-800 focus:ring-offset-2']"
+                :class="[enabled ? 'bg-cyan-600 ' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-700 focus:ring-offset-2']"
                 :disabled="disabled">
             <span
                 :class="[enabled ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"

@@ -27,7 +27,7 @@ const props = defineProps({
         <p class="mt-1 text-sm text-gray-500">{{ message }}</p>
         <div v-if="action" class="mt-6">
             <Link :href="link" as="button"
-                  class="inline-flex items-center rounded-md bg-s-pink-800  px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
+                  class="inline-flex items-center rounded-md bg-cyan-600  px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                 {{ action }}
                 <PlusIcon aria-hidden="true" class="ml-1.5 h-5 w-5"/>
             </Link>

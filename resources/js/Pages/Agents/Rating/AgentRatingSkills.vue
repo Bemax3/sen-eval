@@ -182,7 +182,7 @@ watch(() => query.value, function (next) {
                                 <Listbox v-model="form.phase_skill_id" as="div">
                                     <div class="relative">
                                         <ListboxButton
-                                            class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-s-pink-800 sm:text-sm sm:leading-6">
+                                            class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                             <span v-if="hasData(specific_skill_types)"
                                                   class="block truncate">{{ specific_skill_types.filter((type) => type.pivot.phase_skill_id === form.phase_skill_id)[0].skill_name
                                                 }}</span>
@@ -196,10 +196,10 @@ watch(() => query.value, function (next) {
                                                             class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 <ListboxOption v-for="type in specific_skill_types" :key="type.skill_id" v-slot="{ active, selected }"
                                                                :value="type.pivot.phase_skill_id" as="template">
-                                                    <li :class="[active ? 'bg-s-pink-800  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                    <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                         <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.skill_name }}</span>
                                                         <span v-if="selected"
-                                                              :class="[active ? 'text-white' : 'text-s-pink-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                              :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                                             <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                         </span>
                                                     </li>
@@ -250,7 +250,7 @@ watch(() => query.value, function (next) {
                                     </template>
                                     <template v-else>
                                         <input :ref="el => {inputs[skill.rating_skill_id] = el}" :value="skill.rating_skill_mark"
-                                               class="w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
+                                               class="w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                                type="text"/>
                                     </template>
                                     <p class="ml-0.5 font-bold">
@@ -259,7 +259,7 @@ watch(() => query.value, function (next) {
                                     <template v-if="!rating.rating_is_validated">
                                         <template v-if="!editMark(skill.rating_skill_id)">
                                             <button
-                                                class="rounded-full bg-s-pink-800  p-2 text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                                                class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                                 type="button"
                                                 @click="edits.find(s => s.id === skill.rating_skill_id).edit = true">
                                                 <PencilSquareIcon aria-hidden="true" class="h-5 w-5"/>
@@ -267,7 +267,7 @@ watch(() => query.value, function (next) {
                                         </template>
                                         <template v-else>
                                             <button
-                                                class="rounded-full bg-s-pink-800  p-2 text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                                                class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                                 type="button"
                                                 @click="updateMark(skill.rating_skill_id,skill.phase_skill.phase_skill_marking)">
                                                 <CheckIcon aria-hidden="true" class="h-5 w-5"/>
@@ -314,7 +314,7 @@ watch(() => query.value, function (next) {
                                     </template>
                                     <template v-else>
                                         <input :ref="el => {inputs[skill.rating_skill_id] = el}" :value="skill.rating_skill_mark"
-                                               class=" w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
+                                               class=" w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                                type="text"/>
                                     </template>
                                     <p class="ml-0.5 font-bold">
@@ -323,7 +323,7 @@ watch(() => query.value, function (next) {
                                     <template v-if="!rating.rating_is_validated">
                                         <template v-if="!editMark(skill.rating_skill_id)">
                                             <button
-                                                class="rounded-full bg-s-pink-800  p-2 text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                                                class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                                 type="button"
                                                 @click="edits.find(s => s.id === skill.rating_skill_id).edit = true">
                                                 <PencilSquareIcon aria-hidden="true" class="h-5 w-5"/>
@@ -331,7 +331,7 @@ watch(() => query.value, function (next) {
                                         </template>
                                         <template v-else>
                                             <button
-                                                class="rounded-full bg-s-pink-800  p-2 text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                                                class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                                 type="button"
                                                 @click="updateMark(skill.rating_skill_id,skill.phase_skill.phase_skill_marking)">
                                                 <CheckIcon aria-hidden="true" class="h-5 w-5"/>
@@ -374,7 +374,7 @@ watch(() => query.value, function (next) {
                                     </template>
                                     <template v-else>
                                         <input :ref="el => {inputs['goal_' + goal.goal_id] = el}" :value="goal.goal_mark"
-                                               class=" w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
+                                               class=" w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                                type="text"/>
                                     </template>
                                     <p class="ml-0.5 font-bold">
@@ -383,7 +383,7 @@ watch(() => query.value, function (next) {
                                     <template v-if="!rating.rating_is_validated">
                                         <template v-if="!editMark('goal_' + goal.goal_id)">
                                             <button
-                                                class="rounded-full bg-s-pink-800  p-2 text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                                                class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                                 type="button"
                                                 @click="edits.find(s => s.id === ('goal_' + goal.goal_id)).edit = true">
                                                 <PencilSquareIcon aria-hidden="true" class="h-5 w-5"/>
@@ -391,7 +391,7 @@ watch(() => query.value, function (next) {
                                         </template>
                                         <template v-else>
                                             <button
-                                                class="rounded-full bg-s-pink-800  p-2 text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                                                class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                                 type="button"
                                                 @click="updateGoal(goal.goal_id,goal.goal_marking)">
                                                 <CheckIcon aria-hidden="true" class="h-5 w-5"/>
@@ -450,7 +450,7 @@ watch(() => query.value, function (next) {
                                                 :class="commentForm.errors.new_validator !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"
                                                 :display-value="(id) => { let selected = filteredN1.filter(n => n.user_id === id)[0];
                                                                     return selected ? selected.user_matricule + ' ' + selected.user_display_name : commentForm.new_validator.user_matricule + ' ' + commentForm.new_validator.user_display_name}"
-                                                class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
+                                                class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                                 placeholder="Trouver votre N + 1"
                                                 @change="searchAgent.keyword = query = $event.target.value; "/>
                                             <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
@@ -460,14 +460,14 @@ watch(() => query.value, function (next) {
                                                              class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" v-slot="{ active, selected }" :value="n1.user_id"
                                                                 as="template">
-                                                    <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-s-pink-800  text-white' : 'text-gray-900']">
+                                                    <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900']">
                                                         <div class="flex">
                                                         <span :class="['truncate', selected && 'font-semibold']">
                                                             {{ n1?.user_matricule + ' ' + n1?.user_display_name }}
                                                         </span>
                                                         </div>
                                                         <span v-if="selected"
-                                                              :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-s-pink-600']">
+                                                              :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">
                                                         <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                     </span>
                                                     </li>
@@ -477,7 +477,7 @@ watch(() => query.value, function (next) {
                                     </Combobox>
                                 </div>
                                 <div class=" mt-3 flex items-center">
-                                    <input id="remember-n1" v-model="commentForm.remember" class="h-4 w-4 rounded border-gray-300 text-s-pink-800 focus:ring-s-pink-800"
+                                    <input id="remember-n1" v-model="commentForm.remember" class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-700"
                                            name="remember-n1"
                                            type="checkbox"/>
                                     <label class="ml-3 block text-sm leading-6 text-gray-900" for="remember-n1">Sauvegarder en tant que mon N + 1</label>
@@ -492,7 +492,7 @@ watch(() => query.value, function (next) {
                                     Enregistrer
                                 </SubmitButton>
                                 <button
-                                    :class="rating.rating_is_validated ? 'bg-gray-600' : 'bg-s-pink-800  focus-visible:outline-s-pink-600 hover:bg-s-pink-900    '"
+                                    :class="rating.rating_is_validated ? 'bg-gray-600' : 'bg-cyan-600  focus-visible:outline-cyan-600 hover:bg-cyan-700    '"
                                     :disabled="rating.rating_is_validated"
                                     class="inline-flex gap-x-1.5 disabled:opacity-70 rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  mt-3 sm:ml-3 sm:mt-0 sm:w-auto"
                                     @click.prevent="open = true">Valider

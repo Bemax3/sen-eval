@@ -15,7 +15,7 @@ import {Link} from "@inertiajs/vue3";
             <Link
                 :href="route('agents.index')"
                 as="button"
-                class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
+                class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                 <ChevronDoubleLeftIcon class="-mr-0.5 h-5 w-5"/>
                 Retour
             </Link>

@@ -80,10 +80,10 @@ watch(() => props.orgs,
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">
                                 <Link :href="route('orgs.show', {org: org.org_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
+                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
                                 </Link>
                                 <Link :href="route('orgs.edit', {org: org.org_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-s-pink-600"/>
+                                    <PencilSquareIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
                                 </Link>
                             </div>
                         </td>

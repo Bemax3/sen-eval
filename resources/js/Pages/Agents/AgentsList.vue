@@ -107,7 +107,7 @@ watch(() => props.agents, function (next) {
                                         :class="form.errors.agent_id !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"
                                         :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0];
                                                             return selected ? selected.user_matricule + ' ' + selected.user_display_name : ''}"
-                                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-s-pink-800 sm:text-sm sm:leading-6"
+                                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                         placeholder="Chercher un agent..."
                                         @change="searchAgent.keyword = query = $event.target.value; "/>
                                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
@@ -116,14 +116,14 @@ watch(() => props.agents, function (next) {
                                     <ComboboxOptions v-if="filteredN1.length > 0"
                                                      class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                         <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" v-slot="{ active, selected }" :value="n1.user_id" as="template">
-                                            <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-s-pink-800  text-white' : 'text-gray-900']">
+                                            <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900']">
                                                 <div class="flex">
                                                     <span :class="['truncate', selected && 'font-semibold']">
                                                         {{ n1?.user_matricule + ' ' + n1?.user_display_name }}
                                                     </span>
                                                 </div>
                                                 <span v-if="selected"
-                                                      :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-s-pink-600']">
+                                                      :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-cyan-600']">
                                                     <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                 </span>
                                             </li>
@@ -163,7 +163,7 @@ watch(() => props.agents, function (next) {
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">
                                 <Link :href="route('agent-ratings.index', {agent: user.user_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
+                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
                                 </Link>
                                 <Link :href="route('agents.show', {agent: user.user_id})" class="group flex items-center px-4 py-2 text-sm">
                                     <IdentificationIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>

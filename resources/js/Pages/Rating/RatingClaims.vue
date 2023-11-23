@@ -102,7 +102,7 @@ watch(() => props.claims,
                                 <div class="relative">
                                     <ListboxButton
                                         :class="form.errors.phase_id ? 'ring-red-300':'ring-gray-300'"
-                                        class="w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-s-pink-800 sm:text-sm sm:leading-6">
+                                        class="w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                         <span v-if="hasData(types)"
                                               class="block truncate">{{ types.filter((type) => type.claim_type_id === form.claim_type_id)[0].claim_type_name }}</span>
                                         <span v-else class="block truncate">Aucune réclamation disponible pour l'instant.</span>
@@ -115,10 +115,10 @@ watch(() => props.claims,
                                                         class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                             <ListboxOption v-for="type in types" :key="type.claim_type_id" v-slot="{ active, selected }" :value="type.claim_type_id"
                                                            as="template">
-                                                <li :class="[active ? 'bg-s-pink-800  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                     <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.claim_type_name }}</span>
                                                     <span v-if="selected"
-                                                          :class="[active ? 'text-white' : 'text-s-pink-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                          :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                                     <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                 </span>
                                                 </li>
@@ -162,7 +162,7 @@ watch(() => props.claims,
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div v-if="isEvaluated && !rating.rating_is_validated" class="flex items-center justify-center gap-2">
                                 <button
-                                    class="rounded-lg bg-s-pink-800  p-2 text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                                    class="rounded-lg bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                     type="button"
                                     @click="setupEdit(claim.rating_claim_id)">
                                     <PencilSquareIcon aria-hidden="true" class="h-5 w-5"/>

@@ -57,7 +57,7 @@ export default {
                     '900': '#950660',
                     '950': '#5c0037',
                 },
-                "vtd-primary": colors.fuchsia,
+                "vtd-primary": colors.cyan,
 
             }
         },

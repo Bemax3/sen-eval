@@ -96,7 +96,7 @@ watch(() => props.trainings,
                                 <div class="relative">
                                     <ListboxButton
                                         :class="form.errors.phase_id ? 'ring-red-300':'ring-gray-300'"
-                                        class="w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-s-pink-800 sm:text-sm sm:leading-6">
+                                        class="w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                         <span v-if="hasData(types)"
                                               class="block truncate">{{ types.filter((type) => type.training_type_id === form.training_type_id)[0].training_type_name
                                             }}</span>
@@ -111,10 +111,10 @@ watch(() => props.trainings,
                                             <ListboxOption v-for="type in types" :key="type.training_type_id" v-slot="{ active, selected }"
                                                            :value="type.training_type_id"
                                                            as="template">
-                                                <li :class="[active ? 'bg-s-pink-800  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                     <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.training_type_name }}</span>
                                                     <span v-if="selected"
-                                                          :class="[active ? 'text-white' : 'text-s-pink-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                                                          :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                                     <CheckIcon aria-hidden="true" class="h-5 w-5"/>
                                                 </span>
                                                 </li>

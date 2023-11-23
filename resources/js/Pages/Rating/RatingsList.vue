@@ -69,8 +69,8 @@ watch(() => search.keyword,
                         <TableData>{{ e.phase.phase_year }}</TableData>
                         <TableData>
                             <span class="flex-shrink-0">
-                                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-s-pink-900">
-                                    <span class="text-s-pink-900">{{ e.rating_mark }}</span>
+                                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                    <span class="text-cyan-700">{{ e.rating_mark }}</span>
                                 </span>
                             </span>
                         </TableData>
@@ -83,7 +83,7 @@ watch(() => search.keyword,
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div class="flex items-center justify-center">
                                 <Link :href="route('ratings.show', {rating: e.rating_id})" class="group flex items-center px-4 py-2 text-sm">
-                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
+                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
                                 </Link>
                             </div>
                         </td>

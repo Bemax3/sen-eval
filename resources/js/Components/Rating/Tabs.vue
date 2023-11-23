@@ -51,7 +51,7 @@ const changeTab = () => {
                 <label class="sr-only" for="current-tab">Select a tab</label>
                 <select id="current-tab"
                         v-model="selectedTab"
-                        class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-s-pink-900 focus:outline-none focus:ring-s-pink-500 sm:text-sm"
+                        class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-cyan-600 focus:outline-none focus:ring-cyan-500 sm:text-sm"
                         name="current-tab"
                         @change="changeTab">
                     <option v-for="tab in tabs" :key="tab.name" :selected="tab.current" :value="tab">{{ tab.name }}</option>
@@ -60,7 +60,7 @@ const changeTab = () => {
             <div class="hidden sm:block">
                 <nav class="-mb-px flex space-x-8">
                     <Link v-for="tab in tabs" :key="tab.name" :aria-current="tab.current ? 'page' : undefined"
-                          :class="[tab.current ? 'border-s-pink-900 text-s-pink-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium']"
+                          :class="[tab.current ? 'border-cyan-600 text-cyan-700' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium']"
                           :href="tab.href">{{ tab.name }}
                     </Link>
                 </nav>

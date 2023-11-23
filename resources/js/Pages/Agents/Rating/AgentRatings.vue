@@ -51,7 +51,7 @@ watch(() => search.keyword, function (next) {
                 <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <Link
                         :href="route('agent-goals.index',{agent: agent.user_id})"
-                        class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                     >
                         Objectif
                         <ChevronDoubleRightIcon class="-mr-0.5 h-5 w-5"/>
@@ -64,7 +64,7 @@ watch(() => search.keyword, function (next) {
                 <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <Link
                         :href="route('agent-ratings.create',{agent: agent.user_id})"
-                        class="inline-flex gap-x-1.5 rounded-md bg-s-pink-800  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-s-pink-900     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-s-pink-600">
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                         Évaluer cet agent
                         <PlusIcon class="-mr-0.5 h-5 w-5"/>
                     </Link>
@@ -89,8 +89,8 @@ watch(() => search.keyword, function (next) {
                         <TableData>{{ e.phase.phase_year }}</TableData>
                         <TableData>
                             <span class="flex-shrink-0">
-                                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-s-pink-900">
-                                    <span class="text-s-pink-900">{{ e.rating_mark }}</span>
+                                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cyan-600">
+                                    <span class="text-cyan-700">{{ e.rating_mark }}</span>
                                 </span>
                             </span>
                         </TableData>
@@ -104,7 +104,7 @@ watch(() => search.keyword, function (next) {
                             <div class="flex items-center justify-center">
                                 <Link :href="route('agent-ratings.show', {agent: agent.user_id,agent_rating: e.rating_id})"
                                       class="group flex items-center px-4 py-2 text-sm">
-                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-amber-600"/>
+                                    <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
                                 </Link>
                             </div>
                         </td>

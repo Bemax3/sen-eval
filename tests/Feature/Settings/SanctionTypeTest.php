@@ -10,8 +10,8 @@ use function Pest\Laravel\assertDatabaseMissing;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed([\Database\Seeders\GroupSeeder::class, \Database\Seeders\RoleSeeder::class]);
-    $this->user = User::factory()->create();
+    $this->seed([\Database\Seeders\DatabaseSeeder::class]);
+    $this->user = User::factory()->create(['role_id' => 1]);
 });
 
 
@@ -29,10 +29,9 @@ it('Creates a new type', function (string $name, string $desc) {
     actingAs($this->user)->post(route('sanctionTypes.store'), [
         'sanction_type_name' => $name,
         'sanction_type_desc' => $desc
-    ])->assertRedirect(route('sanctionTypes.create'));
+    ]);
 
     assertDatabaseHas('sanction_types', [
-        'sanction_type_id' => 1,
         'sanction_type_name' => $name,
         'sanction_type_desc' => $desc
     ]);

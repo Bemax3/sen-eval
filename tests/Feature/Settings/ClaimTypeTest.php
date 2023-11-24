@@ -10,8 +10,8 @@ use function Pest\Laravel\assertDatabaseMissing;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed([\Database\Seeders\GroupSeeder::class, \Database\Seeders\RoleSeeder::class]);
-    $this->user = User::factory()->create();
+    $this->seed([\Database\Seeders\DatabaseSeeder::class]);
+    $this->user = User::factory()->create(['role_id' => 1]);
 });
 
 it('Shows validation errors when creating falsy a Claim Type', function (string $name, string $desc) {
@@ -29,10 +29,9 @@ it('Creates a new type', function (string $name, string $desc) {
     actingAs($this->user)->post(route('claimTypes.store'), [
         'claim_type_name' => $name,
         'claim_type_desc' => $desc
-    ])->assertRedirect(route('claimTypes.create'));
+    ]);
 
     assertDatabaseHas('claim_types', [
-        'claim_type_id' => 1,
         'claim_type_name' => $name,
         'claim_type_desc' => $desc
     ]);

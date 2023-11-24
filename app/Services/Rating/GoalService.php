@@ -133,7 +133,6 @@ class GoalService
     public function updateAgentComment(mixed $validated, string $id): void
     {
         $goal = Goal::findOrFail($id);
-//        $goal->update($validated);
         GoalHistory::create([
             'goal_id' => $goal->goal_id,
             'goal_rate' => $goal->goal_rate,

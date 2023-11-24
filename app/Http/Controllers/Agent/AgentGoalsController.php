@@ -8,7 +8,6 @@ use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Goal\PeriodGoalsCountLimitReachedException;
 use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\Rating\GoalRateCantBeLowerThanBeforeException;
-use App\Exceptions\UnknownException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveAgentGoalRequest;
 use App\Http\Requests\Utilities\SearchRequest;
@@ -108,7 +107,7 @@ class AgentGoalsController extends Controller
 
             $this->goalService->destroy(intval($goal_id));
             alert_success('Objectif Supprimé avec succès.');
-        } catch (NotEnoughGoalsException|ModelNotFoundException|UnknownException $e) {
+        } catch (NotEnoughGoalsException|ModelNotFoundException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();
@@ -117,7 +116,6 @@ class AgentGoalsController extends Controller
 
     public function search(SearchRequest $request, string $agent_id)
     {
-//        ray($agent_id);
         try {
             $data = $request->validated();
             $searchResults = (new Search())

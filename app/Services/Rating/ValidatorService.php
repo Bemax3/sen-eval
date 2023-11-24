@@ -4,6 +4,7 @@ namespace App\Services\Rating;
 
 use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Rating\CantUpdateValidatedRatingException;
+use App\Exceptions\Rating\CantValidateRatingOutOfEvaluationPeriodsException;
 use App\Exceptions\Rating\EvaluatedHasNotValidatedException;
 use App\Exceptions\Rating\NotEnoughSpecificSkillsException;
 use App\Exceptions\Rating\NotRatedCorrectlyException;
@@ -42,11 +43,17 @@ class ValidatorService
      * @throws NotEnoughSpecificSkillsException
      * @throws NotRatedCorrectlyException
      * @throws CantUpdateValidatedRatingException
+     * @throws CantValidateRatingOutOfEvaluationPeriodsException
      */
     public function update(string $validation, mixed $validated): void
     {
         $validator = Validator::findOrFail($validation);
-        if ((new ValidatorService())->checkForAllValidation(Rating::findOrFail($validator->rating_id))) throw new CantUpdateValidatedRatingException();
+
+        $rating = Rating::findOrFail($validator->rating_id);
+
+        if (!$this->checkForEvaluationPeriods($rating)) throw new CantValidateRatingOutOfEvaluationPeriodsException();
+
+        if ($this->checkForAllValidation($rating)) throw new CantUpdateValidatedRatingException();
 
         if (isset($validated['remember']) && $validated['remember']) User::findOrFail(\Auth::id())->update(['n1_id' => $validated['new_validator']]);
 
@@ -61,7 +68,6 @@ class ValidatorService
         }
 
         if (isset($validated['has_validated'])) {
-            $rating = Rating::findOrFail($validator->rating_id);
             if (!(new RatingSkillService())->checkSkills($rating)) throw new NotEnoughSpecificSkillsException();
             if (!(new GoalService())->checkGoals($rating)) throw new NotEnoughGoalsException();
             if ($rating->skills()->where('rating_skill_mark', '=', 0)->exists() || $rating->goals()->where('goal_mark', '=', 0)->exists()) throw new NotRatedCorrectlyException();
@@ -79,6 +85,16 @@ class ValidatorService
 
     }
 
+    public function checkForEvaluationPeriods($rating): bool
+    {
+        $periods = $rating->phase->periods()->get();
+        foreach ($periods as $period) {
+            if (Carbon::today()->isBetween($period->evaluation_period_start, $period->evaluation_period_end)) return true;
+        }
+        return false;
+
+    }
+
     public function checkForAllValidation($rating): bool
     {
         if (Validator::where('rating_id', '=', $rating->rating_id)
@@ -88,12 +104,12 @@ class ValidatorService
 
     public function checkForEvaluatedValidation($rating): bool
     {
+
         if (Validator::where('rating_id', '=', $rating->rating_id)
             ->where('validator_id', '=', $rating->evaluated_id)
             ->where('has_validated', '=', 1)->exists()) return true;
 
         return false;
     }
-
 
 }

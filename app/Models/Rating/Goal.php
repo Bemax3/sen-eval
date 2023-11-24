@@ -29,7 +29,8 @@ class Goal extends Model implements Searchable
         'evaluation_period_id',
         'goal_mark',
         'goal_rate',
-        'goal_reached_at'
+        'goal_reached_at',
+        'updated_by'
     ];
 
     public function getForeignKey()

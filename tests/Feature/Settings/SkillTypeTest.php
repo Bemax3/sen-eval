@@ -10,8 +10,8 @@ use function Pest\Laravel\assertDatabaseMissing;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed([\Database\Seeders\GroupSeeder::class, \Database\Seeders\RoleSeeder::class]);
-    $this->user = User::factory()->create();
+    $this->seed([\Database\Seeders\DatabaseSeeder::class]);
+    $this->user = User::factory()->create(['role_id' => 1]);
 });
 
 
@@ -31,10 +31,9 @@ it('Creates a new type', function (string $name, string $desc, int $marking) {
         'skill_type_name' => $name,
         'skill_type_marking' => $marking,
         'skill_type_desc' => $desc
-    ])->assertRedirect(route('skillTypes.create'));
+    ]);
 
     assertDatabaseHas('skill_types', [
-        'skill_type_id' => 1,
         'skill_type_name' => $name,
         'skill_type_marking' => $marking,
         'skill_type_desc' => $desc

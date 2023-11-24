@@ -28,7 +28,7 @@ readonly class RatingSkillService
         if ($ratingSkill->rating->evaluator_id !== \Auth::id()) throw new UnauthorizedActionException();
 //        if(!$this->ratingService->checkMarking($ratingSkill->rating_id)) return "exceed";
         $this->ratingService->lowerMark($ratingSkill->rating_id, $ratingSkill->rating_skill_mark);
-        $ratingSkill->update(['rating_skill_mark' => $validated['rating_skill_mark']]);
+        $ratingSkill->update(['rating_skill_mark' => $validated['rating_skill_mark'], 'updated_by' => $validated['updated_by']]);
         $this->ratingService->raiseMark($ratingSkill->rating_id, $ratingSkill->rating_skill_mark);
     }
 

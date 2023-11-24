@@ -15,7 +15,7 @@ class Rating extends Model implements Searchable
 {
     protected $table = 'ratings';
     protected $primaryKey = 'rating_id';
-    protected $fillable = ['evaluated_id', 'evaluator_id', 'phase_id', 'rating_is_contested', 'rating_mark', 'rating_is_validated'];
+    protected $fillable = ['evaluated_id', 'evaluator_id', 'phase_id', 'rating_is_contested', 'rating_mark', 'rating_is_validated', 'validated_at'];
 
     public function getForeignKey()
     {

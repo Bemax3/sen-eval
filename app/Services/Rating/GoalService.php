@@ -56,6 +56,7 @@ class GoalService
             'goal_marking' => $validated['goal_marking'],
             'phase_id' => $validated['phase_id'],
             'goal_rate' => $validated['goal_rate'],
+            'updated_by' => \Auth::id()
         ]);
 
         GoalHistory::create([
@@ -92,7 +93,8 @@ class GoalService
             'goal_marking' => $validated['goal_marking'],
             'phase_id' => $validated['phase_id'],
             'evaluator_id' => \Auth::id(),
-            'evaluated_id' => $agent_id
+            'evaluated_id' => $agent_id,
+            'updated_by' => \Auth::id()
         ]);
 
         GoalHistory::create([

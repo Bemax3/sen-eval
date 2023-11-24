@@ -9,12 +9,11 @@ class SaveRatingMobilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'asked_by_evaluated' => ['sometimes'],
-            'asked_by_evaluator' => ['sometimes'],
             'mobility_type_id' => ['required'],
             'rating_mobility_title' => ['required'],
             'rating_mobility_comment' => ['required'],
-            'asked_by' => ['required']
+            'asked_by' => ['required'],
+            'updated_by' => ['sometimes']
         ];
     }
 
@@ -26,7 +25,8 @@ class SaveRatingMobilityRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'asked_by' => \Auth::id()
+            'asked_by' => \Auth::id(),
+            'updated_by' => \Auth::id()
         ]);
     }
 }

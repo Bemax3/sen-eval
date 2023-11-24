@@ -13,7 +13,8 @@ class SaveRatingSkillRequest extends FormRequest
             'rating_skill_marking' => ['sometimes', 'required', 'integer'],
             'rating_id' => ['sometimes', 'required'],
             'phase_skill_id' => ['sometimes', 'required'],
-            'rating_skill_name' => ['sometimes', 'nullable']
+            'rating_skill_name' => ['sometimes', 'nullable'],
+            'updated_by' => ['sometimes']
         ];
     }
 
@@ -29,5 +30,12 @@ class SaveRatingSkillRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

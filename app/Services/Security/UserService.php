@@ -30,7 +30,7 @@ class UserService
     public function unsetUserN1(string $agent_id): void
     {
         $user = User::where('user_id', $agent_id)->firstOrFail();
-        $user->update(['n1_id' => null]);
+        $user->update(['n1_id' => null, 'updated_by' => \Auth::id()]);
     }
 
 }

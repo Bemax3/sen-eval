@@ -44,7 +44,8 @@ class ClaimService
         if ($rating->evaluated_id !== Auth::id()) throw new UnauthorizedActionException();
         $claim->update([
             'claim_type_id' => $validated['claim_type_id'],
-            'rating_claim_comment' => $validated['rating_claim_comment']
+            'rating_claim_comment' => $validated['rating_claim_comment'],
+            'updated_by' => $validated['updated_by']
         ]);
     }
 

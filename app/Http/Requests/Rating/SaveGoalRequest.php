@@ -13,7 +13,8 @@ class SaveGoalRequest extends FormRequest
             'comment' => ['sometimes', 'required'],
             'goal_mark' => ['sometimes', 'required', 'lte:goal_marking', 'gt:0'],
             'goal_marking' => ['sometimes', 'required'],
-            'rating_id' => ['sometimes', 'required']
+            'rating_id' => ['sometimes', 'required'],
+            'updated_by' => ['sometimes']
         ];
     }
 
@@ -29,5 +30,12 @@ class SaveGoalRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

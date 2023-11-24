@@ -8,8 +8,7 @@ use App\Exceptions\Rating\EvaluatedHasNotValidatedException;
 use App\Exceptions\Rating\NotEnoughSpecificSkillsException;
 use App\Exceptions\Rating\NotRatedCorrectlyException;
 use App\Exceptions\Rating\ValidatorAlreadyExistException;
-use App\Mail\OtherValidation;
-use App\Mail\RatingValidatedBy;
+use App\Mail\ValidatedRating;
 use App\Models\Rating\Rating;
 use App\Models\Rating\Validator;
 use App\Models\User;
@@ -71,12 +70,11 @@ class ValidatorService
                 'has_validated' => true,
                 'validated_at' => Carbon::now()->toDateTimeString()
             ]);
-            $receivers = Validator::where('validator_id', '!=', $validator->validator_id)->where('rating_id', '=', $rating->rating_id)->get();
-            foreach ($receivers as $receiver) {
-                if ($receiver->validator_id !== $rating->evaluated_id) Mail::to($receiver->user->email)->queue(new OtherValidation($rating, $validator, $receiver));
-                if ($receiver->validator_id == $rating->evaluated_id) Mail::to($receiver->user->email)->queue(new RatingValidatedBy($rating, $validator));
+
+            if ($this->checkForAllValidation($rating)) {
+                $rating->update(['rating_is_validated' => true]);
+                Mail::to($rating->evaluated->email)->queue(new ValidatedRating($rating));
             }
-            if ($this->checkForAllValidation($rating)) $rating->update(['rating_is_validated' => true]);
         }
 
     }

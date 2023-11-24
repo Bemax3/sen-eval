@@ -33,12 +33,12 @@ class RatingService
         if ($total >= SkillType::SPECIFIC_MARKING) return false;
         return true;
     }
-    
+
     public function update($data, $rating_id): void
     {
         if (isset($data['remember'])) User::findOrFail(Auth::id())->update(['n1_id' => $data['validator_id']]);
         $rating = Rating::findOrFail($rating_id);
-        if (isset($data['rating_is_contested'])) $rating->update(['rating_is_contested' => $data['rating_is_contested']]);
+        if (isset($data['rating_is_contested'])) $rating->update(['rating_is_contested' => $data['rating_is_contested'], 'updated_by' => $data['updated_by']]);
     }
 
     /**

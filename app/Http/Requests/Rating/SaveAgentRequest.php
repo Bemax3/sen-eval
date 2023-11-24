@@ -10,6 +10,7 @@ class SaveAgentRequest extends FormRequest
     {
         return [
             'agent_id' => ['required', 'sometimes'],
+            'updated_by' => ['sometimes']
         ];
     }
 
@@ -23,5 +24,12 @@ class SaveAgentRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

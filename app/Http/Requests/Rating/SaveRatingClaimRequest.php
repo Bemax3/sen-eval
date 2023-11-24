@@ -10,12 +10,20 @@ class SaveRatingClaimRequest extends FormRequest
     {
         return [
             'claim_type_id' => ['required'],
-            'rating_claim_comment' => ['sometimes']
+            'rating_claim_comment' => ['sometimes'],
+            'updated_by' => ['sometimes']
         ];
     }
 
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

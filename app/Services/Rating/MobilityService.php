@@ -34,6 +34,7 @@ class MobilityService
             'mobility_type_id' => $validated['mobility_type_id'],
             'rating_mobility_title' => $validated['rating_mobility_title'],
             'rating_mobility_comment' => $validated['rating_mobility_comment'],
+            'updated_by' => $validated['updated_by']
         ]);
     }
 

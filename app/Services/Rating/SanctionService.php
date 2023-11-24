@@ -43,7 +43,8 @@ class SanctionService
         if ($rating->evaluator_id !== \Auth::id()) throw new UnauthorizedActionException();
         $sanction->update([
             'sanction_type_id' => $validated['sanction_type_id'],
-            'rating_sanction_comment' => $validated['rating_sanction_comment']
+            'rating_sanction_comment' => $validated['rating_sanction_comment'],
+            'updated_by' => $validated['updated_by']
         ]);
         return 'ok';
     }

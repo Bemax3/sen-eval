@@ -46,7 +46,8 @@ class PromotionService
         $promotion->update([
             'promotion_type_id' => $validated['promotion_type_id'],
             'evaluated_is_eligible' => $validated['evaluated_is_eligible'],
-            'rating_promotion_comment' => $validated['rating_promotion_comment']
+            'rating_promotion_comment' => $validated['rating_promotion_comment'],
+            'updated_by' => $validated['updated_by']
         ]);
     }
 

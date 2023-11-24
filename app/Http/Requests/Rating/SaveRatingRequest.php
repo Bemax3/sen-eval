@@ -14,6 +14,7 @@ class SaveRatingRequest extends FormRequest
             'evaluated_id' => ['sometimes', 'required'],
             'evaluator_id' => ['sometimes', 'required'],
             'rating_is_contested' => ['sometimes', 'required'],
+            'updated_by' => ['sometimes']
         ];
     }
 
@@ -31,6 +32,9 @@ class SaveRatingRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $this->merge(['evaluator_id' => \Auth::id()]);
+        $this->merge([
+            'evaluator_id' => \Auth::id(),
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

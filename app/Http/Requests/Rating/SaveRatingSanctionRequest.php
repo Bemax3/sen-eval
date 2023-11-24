@@ -10,12 +10,20 @@ class SaveRatingSanctionRequest extends FormRequest
     {
         return [
             'sanction_type_id' => ['required'],
-            'rating_sanction_comment' => ['sometimes']
+            'rating_sanction_comment' => ['sometimes'],
+            'updated_by' => ['sometimes']
         ];
     }
 
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'updated_by' => \Auth::id()
+        ]);
     }
 }

@@ -15,6 +15,7 @@ use App\Models\Phase\Phase;
 use App\Models\Rating\Goal;
 use App\Models\User;
 use App\Services\Rating\GoalService;
+use Auth;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -31,8 +32,8 @@ class AgentGoalsController extends Controller
     public function index(Request $request, string $id)
     {
         $phase = $request->get('phase_id');
-        if (!isset($phase) || $phase == -1) $goals = Goal::where('evaluator_id', '=', \Auth::id())->where('evaluated_id', '=', $id)->with('phase')->paginate(10);
-        else $goals = Goal::where('evaluator_id', '=', \Auth::id())->where('evaluated_id', '=', $id)->where('phase_id', '=', $phase)->with('phase')->paginate(10);
+        if (!isset($phase) || $phase == -1) $goals = Goal::where('evaluator_id', '=', Auth::id())->where('evaluated_id', '=', $id)->with('phase')->paginate(10);
+        else $goals = Goal::where('evaluator_id', '=', Auth::id())->where('evaluated_id', '=', $id)->where('phase_id', '=', $phase)->with('phase')->paginate(10);
         try {
             return Inertia::render('Agents/Goal/AgentGoals', [
                 'agent' => User::with('org')->findOrFail($id),
@@ -69,8 +70,6 @@ class AgentGoalsController extends Controller
             alert_success('Objectif Enregistré avec succès');
         } catch (GoalsMarkingExceededException|PeriodGoalsCountLimitReachedException $e) {
             alert_error($e->getMessage());
-        } catch (\Exception $e) {
-            alert_error('Erreur lors de l\'enregistrement de l\'objectif');
         } finally {
             return redirect()->back();
         }
@@ -122,7 +121,7 @@ class AgentGoalsController extends Controller
                 ->registerModel(Goal::class, function (ModelSearchAspect $aspect) use ($data, $agent_id) {
                     foreach ($data['fields'] as $field) $aspect->addSearchableAttribute($field);
                     $aspect->where('evaluated_id', '=', $agent_id);
-                    $aspect->where('evaluator_id', '=', \Auth::id());
+                    $aspect->where('evaluator_id', '=', Auth::id());
                 })
                 ->limitAspectResults(20)
                 ->search($data['keyword']);

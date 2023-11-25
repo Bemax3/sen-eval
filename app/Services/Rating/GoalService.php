@@ -41,12 +41,13 @@ class GoalService
     public function update(mixed $validated, string $goal_id): void
     {
         $goal = Goal::findOrFail($goal_id);
-        if (!$this->checkMarking($goal->evaluated_id, $validated['phase_id'], $validated['goal_marking'] - $goal->goal_marking)) {
-            throw new GoalsMarkingExceededException();
-        }
+
+        if (!$this->checkMarking($goal->evaluated_id, $validated['phase_id'], $validated['goal_marking'] - $goal->goal_marking)) throw new GoalsMarkingExceededException();
+
         if ($validated['goal_marking'] < $goal->goal_mark) throw new GoalMarkExceedMarkingException();
 
         if ($validated['goal_rate'] < $goal->goal_rate) throw new GoalRateCantBeLowerThanBeforeException();
+
         $goal->update([
             'goal_name' => $validated['goal_name'],
             'goal_expected_result' => $validated['goal_expected_result'],
@@ -80,10 +81,10 @@ class GoalService
      */
     public function create($validated, $agent_id): void
     {
-        if (!$this->checkMarking($agent_id, $validated['phase_id'], $validated['goal_marking'])) {
-            throw new GoalsMarkingExceededException();
-        }
+        if (!$this->checkMarking($agent_id, $validated['phase_id'], $validated['goal_marking'])) throw new GoalsMarkingExceededException();
+
         if (!$this->checkPeriodGoalsCount($validated['evaluation_period_id'], $agent_id)) throw new PeriodGoalsCountLimitReachedException();
+
         $goal = Goal::create([
             'goal_name' => $validated['goal_name'],
             'goal_expected_result' => $validated['goal_expected_result'],
@@ -119,8 +120,7 @@ class GoalService
         $rating = Rating::where('phase_id', '=', $goal->phase_id)
             ->where('evaluated_id', '=', $goal->evaluated_id)
             ->where('evaluator_id', '=', $goal->evaluator_id)->first();
-        if ($rating)
-            if (!$this->checkGoals($rating, 1)) throw new NotEnoughGoalsException();
+        if ($rating) if (!$this->checkGoals($rating, 1)) throw new NotEnoughGoalsException();
         $goal->delete();
     }
 

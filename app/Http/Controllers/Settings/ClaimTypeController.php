@@ -23,14 +23,6 @@ class ClaimTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render('Settings/Claim/SaveClaim');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(SaveClaimTypeRequest $request)
@@ -46,15 +38,23 @@ class ClaimTypeController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Settings/Claim/SaveClaim');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(ClaimType $claimType)
     {
         try {
             return Inertia::render('Settings/Claim/SaveClaim', [
-                'claim' => ClaimType::findOrFail($id)
+                'claim' => $claimType
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -63,11 +63,10 @@ class ClaimTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveClaimTypeRequest $request, string $id)
+    public function update(SaveClaimTypeRequest $request, ClaimType $claimType)
     {
         try {
-            $claim = ClaimType::findOrFail($id);
-            $claim->update($request->validated());
+            $claimType->update($request->validated());
             alert_success('Type modifié avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
@@ -79,10 +78,10 @@ class ClaimTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ClaimType $claimType)
     {
         try {
-            ClaimType::findOrFail(intval($id))->delete();
+            $claimType->delete();
             alert_success('Type supprimé avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la suppression de ce type.');

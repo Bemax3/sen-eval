@@ -23,14 +23,6 @@ class MobilityTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render('Settings/Mobility/SaveMobility');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(SaveMobilityTypeRequest $request)
@@ -46,15 +38,23 @@ class MobilityTypeController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Settings/Mobility/SaveMobility');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(MobilityType $mobilityType)
     {
         try {
             return Inertia::render('Settings/Mobility/SaveMobility', [
-                'mobility' => MobilityType::findOrFail($id)
+                'mobility' => $mobilityType
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -63,11 +63,10 @@ class MobilityTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveMobilityTypeRequest $request, string $id)
+    public function update(SaveMobilityTypeRequest $request, MobilityType $mobilityType)
     {
         try {
-            $mobility = MobilityType::findOrFail($id);
-            $mobility->update($request->validated());
+            $mobilityType->update($request->validated());
             alert_success('Type modifié avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
@@ -79,10 +78,10 @@ class MobilityTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(MobilityType $mobilityType)
     {
         try {
-            MobilityType::findOrFail(intval($id))->delete();
+            $mobilityType->delete();
             alert_success('Type supprimé avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la suppression de ce type.');

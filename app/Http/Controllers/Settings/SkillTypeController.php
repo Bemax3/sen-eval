@@ -23,14 +23,6 @@ class SkillTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render('Settings/SkillTypes/SaveSkillType');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(SaveSkillTypeRequest $request)
@@ -46,15 +38,23 @@ class SkillTypeController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Settings/SkillTypes/SaveSkillType');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(SkillType $skillType)
     {
         try {
             return Inertia::render('Settings/SkillTypes/SaveSkillType', [
-                'skill' => SkillType::findOrFail($id)
+                'skill' => $skillType
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -63,11 +63,11 @@ class SkillTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveSkillTypeRequest $request, string $id)
+    public function update(SaveSkillTypeRequest $request, SkillType $skillType)
     {
         try {
-            $skill = SkillType::findOrFail($id);
-            $skill->update($request->validated());
+
+            $skillType->update($request->validated());
             alert_success('Type modifié avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
@@ -79,10 +79,10 @@ class SkillTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SkillType $skillType)
     {
         try {
-            SkillType::findOrFail(intval($id))->delete();
+            $skillType->delete();
             alert_success('Type supprimé avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la suppression de ce type.');

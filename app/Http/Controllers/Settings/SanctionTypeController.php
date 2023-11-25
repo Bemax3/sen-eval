@@ -23,14 +23,6 @@ class SanctionTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render('Settings/Sanction/SaveSanction');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(SaveSanctionTypeRequest $request)
@@ -46,15 +38,23 @@ class SanctionTypeController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Settings/Sanction/SaveSanction');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(SanctionType $sanctionType)
     {
         try {
             return Inertia::render('Settings/Sanction/SaveSanction', [
-                'sanction' => SanctionType::findOrFail($id)
+                'sanction' => $sanctionType
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -63,11 +63,10 @@ class SanctionTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveSanctionTypeRequest $request, string $id)
+    public function update(SaveSanctionTypeRequest $request, SanctionType $sanctionType)
     {
         try {
-            $sanction = SanctionType::findOrFail($id);
-            $sanction->update($request->validated());
+            $sanctionType->update($request->validated());
             alert_success('Type modifié avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
@@ -79,10 +78,10 @@ class SanctionTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SanctionType $sanctionType)
     {
         try {
-            SanctionType::findOrFail(intval($id))->delete();
+            $sanctionType->delete();
             alert_success('Type supprimé avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la suppression de ce type.');

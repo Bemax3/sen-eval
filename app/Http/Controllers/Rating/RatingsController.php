@@ -47,7 +47,7 @@ class RatingsController extends Controller
                 'marking' => ['specific' => SkillType::SPECIFIC_MARKING, 'general' => SkillType::GENERAL_MARKING, 'perf' => SkillType::GOALS_MARKING],
                 'specific_skills' => $rating->specific_skills()->get(),
                 'skills' => $rating->general_skills()->get(),
-                'goals' => Goal::where('phase_id', $rating->phase_id)->where('evaluated_id', $rating->evaluated_id)->with('period', 'phase')->get(),
+                'goals' => Goal::where('phase_id', $rating->phase_id)->where('evaluated_id', $rating->evaluated_id)->with('period', 'phase')->orderBy('evaluation_period_id')->get(),
                 'others' => $evaluator->org_id ? (new UserService())->findSameOrgUsers($evaluator) : [],
                 'agent_n2' => $evaluator->n1,
                 'validators' => Validator::where('rating_id', '=', $rating->rating_id)->with('user')->get(),

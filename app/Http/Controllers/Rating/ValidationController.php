@@ -7,6 +7,7 @@ use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\CantValidateRatingOutOfEvaluationPeriodsException;
 use App\Exceptions\Rating\EvaluatedHasNotValidatedException;
+use App\Exceptions\Rating\EvaluatorHasNotValidatedException;
 use App\Exceptions\Rating\NotEnoughSpecificSkillsException;
 use App\Exceptions\Rating\NotRatedCorrectlyException;
 use App\Exceptions\Rating\ValidatorAlreadyExistException;
@@ -51,7 +52,7 @@ class ValidationController extends Controller
             'validators' => $rating->validators()->with('user')->get(),
             'others' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],
             'n1' => $user->n1,
-            'goals' => Goal::where('phase_id', $rating->phase_id)->where('evaluated_id', $rating->evaluated_id)->with('period', 'phase')->get(),
+            'goals' => Goal::where('phase_id', $rating->phase_id)->where('evaluated_id', $rating->evaluated_id)->with('period', 'phase')->orderBy('evaluation_period_id')->get(),
         ]);
     }
 
@@ -67,7 +68,8 @@ class ValidationController extends Controller
         NotEnoughSpecificSkillsException|
         NotRatedCorrectlyException|
         CantUpdateValidatedRatingException|
-        CantValidateRatingOutOfEvaluationPeriodsException $e
+        CantValidateRatingOutOfEvaluationPeriodsException|
+        EvaluatorHasNotValidatedException $e
         ) {
             alert_error($e->getMessage());
         } catch (ValidatorAlreadyExistException $e) {

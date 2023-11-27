@@ -6,6 +6,7 @@ use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\CantValidateRatingOutOfEvaluationPeriodsException;
 use App\Exceptions\Rating\EvaluatedHasNotValidatedException;
+use App\Exceptions\Rating\EvaluatorHasNotValidatedException;
 use App\Exceptions\Rating\NotEnoughSpecificSkillsException;
 use App\Exceptions\Rating\NotRatedCorrectlyException;
 use App\Exceptions\Rating\ValidatorAlreadyExistException;
@@ -44,6 +45,7 @@ class ValidatorService
      * @throws NotRatedCorrectlyException
      * @throws CantUpdateValidatedRatingException
      * @throws CantValidateRatingOutOfEvaluationPeriodsException
+     * @throws EvaluatorHasNotValidatedException
      */
     public function update(string $validation, mixed $validated): void
     {
@@ -71,6 +73,7 @@ class ValidatorService
             if (!(new RatingSkillService())->checkSkills($rating)) throw new NotEnoughSpecificSkillsException();
             if (!(new GoalService())->checkGoals($rating)) throw new NotEnoughGoalsException();
             if ($rating->skills()->where('rating_skill_mark', '=', 0)->exists() || $rating->goals()->where('goal_mark', '=', 0)->exists()) throw new NotRatedCorrectlyException();
+            if ($validator->validator_id != $rating->evaluator_id && !$this->checkForEvaluatorValidation($rating)) throw new EvaluatorHasNotValidatedException();
             if ($validator->validator_id != $rating->evaluated_id && $validator->validator_id != $rating->evaluator_id && !$this->checkForEvaluatedValidation($rating)) throw new EvaluatedHasNotValidatedException();
             $validator->update([
                 'has_validated' => true,
@@ -78,7 +81,7 @@ class ValidatorService
             ]);
 
             if ($this->checkForAllValidation($rating)) {
-                $rating->update(['rating_is_validated' => true]);
+                $rating->update(['rating_is_validated' => true, 'validated_at' => Carbon::now()->toDateTimeString()]);
                 Mail::to($rating->evaluated->email)->queue(new ValidatedRating($rating));
             }
         }
@@ -102,14 +105,20 @@ class ValidatorService
         return true;
     }
 
+    public function checkForEvaluatorValidation($rating): bool
+    {
+
+        return Validator::where('rating_id', '=', $rating->rating_id)
+            ->where('validator_id', '=', $rating->evaluator_id)
+            ->where('has_validated', '=', 1)->exists();
+    }
+
     public function checkForEvaluatedValidation($rating): bool
     {
 
-        if (Validator::where('rating_id', '=', $rating->rating_id)
+        return Validator::where('rating_id', '=', $rating->rating_id)
             ->where('validator_id', '=', $rating->evaluated_id)
-            ->where('has_validated', '=', 1)->exists()) return true;
-
-        return false;
+            ->where('has_validated', '=', 1)->exists();
     }
 
 }

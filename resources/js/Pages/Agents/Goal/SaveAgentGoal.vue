@@ -133,8 +133,12 @@ watch(() => form.phase_id, function (next) {
                             </div>
                             <div class="sm:col-span-full">
                                 <InputLabel for="start_date" required>Valeur Cible</InputLabel>
-                                <div class="mt-2">
-                                    <TextArea v-model="form.goal_expected_result" :invalid="form.errors.goal_expected_result !== undefined"/>
+                                <div class="mt-2 flex rounded-md shadow-sm">
+                                    <input
+                                        v-model="form.goal_expected_result"
+                                        :class="form.errors.goal_expected_result !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300'"
+                                        class="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
+                                    <span class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">%</span>
                                 </div>
                                 <div class="flex flex-col space-y-2">
                                     <InputError :message="form.errors.goal_expected_result"/>
@@ -263,8 +267,13 @@ watch(() => form.phase_id, function (next) {
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                             <div class="col-span-full">
                                 <InputLabel for="start_date" required>Taux d'avancement</InputLabel>
-                                <div class="mt-2">
-                                    <NumberInput v-model="form.goal_rate" :invalid="form.errors.goal_rate !== undefined" maxlength="3"/>
+                                <div class="mt-2 flex rounded-md shadow-sm">
+                                    <input
+                                        v-model="form.goal_rate"
+                                        :class="form.errors.goal_rate !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300'"
+                                        class="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                                        maxlength="3" type="number"/>
+                                    <span class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">%</span>
                                 </div>
                                 <div class="flex flex-col space-y-2">
                                     <InputError :message="form.errors.goal_rate"/>

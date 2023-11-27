@@ -2,6 +2,7 @@
 
 namespace App\Services\Rating;
 
+use App\Exceptions\Goal\ExpectedDateCantBeAfterTheEvaluationException;
 use App\Exceptions\Goal\GoalMarkExceedMarkingException;
 use App\Exceptions\Goal\GoalsMarkingExceededException;
 use App\Exceptions\Goal\NotEnoughGoalsException;
@@ -78,12 +79,15 @@ class GoalService
     /**
      * @throws GoalsMarkingExceededException
      * @throws PeriodGoalsCountLimitReachedException
+     * @throws ExpectedDateCantBeAfterTheEvaluationException
      */
     public function create($validated, $agent_id): void
     {
         if (!$this->checkMarking($agent_id, $validated['phase_id'], $validated['goal_marking'])) throw new GoalsMarkingExceededException();
 
         if (!$this->checkPeriodGoalsCount($validated['evaluation_period_id'], $agent_id)) throw new PeriodGoalsCountLimitReachedException();
+
+        if (!$this->checkDateAndPeriod($validated['evaluation_period_id'], $validated['goal_expected_date'])) throw new ExpectedDateCantBeAfterTheEvaluationException();
 
         $goal = Goal::create([
             'goal_name' => $validated['goal_name'],
@@ -108,7 +112,15 @@ class GoalService
 
     public function checkPeriodGoalsCount($period_id, $agent_id): bool
     {
-        return EvaluationPeriod::findOrFail($period_id)->goals()->where('evaluated_id', '=', $agent_id)->count() < 4;
+        return Goal::where('evaluation_period_id', '=', $period_id)->where('evaluated_id', '=', $agent_id)->count() <= 3;
+    }
+
+    public function checkDateAndPeriod($period_id, $date): bool
+    {
+        $period = EvaluationPeriod::findOrFail($period_id);
+        if (Carbon::createFromDate($date)->between(Carbon::createFromDate($period->evaluation_period_start)->subMonth(5), $period->evaluation_period_end)) return true;
+        return false;
+
     }
 
     /**
@@ -133,6 +145,7 @@ class GoalService
     public function updateAgentComment(mixed $validated, string $id): void
     {
         $goal = Goal::findOrFail($id);
+        $goal->update(['goal_rate' => $validated['goal_rate']]);
         GoalHistory::create([
             'goal_id' => $goal->goal_id,
             'goal_rate' => $goal->goal_rate,

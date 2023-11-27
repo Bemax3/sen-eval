@@ -32,7 +32,7 @@ const pages = [
 
 let form;
 const setForm = () => {
-    form = useForm({comment: ''});
+    form = useForm({comment: '', goal_rate: props.goal.goal_rate});
 }
 const submit = () => {
     form.put(route('goals.update', {goal: props.goal.goal_id}), {
@@ -75,14 +75,15 @@ setForm();
                                 </div>
                             </div>
                             <div class="sm:col-span-full">
-                                <InputLabel for="start_date" required>Valeur Cible</InputLabel>
+                                <InputLabel for="start_date" required>Libelle</InputLabel>
                                 <div class="relative mt-2">
-                                    <TextArea v-model="goal.goal_expected_result" :disabled="true"/>
+                                    <TextInput v-model="goal.goal_expected_result" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <LockClosedIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -153,12 +154,26 @@ setForm();
                 <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 border-t-2">
                     <div>
                         <h2 class="text-base font-semibold leading-7 text-gray-900">Suivi de l'objectif</h2>
-                        <p class="mt-1 text-sm leading-6 text-gray-400">Faites le suivi de cet objectif en laissant un commentaire. Le taux de réalisation sera renseigné
-                            par votre évaluateur.</p>
+                        <p class="mt-1 text-sm leading-6 text-gray-400">Faites le suivi de cet objectif renseignant le taux d'évaluation et en laissant un
+                            commentaire.</p>
                         <GoalActivity :history="history"/>
                     </div>
                     <div class="md:col-span-1">
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                            <div class="col-span-full">
+                                <InputLabel for="start_date" required>Taux d'avancement</InputLabel>
+                                <div class="mt-2 flex rounded-md shadow-sm">
+                                    <input
+                                        v-model="form.goal_rate"
+                                        :class="form.errors.goal_rate !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300'"
+                                        class="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                                        maxlength="3" type="number"/>
+                                    <span class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">%</span>
+                                </div>
+                                <div class="flex flex-col space-y-2">
+                                    <InputError :message="form.errors.goal_rate"/>
+                                </div>
+                            </div>
                             <div class="col-span-full">
                                 <InputLabel for="start_date">Commentaire</InputLabel>
                                 <div class="relative mt-2">

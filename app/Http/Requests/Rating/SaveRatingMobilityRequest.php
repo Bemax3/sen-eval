@@ -17,6 +17,13 @@ class SaveRatingMobilityRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'rating_mobility_title.required' => 'Veuillez renseigner le poste souhaité.'
+        ];
+    }
+
     public function authorize(): bool
     {
         return true;

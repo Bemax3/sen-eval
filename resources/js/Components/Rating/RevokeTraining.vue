@@ -19,7 +19,7 @@ watch(() => props.opened, (next) => {
 defineEmits(['closeModal'])
 
 const destroy = () => {
-    props.form.put(props.link)
+    props.form.delete(props.link)
 }
 
 </script>

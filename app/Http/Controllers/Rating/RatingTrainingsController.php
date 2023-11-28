@@ -43,11 +43,23 @@ class RatingTrainingsController extends Controller
         }
     }
 
-    public function update(SaveRatingTrainingRequest $request, string $rating_id, string $training_id)
+    public function destroy(SaveRatingTrainingRequest $request, string $rating_id, string $training_id)
     {
         try {
             $this->trainingService->update($request->validated(), $training_id);
             alert_success('Vous avez annuler votre demande pour cette formation.');
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
+            alert_error($e->getMessage());
+        } finally {
+            return redirect()->back();
+        }
+    }
+
+    public function update(SaveRatingTrainingRequest $request, string $rating_id, string $training_id)
+    {
+        try {
+            $this->trainingService->update($request->validated(), $training_id);
+            alert_success('Demande de formation enregistré avec succès.');
         } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {

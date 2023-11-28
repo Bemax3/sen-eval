@@ -1,26 +1,20 @@
 <script setup>
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head, router, useForm, usePage} from "@inertiajs/vue3";
+import {Head, router, usePage} from "@inertiajs/vue3";
 import Title from "@/Components/Rating/Title.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import Tabs from "@/Components/Rating/Tabs.vue";
-import {capitalize, computed, ref, watch} from "vue";
-import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
-import Separator from "@/Components/LayoutParts/Separator.vue";
-import SubmitButton from "@/Components/Forms/SubmitButton.vue";
-import {CheckIcon, ChevronUpDownIcon, PencilSquareIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
-import {getPagination, hasData, moment} from "@/helpers/helper.js";
-import InputError from "@/Components/Forms/InputError.vue";
+import {computed, ref, watch} from "vue";
+import {PencilSquareIcon, PlusIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
+import {getPagination, hasData} from "@/helpers/helper.js";
 import Datatable from "@/Components/Common/Tables/Datatable.vue";
 import EmptyState from "@/Components/Common/EmptyState.vue";
 import TableData from "@/Components/Common/Tables/TableData.vue";
 import TableHeading from "@/Components/Common/Tables/TableHeading.vue";
-import InputLabel from "@/Components/Forms/InputLabel.vue";
-import FormIndications from "@/Components/Forms/FormIndications.vue";
-import Switch from "@/Components/Forms/Switch.vue";
-import TextArea from "@/Components/Forms/TextArea.vue";
 import DeleteModal from "@/Components/Common/DeleteModal.vue";
+import SectionTitle from "@/Components/LayoutParts/SectionTitle.vue";
+import SavePromotionModal from "@/Pages/Rating/modals/SavePromotionModal.vue";
 
 
 const props = defineProps({
@@ -45,36 +39,22 @@ const pages = isEvaluated.value ? [
 ]
 const pagination = computed(() => getPagination(props.promotions));
 const displayedData = ref(props.promotions.data);
-let form = ref(useForm({
-    evaluated_is_eligible: 0,
-    rating_promotion_comment: '',
-    promotion_type_id: hasData(props.types) ? props.types[0].promotion_type_id : null
-}));
-
 const search = '';
-const input = ref();
-
-const opened = ref(false);
+const openDestroy = ref(false);
+const openSave = ref(false);
 const toDestroy = ref(displayedData[0]?.rating_mobility_id);
+const promotionToEdit = ref(displayedData[0]);
 const destroy = (id) => {
     toDestroy.value = id;
-    opened.value = true;
+    openDestroy.value = true;
 }
 const setupEdit = (id) => {
-    const promotion = displayedData.value.filter(m => m.rating_promotion_id === id)[0];
-    form.value.rating_promotion_id = id;
-    form.value.evaluated_is_eligible = promotion.evaluated_is_eligible;
-    form.value.rating_promotion_comment = promotion.rating_promotion_comment;
-    form.value.promotion_type_id = promotion.promotion_type_id;
-    input.value.focus();
+    promotionToEdit.value = displayedData.value.filter(m => m.rating_promotion_id === id)[0];
+    openSave.value = true
 }
 
-const submit = () => {
-    if (form.value.rating_promotion_id) form.value.put(route('rating-promotions.update', {
-        rating: props.rating.rating_id,
-        rating_promotion: form.value.rating_promotion_id
-    }))
-    else form.value.post(route('rating-promotions.store', {rating: props.rating.rating_id}))
+const savePromotion = () => {
+    openSave.value = true
 }
 
 watch(() => props.promotions,
@@ -96,78 +76,17 @@ watch(() => props.promotions,
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
             <Tabs :agent_id="props.agent.user_id" :evaluated="isEvaluated" :rating_id="props.rating.rating_id" :validator="isValidator"/>
-            <form v-if="!isEvaluated && !isValidator && !rating.rating_is_validated"
-                  class="mt-8 bg-white px-4 py-5 sm:p-6 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
-                  @submit.prevent="submit">
-                <h3 class="text-base font-semibold leading-6 text-gray-900">Demander une promotion ou un avancement</h3>
-                <div class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>Rechercher une promotion ou un avancement et ajouter la à la liste des demandes pour cette évaluation. </p>
+            <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+                <SectionTitle desc="Liste des promotions demandées pour cette évaluation" title="Promotions"/>
+                <div v-if="!isEvaluated && !isValidator && !rating.rating_is_validated" class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    <button
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                        @click="savePromotion()">
+                        Nouvelle Promotion
+                        <PlusIcon class="-mr-0.5 h-5 w-5"/>
+                    </button>
                 </div>
-                <div class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>GF: {{ agent.user_gf }} promu le {{ capitalize(moment(agent.user_gf_prom_date).format('DD MMMM YYYY')) }}</p>
-                </div>
-                <div class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>NR: {{ agent.user_nr }} promu le {{ capitalize(moment(agent.user_nr_prom_date).format('DD MMMM YYYY')) }}</p>
-                </div>
-                <div class="px-4 py-6 sm:p-8">
-                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                        <div class="col-span-full">
-                            <div class="mt-2">
-                                <Switch v-model="form.evaluated_is_eligible" desc="L'évalué est-il éligible à cette avancement ou promotion ?"
-                                        label="Non Éligible / Éligible"/>
-                            </div>
-                        </div>
-
-                        <div class="col-span-full relative">
-                            <InputLabel for="start_date" required>Nature</InputLabel>
-                            <Listbox v-model="form.promotion_type_id">
-                                <div class="relative">
-                                    <ListboxButton
-                                        :class="form.errors.phase_id ? 'ring-red-300':'ring-gray-300'"
-                                        class="w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
-                                        <span v-if="hasData(types)"
-                                              class="block truncate">{{ types.filter((type) => type.promotion_type_id === form.promotion_type_id)[0].promotion_type_name
-                                            }}</span>
-                                        <span v-else class="block truncate">Aucune promotion disponible pour l'instant.</span>
-                                        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                            <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
-                                        </span>
-                                    </ListboxButton>
-                                    <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                                        <ListboxOptions v-if="hasData(types)"
-                                                        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                            <ListboxOption v-for="type in types" :key="type.promotion_type_id" v-slot="{ active, selected }"
-                                                           :value="type.promotion_type_id"
-                                                           as="template">
-                                                <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
-                                                    <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.promotion_type_name }}</span>
-                                                    <span v-if="selected"
-                                                          :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
-                                                        <CheckIcon aria-hidden="true" class="h-5 w-5"/>
-                                                    </span>
-                                                </li>
-                                            </ListboxOption>
-                                        </ListboxOptions>
-                                    </transition>
-                                </div>
-                            </Listbox>
-                            <InputError :message="form.errors.promotion_type_id"/>
-                        </div>
-                        <div class="col-span-full">
-                            <InputLabel for="">Commentaire</InputLabel>
-                            <div class=" mt-2">
-                                <TextArea ref="input" v-model="form.rating_promotion_comment"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-                    <FormIndications/>
-                    <SubmitButton :disabled="rating.rating_is_validated" :processing="form.processing" class=" mt-3 sm:ml-3 sm:mt-0 sm:w-auto" type="submit">Enregistrer
-                    </SubmitButton>
-                </div>
-            </form>
-            <Separator title="Promotions / Avancements Demandées"/>
+            </div>
             <Datatable v-if="hasData(promotions.data)" v-model="search" :pagination="pagination" :search="false">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
@@ -214,8 +133,11 @@ watch(() => props.promotions,
             <EmptyState v-else :message="isEvaluated ? '' : 'Demander une promotion en utilisant le formulaire en haut.'"
                         title="Aucune promotions ou avancement demandée pour l'instant."/>
         </div>
-        <DeleteModal :link="route('rating-promotions.destroy',{rating: rating.rating_id,rating_promotion: toDestroy ? toDestroy : -1})" :opened="opened"
-                     @close-modal="opened=false"/>
+        <DeleteModal :link="route('rating-promotions.destroy',{rating: rating.rating_id,rating_promotion: toDestroy ? toDestroy : -1})" :opened="openDestroy"
+                     @close-modal="openDestroy=false"/>
+        <SavePromotionModal :agent="agent" :isEvaluated="isEvaluated" :isValidator="isValidator" :opened="openSave" :promotion="promotionToEdit" :rating="rating"
+                            :types="types"
+                            @close-modal="openSave = false"/>
     </AuthenticatedLayout>
 </template>
 

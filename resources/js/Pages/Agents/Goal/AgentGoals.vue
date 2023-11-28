@@ -15,6 +15,7 @@ import axios from "axios";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
 import SubmitButton from "@/Components/Forms/SubmitButton.vue";
+import DeleteModal from "@/Components/Common/DeleteModal.vue";
 
 const props = defineProps({
     agent: {type: Object},
@@ -32,6 +33,13 @@ const search = reactive({keyword: '', fields: ['goal_name', 'goal_expected_resul
 const form = useForm({
     phase_id: parseInt(props.phase_id) || -1
 })
+
+const opened = ref(false);
+const toDestroy = ref(displayedData[0]?.rating_claim_id);
+const destroy = (id) => {
+    toDestroy.value = id;
+    opened.value = true;
+}
 
 const filtrer = () => {
     router.get(route('agent-goals.index', {agent: props.agent.user_id, phase_id: form.phase_id}), {}, {preserveScroll: true})
@@ -208,7 +216,7 @@ watch(() => props.goals, function (next) {
                                     <EyeIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-cyan-600"/>
                                 </Link>
                                 <button class="group flex items-center px-4 py-2 text-sm"
-                                        @click="router.delete(route('agent-goals.destroy',{agent: agent.user_id, agent_goal: goal.goal_id}))">
+                                        @click="destroy(goal.goal_id)">
                                     <TrashIcon aria-hidden="true" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-red-600"/>
                                 </button>
                             </div>
@@ -225,6 +233,7 @@ watch(() => props.goals, function (next) {
                 message="Créer un objectif en appuyant sur ce bouton"
                 title="Pas d'objectifs"/>
         </div>
+        <DeleteModal :link="route('agent-goals.destroy',{agent: agent.user_id, agent_goal: toDestroy ? toDestroy : -1})" :opened="opened" @close-modal="opened=false"/>
     </AuthenticatedLayout>
 </template>
 

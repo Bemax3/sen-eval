@@ -20,6 +20,7 @@ import InputLabel from "@/Components/Forms/InputLabel.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import Switch from "@/Components/Forms/Switch.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
+import DeleteModal from "@/Components/Common/DeleteModal.vue";
 
 
 const props = defineProps({
@@ -52,6 +53,13 @@ let form = ref(useForm({
 
 const search = '';
 const input = ref();
+
+const opened = ref(false);
+const toDestroy = ref(displayedData[0]?.rating_mobility_id);
+const destroy = (id) => {
+    toDestroy.value = id;
+    opened.value = true;
+}
 const setupEdit = (id) => {
     const promotion = displayedData.value.filter(m => m.rating_promotion_id === id)[0];
     form.value.rating_promotion_id = id;
@@ -193,7 +201,7 @@ watch(() => props.promotions,
                                 <button
                                     class="rounded-lg bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                     type="button"
-                                    @click="router.delete(route('rating-promotions.destroy',{rating: rating.rating_id,rating_promotion: promotion.rating_promotion_id}))">
+                                    @click="destroy(promotion.rating_promotion_id)">
                                     <TrashIcon aria-hidden="true" class="h-5 w-5"/>
                                 </button>
                             </div>
@@ -206,6 +214,8 @@ watch(() => props.promotions,
             <EmptyState v-else :message="isEvaluated ? '' : 'Demander une promotion en utilisant le formulaire en haut.'"
                         title="Aucune promotions ou avancement demandée pour l'instant."/>
         </div>
+        <DeleteModal :link="route('rating-promotions.destroy',{rating: rating.rating_id,rating_promotion: toDestroy ? toDestroy : -1})" :opened="opened"
+                     @close-modal="opened=false"/>
     </AuthenticatedLayout>
 </template>
 

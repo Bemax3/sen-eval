@@ -19,6 +19,7 @@ import TableHeading from "@/Components/Common/Tables/TableHeading.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
+import DeleteModal from "@/Components/Common/DeleteModal.vue";
 
 const props = defineProps({
     agent: {},
@@ -53,6 +54,12 @@ const search = ''
 const pagination = computed(() => getPagination(props.claims));
 const displayedData = ref(props.claims.data);
 const input = ref();
+const opened = ref(false);
+const toDestroy = ref(displayedData[0]?.rating_claim_id);
+const destroy = (id) => {
+    toDestroy.value = id;
+    opened.value = true;
+}
 
 const setupEdit = (id) => {
     const claim = displayedData.value.filter(m => m.rating_claim_id === id)[0];
@@ -61,6 +68,7 @@ const setupEdit = (id) => {
     form.value.claim_type_id = claim.claim_type_id;
     input.value.focus();
 }
+
 
 const submit = () => {
     if (form.value.rating_claim_id)
@@ -149,7 +157,6 @@ watch(() => props.claims,
                     <thead class="bg-gray-50">
                     <tr>
                         <TableHeading :first="true">Type</TableHeading>
-                        <!--						<TableHeading class="whitespace-nowrap">Demandée par</TableHeading>-->
                         <TableHeading class="whitespace-pre-line">Commentaire</TableHeading>
                         <TableHeading></TableHeading>
                     </tr>
@@ -157,7 +164,6 @@ watch(() => props.claims,
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="claim in displayedData" :key="claim.rating_claim_id">
                         <TableData :first="true">{{ claim.type.claim_type_name }}</TableData>
-                        <!--						<TableData>{{ rating.evaluated.user_display_name }}</TableData>-->
                         <TableData class="whitespace-pre-line">{{ claim.rating_claim_comment || '__' }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div v-if="isEvaluated && !rating.rating_is_validated" class="flex items-center justify-center gap-2">
@@ -170,7 +176,7 @@ watch(() => props.claims,
                                 <button
                                     class="rounded-lg bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                     type="button"
-                                    @click="router.delete(route('rating-claims.destroy',{rating: rating.rating_id,rating_claim: claim.rating_claim_id}))">
+                                    @click="destroy(claim.rating_claim_id)">
                                     <TrashIcon aria-hidden="true" class="h-5 w-5"/>
                                 </button>
                             </div>
@@ -183,6 +189,8 @@ watch(() => props.claims,
             <EmptyState v-else :message="isEvaluated ? 'Demander une réclamation en utilisant la liste déroulante en haut.' : ''"
                         title="Aucune réclamation faite pour l'instant."/>
         </div>
+        <DeleteModal :link="route('rating-claims.destroy',{rating: rating.rating_id,rating_claim: toDestroy ? toDestroy : -1})" :opened="opened"
+                     @close-modal="opened = false"/>
     </AuthenticatedLayout>
 </template>
 

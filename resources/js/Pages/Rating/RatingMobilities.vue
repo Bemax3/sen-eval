@@ -20,6 +20,7 @@ import InputLabel from "@/Components/Forms/InputLabel.vue";
 import TextInput from "@/Components/Forms/TextInput.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
+import DeleteModal from "@/Components/Common/DeleteModal.vue";
 
 
 const props = defineProps({
@@ -52,6 +53,13 @@ let form = ref(useForm({
     rating_mobility_comment: '',
     mobility_type_id: hasData(props.types) ? props.types[0].mobility_type_id : null
 }));
+const opened = ref(false);
+const toDestroy = ref(displayedData[0]?.rating_mobility_id);
+const destroy = (id) => {
+    toDestroy.value = id;
+    opened.value = true;
+}
+
 const setupEdit = (id) => {
     const mobility = displayedData.value.filter(m => m.rating_mobility_id === id)[0];
     if (isEvaluated) form.value.asked_by_evaluated = mobility.asked_by_evaluated;
@@ -189,7 +197,7 @@ watch(() => props.mobilities,
                                 <button
                                     class="rounded-lg bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                     type="button"
-                                    @click="router.delete(route('rating-mobilities.destroy',{rating: rating.rating_id,rating_mobility: mobility.rating_mobility_id}))">
+                                    @click="destroy(mobility.rating_mobility_id)">
                                     <TrashIcon aria-hidden="true" class="h-5 w-5"/>
                                 </button>
                             </div>
@@ -201,6 +209,8 @@ watch(() => props.mobilities,
             </Datatable>
             <EmptyState v-else message="Demander une mobilité en utilisant le formulaire en haut." title="Aucune mobilité demandée pour l'instant."/>
         </div>
+        <DeleteModal :link="route('rating-mobilities.destroy',{rating: rating.rating_id,rating_mobility: toDestroy ? toDestroy : -1})" :opened="opened"
+                     @close-modal="opened = false"/>
     </AuthenticatedLayout>
 </template>
 

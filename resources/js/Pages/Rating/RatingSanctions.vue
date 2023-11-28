@@ -19,6 +19,7 @@ import TableHeading from "@/Components/Common/Tables/TableHeading.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
+import DeleteModal from "@/Components/Common/DeleteModal.vue";
 
 
 const props = defineProps({
@@ -49,6 +50,12 @@ const search = '';
 const pagination = computed(() => getPagination(props.sanctions));
 const displayedData = ref(props.sanctions.data);
 const input = ref();
+const opened = ref(false);
+const toDestroy = ref(displayedData[0]?.rating_sanction_id);
+const destroy = (id) => {
+    toDestroy.value = id;
+    opened.value = true;
+}
 
 const setupEdit = (id) => {
     const sanction = displayedData.value.filter(m => m.rating_sanction_id === id)[0];
@@ -168,7 +175,7 @@ watch(() => props.sanctions,
                                 <button
                                     class="rounded-lg bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                     type="button"
-                                    @click="router.delete(route('rating-sanctions.destroy',{rating: rating.rating_id,rating_sanction: sanction.rating_sanction_id}))">
+                                    @click="destroy(sanction.rating_sanction_id)">
                                     <TrashIcon aria-hidden="true" class="h-5 w-5"/>
                                 </button>
                             </div>
@@ -181,9 +188,7 @@ watch(() => props.sanctions,
             <EmptyState v-else :message="isEvaluated ? '' : 'Demander une sanction en utilisant la liste déroulante en haut.'"
                         title="Aucune sanction demandée pour l'instant."/>
         </div>
+        <DeleteModal :link="route('rating-sanctions.destroy',{rating: rating.rating_id,rating_sanction: toDestroy ? toDestroy : -1})" :opened="opened"
+                     @close-modal="opened=false"/>
     </AuthenticatedLayout>
 </template>
-
-<style scoped>
-
-</style>

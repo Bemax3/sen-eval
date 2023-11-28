@@ -2,11 +2,11 @@
 import {ref, watch} from 'vue'
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
 import {ExclamationTriangleIcon} from '@heroicons/vue/24/outline'
-import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     opened: {type: Boolean, default: false},
     link: {type: String},
+    form: {}
 })
 
 const o = ref(false);
@@ -19,7 +19,7 @@ watch(() => props.opened, (next) => {
 defineEmits(['closeModal'])
 
 const destroy = () => {
-    router.delete(props.link)
+    props.form.put(props.link)
 }
 
 </script>

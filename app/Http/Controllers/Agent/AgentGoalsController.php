@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Agent;
 use App\Exceptions\Goal\ExpectedDateCantBeAfterTheEvaluationException;
 use App\Exceptions\Goal\GoalMarkExceedMarkingException;
 use App\Exceptions\Goal\GoalsMarkingExceededException;
-use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Goal\PeriodGoalsCountLimitReachedException;
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\GoalRateCantBeLowerThanBeforeException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rating\SaveAgentGoalRequest;
@@ -104,10 +104,9 @@ class AgentGoalsController extends Controller
     public function destroy(string $agent_id, string $goal_id)
     {
         try {
-
-            $this->goalService->destroy(intval($goal_id));
+            $this->goalService->destroy($goal_id);
             alert_success('Objectif Supprimé avec succès.');
-        } catch (NotEnoughGoalsException|ModelNotFoundException $e) {
+        } catch (ModelNotFoundException|CantUpdateValidatedRatingException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();

@@ -19,6 +19,7 @@ import TableHeading from "@/Components/Common/Tables/TableHeading.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 import FormIndications from "@/Components/Forms/FormIndications.vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
+import RevokeTraining from "@/Components/Rating/RevokeTraining.vue";
 
 
 const props = defineProps({
@@ -47,6 +48,12 @@ const pages = isEvaluated.value ? [
 const search = '';
 const pagination = computed(() => getPagination(props.trainings));
 const displayedData = ref(props.trainings.data);
+const opened = ref(false);
+const toDestroy = ref(displayedData[0]?.rating_training_id);
+const destroy = (id) => {
+    toDestroy.value = id;
+    opened.value = true;
+}
 
 const form = useForm(isEvaluated.value ?
     {
@@ -174,7 +181,7 @@ watch(() => props.trainings,
                                 <button v-if="!isValidator && ((isEvaluated && training.asked_by_evaluated) || (!isEvaluated && training.asked_by_evaluator))"
                                         class="rounded-lg bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                         type="button"
-                                        @click="revoke.put(route('rating-trainings.update',{rating: rating.rating_id,rating_training: training.rating_training_id}))">
+                                        @click="destroy(training.rating_training_id)">
                                     <TrashIcon aria-hidden="true" class="h-5 w-5"/>
                                 </button>
                             </div>
@@ -186,6 +193,8 @@ watch(() => props.trainings,
             </Datatable>
             <EmptyState v-else message="Demander une formation en utilisant la liste déroulante en haut." title="Aucune formation demandée pour l'instant."/>
         </div>
+        <RevokeTraining :form="revoke" :link="route('rating-trainings.update',{rating: rating.rating_id,rating_training: toDestroy ? toDestroy : -1})" :opened="opened"
+                        @close-modal="opened=false"/>
     </AuthenticatedLayout>
 </template>
 

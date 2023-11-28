@@ -5,8 +5,8 @@ namespace App\Services\Rating;
 use App\Exceptions\Goal\ExpectedDateCantBeAfterTheEvaluationException;
 use App\Exceptions\Goal\GoalMarkExceedMarkingException;
 use App\Exceptions\Goal\GoalsMarkingExceededException;
-use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Goal\PeriodGoalsCountLimitReachedException;
+use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\GoalRateCantBeLowerThanBeforeException;
 use App\Exceptions\Rating\UserCantEvaluateHimselfException;
@@ -124,15 +124,19 @@ class GoalService
     }
 
     /**
-     * @throws NotEnoughGoalsException
+     * @throws CantUpdateValidatedRatingException
      */
-    public function destroy(string $goal_id): void
+    public function destroy($goal_id): void
     {
         $goal = Goal::findOrFail($goal_id);
         $rating = Rating::where('phase_id', '=', $goal->phase_id)
             ->where('evaluated_id', '=', $goal->evaluated_id)
             ->where('evaluator_id', '=', $goal->evaluator_id)->first();
-        if ($rating) if (!$this->checkGoals($rating, 1)) throw new NotEnoughGoalsException();
+        if (!$rating) throw new ModelNotFoundException('Resource Introuvable.');
+        if ($rating->rating_is_validated) throw new CantUpdateValidatedRatingException();
+        if ($rating->validators()->where('validator_id', '=', \Auth::id())->first()->has_validated) throw new CantUpdateValidatedRatingException();
+        (new RatingService())->lowerMark($rating->rating_id, $goal->goal_mark);
+        GoalHistory::where('goal_id', '=', $goal->goal_id)->delete();
         $goal->delete();
     }
 

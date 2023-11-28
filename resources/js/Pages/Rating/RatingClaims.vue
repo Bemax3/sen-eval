@@ -57,7 +57,7 @@ const setupEdit = (id) => {
     openSave.value = true
 }
 
-const saveClaim = (id = -1) => {
+const saveClaim = () => {
     openSave.value = true;
 }
 

@@ -55,7 +55,7 @@ const setupEdit = (id) => {
     openSave.value = true;
 }
 
-const saveMobility = (id = -1) => {
+const saveMobility = () => {
     openSave.value = true;
 }
 

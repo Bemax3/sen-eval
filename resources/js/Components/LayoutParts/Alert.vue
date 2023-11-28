@@ -63,25 +63,6 @@ watch(() => props.notification, (next) => {
             </div>
         </div>
     </div>
-    <!--	<div-->
-    <!--			id="notification"-->
-    <!--			:class="notification?.type  === 'success' ? 'bg-success' : 'bg-danger'"-->
-    <!--			aria-atomic="true"-->
-    <!--			aria-live="assertive"-->
-    <!--			class="toast show text-white border-0"-->
-    <!--			data-bs-autohide="true"-->
-    <!--			data-bs-toggle="toast"-->
-    <!--			role="notification"-->
-    <!--			style="z-index: 11; position: fixed; bottom: 30px; right: 10px; visibility: hidden">-->
-    <!--		<div class="d-flex">-->
-    <!--			<div class="toast-body">{{ notification?.message }}</div>-->
-    <!--			<button-->
-    <!--					aria-label="Close"-->
-    <!--					class="btn-close btn-close-white me-2 m-auto"-->
-    <!--					data-bs-dismiss="toast"-->
-    <!--					type="button"></button>-->
-    <!--		</div>-->
-    <!--	</div>-->
 </template>
 
 <style scoped>

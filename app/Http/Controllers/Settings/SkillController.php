@@ -21,17 +21,7 @@ class SkillController extends Controller
     public function index()
     {
         return Inertia::render('Settings/Skill/SkillsList', [
-            'skills' => Skill::with('type','group')->paginate(10)
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render('Settings/Skill/SaveSkill',[
-            'types' => SkillType::all()
+            'skills' => Skill::with('type', 'group')->paginate(10)
         ]);
     }
 
@@ -43,7 +33,7 @@ class SkillController extends Controller
         try {
             $skill = Skill::create($request->validated());
             foreach (Phase::all() as $phase) {
-                $phase->skills()->attach($skill->skill_id,['phase_skill_marking' => $skill->skill_marking]);
+                $phase->skills()->attach($skill->skill_id, ['phase_skill_marking' => $skill->skill_marking]);
             }
             alert_success('Compétence crée avec succès.');
         } catch (Exception) {
@@ -54,16 +44,26 @@ class SkillController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Settings/Skill/SaveSkill', [
+            'types' => SkillType::all()
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Skill $skill)
     {
         try {
             return Inertia::render('Settings/Skill/SaveSkill', [
-                'skill' => Skill::with('type')->findOrFail($id),
+                'skill' => $skill,
                 'types' => SkillType::all()
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -72,10 +72,9 @@ class SkillController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveSkillRequest $request, string $id)
+    public function update(SaveSkillRequest $request, Skill $skill)
     {
         try {
-            $skill = Skill::findOrFail($id);
             $skill->update($request->validated());
             alert_success('Compétence modifié avec succès.');
         } catch (Exception) {
@@ -88,10 +87,10 @@ class SkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Skill $skill)
     {
         try {
-            Skill::findOrFail(intval($id))->delete();
+            $skill->delete();
             alert_success('Compétence supprimé avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la suppression de cette compétence.');
@@ -106,11 +105,11 @@ class SkillController extends Controller
         try {
             $data = $request->validated();
             $searchResults = (new Search())
-                ->registerModel(Skill::class, function  (ModelSearchAspect $aspect) use($data) {
+                ->registerModel(Skill::class, function (ModelSearchAspect $aspect) use ($data) {
                     foreach ($data['fields'] as $field) {
                         $aspect->addSearchableAttribute($field);
                     }
-                        $aspect->with('type');
+                    $aspect->with('type');
                 })
                 ->search($data['keyword']);
             $result = [];

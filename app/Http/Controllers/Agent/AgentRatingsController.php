@@ -52,7 +52,7 @@ class AgentRatingsController extends Controller
                 'others' => $user->org_id ? (new UserService())->findSameOrgUsers($user) : [],
                 'n1' => $user->n1,
                 'validators' => Validator::where('rating_id', '=', $rating->rating_id)->with('user')->get(),
-                'goals' => Goal::where('phase_id', $rating->phase_id)->where('evaluated_id', $rating->evaluated_id)->with('period', 'phase')->get(),
+                'goals' => Goal::where('phase_id', $rating->phase_id)->where('evaluated_id', $rating->evaluated_id)->with('period', 'phase')->orderBy('evaluation_period_id')->get(),
             ]);
         } catch (ModelNotFoundException $e) {
             alert_error($e->getMessage());

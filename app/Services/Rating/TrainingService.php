@@ -27,11 +27,11 @@ class TrainingService
     private function updateExistingFields($training, $data): void
     {
         if (isset($data['asked_by_evaluator'])) {
-            $training->update(['asked_by_evaluator' => $data['asked_by_evaluator']]);
+            $training->update(['asked_by_evaluator' => $data['asked_by_evaluator'] == 1 ? $data['asked_by_evaluator'] : NULL]);
             if (isset($data['comment'])) $training->update(['evaluator_comment' => $data['comment']]);
         }
         if (isset($data['asked_by_evaluated'])) {
-            $training->update(['asked_by_evaluated' => $data['asked_by_evaluated']]);
+            $training->update(['asked_by_evaluated' => $data['asked_by_evaluated'] == 1 ? $data['asked_by_evaluated'] : NULL]);
             if (isset($data['comment'])) $training->update(['evaluated_comment' => $data['comment']]);
         }
     }

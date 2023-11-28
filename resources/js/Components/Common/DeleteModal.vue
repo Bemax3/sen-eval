@@ -1,39 +1,32 @@
 <script setup>
-import {computed, ref, watch} from 'vue'
+import {ref, watch} from 'vue'
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
 import {ExclamationTriangleIcon} from '@heroicons/vue/24/outline'
 import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     opened: {type: Boolean, default: false},
-    id: {type: Number || null, default: null},
-    link: {
-        type: String
-    },
-    name: {
-        type: String
-    }
+    link: {type: String},
 })
 
-const open = ref(false);
+const o = ref(false);
 
 watch(() => props.opened, (next) => {
-    open.value = next;
+    o.value = next;
 }, {immediate: true});
 
-const idToDelete = computed(() => props.id)
 
 defineEmits(['closeModal'])
 
 const destroy = () => {
-    router.delete(route(props.link, {[props.name]: idToDelete.value}))
+    router.delete(props.link)
 }
 
 </script>
 
 <template>
-    <TransitionRoot :show="open" as="template">
-        <Dialog as="div" class="relative z-10" @close="open = false;$emit('closeModal')">
+    <TransitionRoot :show="o" as="template">
+        <Dialog as="div" class="relative z-10" @close="o = false;$emit('closeModal')">
             <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200"
                              leave-from="opacity-100" leave-to="opacity-0">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"/>
@@ -53,7 +46,7 @@ const destroy = () => {
                                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                     <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900">Suppression</DialogTitle>
                                     <div class="mt-2">
-                                        <p class="text-sm text-gray-500">Êtes vous sûre de vouloir supprimer cet élément? Cette action est irréversible.</p>
+                                        <p class="text-sm text-gray-500">Êtes vous sûre de vouloir continuer ? Cette action est irréversible.</p>
                                     </div>
                                 </div>
                             </div>
@@ -61,11 +54,11 @@ const destroy = () => {
                                 <button
                                     class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                                     type="button"
-                                    @click="destroy();open = false;$emit('closeModal');">Supprimer
+                                    @click="destroy();o = false;$emit('closeModal');">Supprimer
                                 </button>
                                 <button ref="cancelButtonRef"
                                         class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                        type="button" @click="open = false;$emit('closeModal')">Annuler
+                                        type="button" @click="o = false;$emit('closeModal')">Annuler
                                 </button>
                             </div>
                         </DialogPanel>

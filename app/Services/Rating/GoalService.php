@@ -2,10 +2,11 @@
 
 namespace App\Services\Rating;
 
+use App\Exceptions\Goal\ExpectedDateCantBeAfterTheEvaluationException;
 use App\Exceptions\Goal\GoalMarkExceedMarkingException;
 use App\Exceptions\Goal\GoalsMarkingExceededException;
-use App\Exceptions\Goal\NotEnoughGoalsException;
 use App\Exceptions\Goal\PeriodGoalsCountLimitReachedException;
+use App\Exceptions\ModelNotFoundException;
 use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\GoalRateCantBeLowerThanBeforeException;
 use App\Exceptions\Rating\UserCantEvaluateHimselfException;
@@ -41,12 +42,13 @@ class GoalService
     public function update(mixed $validated, string $goal_id): void
     {
         $goal = Goal::findOrFail($goal_id);
-        if (!$this->checkMarking($goal->evaluated_id, $validated['phase_id'], $validated['goal_marking'] - $goal->goal_marking)) {
-            throw new GoalsMarkingExceededException();
-        }
+
+        if (!$this->checkMarking($goal->evaluated_id, $validated['phase_id'], $validated['goal_marking'] - $goal->goal_marking)) throw new GoalsMarkingExceededException();
+
         if ($validated['goal_marking'] < $goal->goal_mark) throw new GoalMarkExceedMarkingException();
 
         if ($validated['goal_rate'] < $goal->goal_rate) throw new GoalRateCantBeLowerThanBeforeException();
+
         $goal->update([
             'goal_name' => $validated['goal_name'],
             'goal_expected_result' => $validated['goal_expected_result'],
@@ -77,13 +79,16 @@ class GoalService
     /**
      * @throws GoalsMarkingExceededException
      * @throws PeriodGoalsCountLimitReachedException
+     * @throws ExpectedDateCantBeAfterTheEvaluationException
      */
     public function create($validated, $agent_id): void
     {
-        if (!$this->checkMarking($agent_id, $validated['phase_id'], $validated['goal_marking'])) {
-            throw new GoalsMarkingExceededException();
-        }
+        if (!$this->checkMarking($agent_id, $validated['phase_id'], $validated['goal_marking'])) throw new GoalsMarkingExceededException();
+
         if (!$this->checkPeriodGoalsCount($validated['evaluation_period_id'], $agent_id)) throw new PeriodGoalsCountLimitReachedException();
+
+        if (!$this->checkDateAndPeriod($validated['evaluation_period_id'], $validated['goal_expected_date'])) throw new ExpectedDateCantBeAfterTheEvaluationException();
+
         $goal = Goal::create([
             'goal_name' => $validated['goal_name'],
             'goal_expected_result' => $validated['goal_expected_result'],
@@ -107,20 +112,31 @@ class GoalService
 
     public function checkPeriodGoalsCount($period_id, $agent_id): bool
     {
-        return EvaluationPeriod::findOrFail($period_id)->goals()->where('evaluated_id', '=', $agent_id)->count() < 4;
+        return Goal::where('evaluation_period_id', '=', $period_id)->where('evaluated_id', '=', $agent_id)->count() <= 3;
+    }
+
+    public function checkDateAndPeriod($period_id, $date): bool
+    {
+        $period = EvaluationPeriod::findOrFail($period_id);
+        if (Carbon::createFromDate($date)->between(Carbon::createFromDate($period->evaluation_period_start)->subMonth(5), $period->evaluation_period_end)) return true;
+        return false;
+
     }
 
     /**
-     * @throws NotEnoughGoalsException
+     * @throws CantUpdateValidatedRatingException
      */
-    public function destroy(string $goal_id): void
+    public function destroy($goal_id): void
     {
         $goal = Goal::findOrFail($goal_id);
         $rating = Rating::where('phase_id', '=', $goal->phase_id)
             ->where('evaluated_id', '=', $goal->evaluated_id)
             ->where('evaluator_id', '=', $goal->evaluator_id)->first();
-        if ($rating)
-            if (!$this->checkGoals($rating, 1)) throw new NotEnoughGoalsException();
+        if (!$rating) throw new ModelNotFoundException('Resource Introuvable.');
+        if ($rating->rating_is_validated) throw new CantUpdateValidatedRatingException();
+        if ($rating->validators()->where('validator_id', '=', \Auth::id())->first()->has_validated) throw new CantUpdateValidatedRatingException();
+        (new RatingService())->lowerMark($rating->rating_id, $goal->goal_mark);
+        GoalHistory::where('goal_id', '=', $goal->goal_id)->delete();
         $goal->delete();
     }
 
@@ -133,6 +149,7 @@ class GoalService
     public function updateAgentComment(mixed $validated, string $id): void
     {
         $goal = Goal::findOrFail($id);
+        $goal->update(['goal_rate' => $validated['goal_rate']]);
         GoalHistory::create([
             'goal_id' => $goal->goal_id,
             'goal_rate' => $goal->goal_rate,

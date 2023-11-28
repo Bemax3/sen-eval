@@ -17,6 +17,10 @@ class Rating extends Model implements Searchable
     protected $primaryKey = 'rating_id';
     protected $fillable = ['evaluated_id', 'evaluator_id', 'phase_id', 'rating_is_contested', 'rating_mark', 'rating_is_validated', 'validated_at'];
 
+    protected $casts = [
+        'validated_at' => 'datetime'
+    ];
+
     public function getForeignKey()
     {
         return $this->primaryKey;

@@ -24,14 +24,6 @@ class TrainingTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render('Settings/Training/SaveTraining');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(SaveTrainingTypeRequest $request)
@@ -47,15 +39,23 @@ class TrainingTypeController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Settings/Training/SaveTraining');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TrainingType $trainingType)
     {
         try {
             return Inertia::render('Settings/Training/SaveTraining', [
-                'training' => TrainingType::findOrFail($id)
+                'training' => $trainingType
             ]);
-        }catch (Exception) {
+        } catch (Exception) {
             alert_error('Resource Introuvable.');
             return redirect()->back();
         }
@@ -64,11 +64,10 @@ class TrainingTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveTrainingTypeRequest $request, string $id)
+    public function update(SaveTrainingTypeRequest $request, TrainingType $trainingType)
     {
         try {
-            $training = TrainingType::findOrFail($id);
-            $training->update($request->validated());
+            $trainingType->update($request->validated());
             alert_success('Type modifié avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la modification de ce type.');
@@ -80,10 +79,10 @@ class TrainingTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TrainingType $trainingType)
     {
         try {
-            TrainingType::findOrFail(intval($id))->delete();
+            $trainingType->delete();
             alert_success('Type supprimé avec succès.');
         } catch (Exception) {
             alert_error('Erreur lors de la suppression de ce type.');

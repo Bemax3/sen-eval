@@ -6,5 +6,5 @@ use Exception;
 
 class AgentHasRatingForCurrentPhaseException extends Exception
 {
-    protected $message = 'Cet agent a déjà une évaluation pour l\'année choisi.';
+    protected $message = 'Cet agent a déjà une évaluation pour l\'année choisie.';
 }

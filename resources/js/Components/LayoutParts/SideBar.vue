@@ -4,11 +4,11 @@ import {
     BuildingOfficeIcon,
     CalendarDaysIcon,
     ChartBarIcon,
+    ChartPieIcon,
     CheckBadgeIcon,
     ChevronRightIcon,
     Cog6ToothIcon,
     DocumentCheckIcon,
-    HomeIcon,
     IdentificationIcon,
     LockClosedIcon,
     UserGroupIcon,
@@ -36,7 +36,7 @@ let navigation = []
 if ([1, 2, 4].includes(user.value.role_id)) navigation.push({
     name: 'Dashboard',
     href: route('admin-dashboard.index'),
-    icon: HomeIcon,
+    icon: ChartPieIcon,
     current: currentRoute === 'admin-dashboard'
 });
 

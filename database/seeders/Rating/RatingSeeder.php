@@ -176,8 +176,8 @@ class RatingSeeder extends Seeder
                     if (!$bytor && !$byted) continue;
                     Training::create([
                         'rating_id' => $rating->rating_id,
-                        'asked_by_evaluated' => $byted,
-                        'asked_by_evaluator' => $bytor,
+                        'asked_by_evaluated' => $byted === 1 ? 1 : NULL,
+                        'asked_by_evaluator' => $bytor === 1 ? 1 : NULL,
                         'evaluated_comment' => $byted ? fake()->realText : '',
                         'evaluator_comment' => $bytor ? fake()->realText : '',
                         'training_type_id' => TrainingType::inRandomOrder()->first()->training_type_id,

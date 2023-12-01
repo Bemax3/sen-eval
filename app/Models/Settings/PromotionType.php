@@ -12,7 +12,7 @@ class PromotionType extends Model implements Searchable
 {
     protected $table = 'promotion_types';
     protected $primaryKey = 'promotion_type_id';
-    protected $fillable = ['promotion_type_name', 'promotion_type_desc', 'promotion_type_is_active', 'updated_by'];
+    protected $fillable = ['promotion_type_name', 'promotion_type_desc', 'promotion_type_is_active', 'updated_by', 'eligible_count', 'others'];
 
     public function getForeignKey()
     {

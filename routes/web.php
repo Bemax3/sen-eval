@@ -4,6 +4,7 @@ use App\Http\Controllers\Agent\AgentGoalsController;
 use App\Http\Controllers\Agent\AgentRatingsController;
 use App\Http\Controllers\Agent\AgentsController;
 use App\Http\Controllers\Dashboards\AdminDashboardController;
+use App\Http\Controllers\Dashboards\DownloadController;
 use App\Http\Controllers\Goal\GoalsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Phase\PeriodsController;
@@ -106,5 +107,15 @@ Route::group(['middleware' => ['auth', 'root']], function () {
 });
 Route::group(['middleware' => ['auth', 'viewer']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard.index');
+    Route::get('/dashboard/rated', [AdminDashboardController::class, 'rated'])->name('admin-dashboard.rated');
+    Route::get('/dashboard/pending', [AdminDashboardController::class, 'pending'])->name('admin-dashboard.pending');
+    Route::get('/dashboard/unrated', [AdminDashboardController::class, 'unrated'])->name('admin-dashboard.unrated');
+    Route::get('/dashboard/leaderboard', [AdminDashboardController::class, 'leaderboard'])->name('admin-dashboard.leaderboard');
+    Route::get('/dashboard/download-trainings', [DownloadController::class, 'downloadTrainings'])->name('admin-dashboard.download-trainings');
+    Route::get('/dashboard/download-claims', [DownloadController::class, 'downloadClaims'])->name('admin-dashboard.download-claims');
+    Route::get('/dashboard/download-sanctions', [DownloadController::class, 'downloadSanctions'])->name('admin-dashboard.download-sanctions');
+    Route::get('/dashboard/download-mobilities', [DownloadController::class, 'downloadMobilities'])->name('admin-dashboard.download-mobilities');
+    Route::get('/dashboard/download-promotions', [DownloadController::class, 'downloadPromotions'])->name('admin-dashboard.download-promotions');
 });
+
 require __DIR__ . '/auth.php';

@@ -12,7 +12,7 @@ class SanctionType extends Model implements Searchable
 {
     protected $table = 'sanction_types';
     protected $primaryKey = 'sanction_type_id';
-    protected $fillable = ['sanction_type_name', 'sanction_type_desc', 'sanction_type_is_active', 'updated_by'];
+    protected $fillable = ['sanction_type_name', 'sanction_type_desc', 'sanction_type_is_active', 'updated_by', 'sanctions_count'];
 
     public function getForeignKey()
     {

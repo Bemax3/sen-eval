@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Phase\PhaseSkill;
-use App\Models\Rating\Rating;
 use App\Models\Settings\ClaimType;
 use App\Models\Settings\MobilityType;
 use App\Models\Settings\PromotionType;
@@ -16,31 +15,19 @@ if (!function_exists('getRatingsData')) {
         $data = (object)[];
         if (!isset($org_id) || $org_id == -1) {
             $users_count = User::where('role_id', '!=', 1)->count();
-            $rated = Rating::where('phase_id', '=', $phase_id)->where('rating_is_validated', '=', 1)->count();
-            $not_validated = Rating::where('phase_id', '=', $phase_id)->where('rating_is_validated', '=', 0)->count();
-            $average = Rating::where('phase_id', '=', $phase_id)->avg('rating_mark');
-            $top = Rating::where('phase_id', '=', $phase_id)->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
+            $rated = Helper::getRatingsByPhaseAndStatus($phase_id, 1)->count();
+            $not_validated = Helper::getRatingsByPhaseAndStatus($phase_id, 0)->count();
+            $average = Helper::getRatingsByPhase($phase_id)->avg('rating_mark');
+            $top = Helper::getRatingsByPhase($phase_id)->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
         } else {
             $users_count = User::where('role_id', '!=', 1)->whereHas('org', function ($query) use ($org_id) {
                 $query->where('organisations.org_id', '=', $org_id)
                     ->orWhere('organisations.parent_id', '=', $org_id);
             })->count();
-            $rated = Helper::getRatingsCountByPhaseAndOrgAndStatus($phase_id, $org_id, 1);
-            $not_validated = Helper::getRatingsCountByPhaseAndOrgAndStatus($phase_id, $org_id, 0);
-            $average = Rating::where('phase_id', '=', $phase_id)
-                ->whereHas('evaluated', function ($query) use ($org_id) {
-                    $query->whereHas('org', function ($query) use ($org_id) {
-                        $query->where('organisations.org_id', '=', $org_id)
-                            ->orWhere('organisations.parent_id', '=', $org_id);
-                    });
-                })->avg('rating_mark');
-            $top = Rating::where('phase_id', '=', $phase_id)
-                ->whereHas('evaluated', function ($query) use ($org_id) {
-                    $query->whereHas('org', function ($query) use ($org_id) {
-                        $query->where('organisations.org_id', '=', $org_id)
-                            ->orWhere('organisations.parent_id', '=', $org_id);
-                    });
-                })->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
+            $rated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 1)->count();
+            $not_validated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 0)->count();
+            $average = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->avg('rating_mark');
+            $top = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
         }
         $data->average = $average;
         $data->users_count = $users_count;
@@ -49,6 +36,64 @@ if (!function_exists('getRatingsData')) {
         $data->top = $top;
 
         return $data;
+    }
+}
+
+if (!function_exists('getRatingsInMarkOrder')) {
+    function getRatingsInMarkOrder($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $rated = Helper::getRatingsByPhase($phase_id)->with('evaluated', 'evaluator', 'phase')->orderBy('rating_mark', 'desc');
+        } else {
+            $rated = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id,)->with('evaluated', 'evaluator', 'phase')->orderBy('rating_mark', 'desc');
+        }
+        return $rated;
+    }
+}
+
+if (!function_exists('getValidatedRatings')) {
+    function getValidatedRatings($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $rated = Helper::getRatingsByPhaseAndStatus($phase_id, 1)->with('evaluated', 'evaluator', 'phase');
+        } else {
+            $rated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 1)->with('evaluated', 'evaluator', 'phase');
+        }
+
+        return $rated;
+    }
+}
+
+if (!function_exists('getPendingRatings')) {
+    function getPendingRatings($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $rated = Helper::getRatingsByPhaseAndStatus($phase_id, 0)->with('evaluated', 'evaluator', 'phase');
+        } else {
+            $rated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 0)->with('evaluated', 'evaluator', 'phase');
+        }
+
+        return $rated;
+    }
+}
+
+if (!function_exists('getUnratedUsers')) {
+    function getUnratedUsers($phase_id, $org_id)
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $unrated = User::where('role_id', '!=', 1)->whereDoesntHave('ratings', function ($query) use ($phase_id) {
+                $query->where('ratings.phase_id', '=', $phase_id);
+            });
+        } else {
+            $unrated = User::where('role_id', '!=', 1)->whereDoesntHave('ratings', function ($query) use ($phase_id) {
+                $query->where('ratings.phase_id', '=', $phase_id);
+            })->whereHas('org', function ($query) use ($org_id) {
+                $query->where('organisations.org_id', '=', $org_id)
+                    ->orWhere('organisations.parent_id', '=', $org_id);
+            });
+        }
+
+        return $unrated;
     }
 }
 
@@ -249,7 +294,7 @@ if (!function_exists('getPromotionsData')) {
 }
 
 if (!function_exists('getSkillsBarChart')) {
-    function getSkillsBarChart($skills): object
+    function getSkillsBarChart($skills, $orientation = true, $reversed = false): object
     {
         $result = (object)[];
         $series = [];
@@ -257,12 +302,20 @@ if (!function_exists('getSkillsBarChart')) {
             'name' => 'Moyenne de la compétence.',
             'data' => array()
         ];
-        $xaxis = (object)[];
-        $xaxis->type = 'string';
-        $xaxis->categories = [];
         foreach ($skills as $s) {
-            $xaxis->categories[] = $s->skill->skill_name . ' - ' . $s->phase_skill_marking;
-            $series[0]->data[] = number_format($s->rating_skills_avg_rating_skill_mark, 2);
+            $series[0]->data[] = (object)[
+                'x' => $s->skill->skill_name,
+                'y' => number_format($s->rating_skills_avg_rating_skill_mark, 2),
+                'goals' => [(object)
+                [
+                    'name' => 'Barème',
+                    'value' => $s->phase_skill_marking,
+                    'strokeWidth' => 3,
+                    'strokeDashArray' => 0,
+                    'strokeColor' => '#775DD0'
+                ]
+                ]
+            ];
         }
         $chartOptions = json_decode('{
                "chart":{
@@ -288,8 +341,7 @@ if (!function_exists('getSkillsBarChart')) {
                },
                "plotOptions":{
                   "bar":{
-                     "horizontal":false,
-                     "borderRadius": 10
+                     "horizontal":true
                   }
                },
                "colors":[
@@ -297,6 +349,9 @@ if (!function_exists('getSkillsBarChart')) {
                ],
                "dataLabels":{
                   "enabled":true
+               },
+               "yaxis":{
+                  "reversed":true
                },
                "legend":{
                   "show":true,
@@ -307,8 +362,9 @@ if (!function_exists('getSkillsBarChart')) {
                   }
                }
             }');
+        $chartOptions->plotOptions->bar->horizontal = $orientation;
+        $chartOptions->yaxis->reversed = $reversed;
         $chartOptions = (object)$chartOptions;
-        $chartOptions->xaxis = $xaxis;
         $result->series = $series;
         $result->chartOptions = $chartOptions;
         return $result;

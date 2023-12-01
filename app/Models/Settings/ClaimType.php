@@ -12,7 +12,7 @@ class ClaimType extends Model implements Searchable
 {
     protected $table = 'claim_types';
     protected $primaryKey = 'claim_type_id';
-    protected $fillable = ['claim_type_name', 'claim_type_desc', 'claim_type_is_active', 'updated_by'];
+    protected $fillable = ['claim_type_name', 'claim_type_desc', 'claim_type_is_active', 'updated_by', 'claims_count'];
 
     public function getForeignKey()
     {

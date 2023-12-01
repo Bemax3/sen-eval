@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Rating\Goal;
 use App\Models\Rating\Mobility;
+use App\Models\Rating\Rating;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -119,6 +120,11 @@ class User extends Authenticatable implements LdapAuthenticatable, Searchable
         return $this->hasMany(Mobility::class, 'asked_by', 'user_id');
     }
 
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class, 'evaluated_id', 'user_id');
+    }
+
 //    public function parent_org: Belongs
 
     public function isRoot(): bool
@@ -140,7 +146,7 @@ class User extends Authenticatable implements LdapAuthenticatable, Searchable
     {
         return $this->group_id === Group::CADRE;
     }
-    
+
     public function isUser(): bool
     {
         return $this->role_id === Role::USER;

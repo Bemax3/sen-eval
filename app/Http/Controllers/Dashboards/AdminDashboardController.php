@@ -22,7 +22,7 @@ class AdminDashboardController extends Controller
         // Get Skills Data
         $specific_skills = getSkillsDataByType($phase_id, $org_id, 1);
         $skills = getSkillsDataByType($phase_id, $org_id, 2);
-        $skillsAvgBarChart = getSkillsBarChart($skills);
+        $skillsAvgBarChart = getSkillsBarChart($skills, reversed: true);
         $specificSkillsAvgBarChart = getSkillsBarChart($specific_skills);
 
         // Get Trainings Data
@@ -74,4 +74,62 @@ class AdminDashboardController extends Controller
             'selected' => $request->get('selected') ?? 0
         ]);
     }
+
+    public function rated(Request $request)
+    {
+        $org_id = $request->get('org_id') ?? -1;
+        $phase_id = $request->get('phase_id');
+        $phases = Phase::get();
+        if (!isset($phase_id)) $phase_id = $phases[0]->phase_id;
+        $ratings = getValidatedRatings($phase_id, $org_id);
+        return Inertia::render('Dashboards/RatedDetails', [
+            'ratings' => $ratings->paginate(10)->withQueryString(),
+            'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
+            'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
+        ]);
+    }
+
+    public function leaderboard(Request $request)
+    {
+        $org_id = $request->get('org_id') ?? -1;
+        $phase_id = $request->get('phase_id');
+        $phases = Phase::get();
+        if (!isset($phase_id)) $phase_id = $phases[0]->phase_id;
+        $ratings = getRatingsInMarkOrder($phase_id, $org_id);
+        return Inertia::render('Dashboards/LeaderBoard', [
+            'ratings' => $ratings->paginate(10)->withQueryString(),
+            'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
+            'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
+        ]);
+    }
+
+    public function pending(Request $request)
+    {
+        $org_id = $request->get('org_id') ?? -1;
+        $phase_id = $request->get('phase_id');
+        $phases = Phase::get();
+        if (!isset($phase_id)) $phase_id = $phases[0]->phase_id;
+        $ratings = getPendingRatings($phase_id, $org_id);
+        return Inertia::render('Dashboards/PendingDetails', [
+            'ratings' => $ratings->paginate(10)->withQueryString(),
+            'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
+            'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
+        ]);
+    }
+
+    public function unrated(Request $request)
+    {
+        $org_id = $request->get('org_id') ?? -1;
+        $phase_id = $request->get('phase_id');
+        $phases = Phase::get();
+        if (!isset($phase_id)) $phase_id = $phases[0]->phase_id;
+        $users = getUnratedUsers($phase_id, $org_id);
+
+        return Inertia::render('Dashboards/UnratedDetails', [
+            'users' => $users->with('org')->paginate(10)->withQueryString(),
+            'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
+            'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
+        ]);
+    }
+    
 }

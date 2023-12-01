@@ -27,7 +27,7 @@ class Helper
         })->where('asked_by_evaluator', $asked_by_evaluator)->where('asked_by_evaluated', $asked_by_evaluated);
     }
 
-    public static function getRatingsCountByPhaseAndOrgAndStatus($phase_id, $org_id, $status): int
+    public static function getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, $status): \Illuminate\Database\Eloquent\Builder|Rating
     {
         return Rating::where('phase_id', '=', $phase_id)
             ->where('rating_is_validated', '=', $status)
@@ -36,7 +36,28 @@ class Helper
                     $query->where('organisations.org_id', '=', $org_id)
                         ->orWhere('organisations.parent_id', '=', $org_id);
                 });
-            })->count();
+            });
+    }
+
+    public static function getRatingsByPhaseAndOrg($phase_id, $org_id): \Illuminate\Database\Eloquent\Builder|Rating
+    {
+        return Rating::where('phase_id', '=', $phase_id)
+            ->whereHas('evaluated', function ($query) use ($org_id) {
+                $query->whereHas('org', function ($query) use ($org_id) {
+                    $query->where('organisations.org_id', '=', $org_id)
+                        ->orWhere('organisations.parent_id', '=', $org_id);
+                });
+            });
+    }
+
+    public static function getRatingsByPhase($phase_id): \Illuminate\Database\Eloquent\Builder|Rating
+    {
+        return Rating::where('phase_id', '=', $phase_id);
+    }
+
+    public static function getRatingsByPhaseAndStatus($phase_id, $status): \Illuminate\Database\Eloquent\Builder|Rating
+    {
+        return Rating::where('phase_id', '=', $phase_id)->where('rating_is_validated', '=', $status);
     }
 
     public static function filterMobilitiesByPhaseAndOrgAndAsker($query, $phase_id, $org_id, $by)

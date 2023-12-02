@@ -354,6 +354,13 @@ if (!function_exists('getSkillsBarChart')) {
                "yaxis":{
                   "reversed":true
                },
+               "yaxis":{
+                  "labels": {
+                    "style" : {
+                      "fontSize": "14px"
+                    }
+                  }
+               },
                "legend":{
                   "show":true,
                   "markers":{
@@ -445,6 +452,20 @@ if (!function_exists('getTrainingsBarChart')) {
                "dataLabels":{
                   "enabled":false
                },
+               "yaxis":{
+                  "labels": {
+                    "style" : {
+                      "fontSize": "14px"
+                    }
+                  }
+               },
+               "xaxis":{
+                  "labels": {
+                    "style" : {
+                      "fontSize": "16px"
+                    }
+                  }
+               },
                "legend":{
                   "show":true,
                   "markers":{
@@ -507,6 +528,20 @@ if (!function_exists('getMobilitiesBarChart')) {
                "tooltip": {
                     "enabled": true,
                     "theme": "dark"
+               },
+                "yaxis":{
+                  "labels": {
+                    "style" : {
+                      "fontSize": "14px"
+                    }
+                  }
+               },
+               "xaxis":{
+                  "labels": {
+                    "style" : {
+                      "fontSize": "14px"
+                    }
+                  }
                },
                "plotOptions":{
                   "bar":{
@@ -573,6 +608,9 @@ if (!function_exists('getClaimsPieChart')) {
                 "enabled": true,
                 "theme": "dark"
             },
+            "legend": {
+                "fontSize": "16px"
+            },
             "labels": [],
             "colors":[
               "#175562",
@@ -617,6 +655,9 @@ if (!function_exists('getSanctionsPieChart')) {
                 "enabled": true,
                 "theme": "dark"
             },
+            "legend": {
+                "fontSize": "16px"
+            },
             "labels": [],
             "colors":[
               "#166674",
@@ -659,6 +700,9 @@ if (!function_exists('getPromotionsPieChartByType')) {
             "tooltip": {
                 "enabled": true,
                 "theme": "dark"
+            },
+            "legend": {
+                "fontSize": "16px"
             },
             "labels": [],
             "colors":[

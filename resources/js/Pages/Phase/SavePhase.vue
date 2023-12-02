@@ -64,12 +64,12 @@ setForm();
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">{{ title }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">Ajouter ou modifier une phase d'évaluation.</p>
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">{{ title }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">Ajouter ou modifier une phase d'évaluation.</p>
                 </div>
             </div>
             <div class="mt-8 flow-root">
-                <form class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
+                <form class="bg-white dark:bg-grayish shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
                     <div class="px-4 py-6 sm:p-8">
                         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-4">
@@ -99,7 +99,7 @@ setForm();
                                     <Listbox v-model="form.period_type_id" as="div">
                                         <div class="relative mt-2">
                                             <ListboxButton
-                                                class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                                class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                                 <span class="block truncate">{{ types.filter((type) => type.period_type_id === form.period_type_id)[0].period_type_name }}
                                                 </span>
                                                 <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -108,11 +108,11 @@ setForm();
                                             </ListboxButton>
                                             <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                                 <ListboxOptions
-                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                     <ListboxOption v-for="type in types" :key="type.period_type_id" v-slot="{ active, selected }"
                                                                    :value="type.period_type_id"
                                                                    as="template">
-                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.period_type_name
                                                                 }}</span>
                                                             <span v-if="selected"

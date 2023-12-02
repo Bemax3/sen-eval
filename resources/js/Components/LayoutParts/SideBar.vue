@@ -125,7 +125,7 @@ defineEmits(['closeSidebar'])
                             </div>
                         </TransitionChild>
                         <!-- Sidebar component, swap this element with another sidebar if you like -->
-                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700  px-6 pb-4">
+                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 dark:bg-grayish  px-6 pb-4">
                             <div class="flex h-16 shrink-0 items-center">
                                 <img alt="Your Company" class="h-8 w-auto" src="../../assets/logo1637145113.png"/>
                             </div>
@@ -180,7 +180,7 @@ defineEmits(['closeSidebar'])
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700  px-3 pb-4">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 dark:bg-grayish  px-3 pb-4">
             <div class="mt-2 flex h-24 shrink-0 items-center justify-center p-6">
                 <img alt="Your Company" class="h-24 w-auto" src="../../assets/logo1637145113.png"/>
             </div>

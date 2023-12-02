@@ -96,8 +96,8 @@ watch(() => form.phase_id, function (next) {
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Objectifs de {{ agent.user_display_name }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Objectifs de {{ agent.user_display_name }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Objectifs de l'agent.
                     </p>
                 </div>
@@ -114,10 +114,10 @@ watch(() => form.phase_id, function (next) {
             <Separator title="Objectifs"/>
             <SectionTitle :desc="desc" :title="title"/>
 
-            <form class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white" @submit.prevent="submit">
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <form class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white dark:bg-grayish" @submit.prevent="submit">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Libellé et Valeur Cible</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Libellé et Valeur Cible</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Renseigner le libellé de l'objectif ainsi que la valeur cible.</p>
                     </div>
                     <div class="md:col-span-2">
@@ -136,9 +136,10 @@ watch(() => form.phase_id, function (next) {
                                 <div class="mt-2 flex rounded-md shadow-sm">
                                     <input
                                         v-model="form.goal_expected_result"
-                                        :class="form.errors.goal_expected_result !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300'"
-                                        class="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
-                                    <span class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">%</span>
+                                        :class="form.errors.goal_expected_result !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300 dark:ring-gray-600'"
+                                        class="bg-white dark:bg-grayish block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 dark:text-white ring-1 ring-inset dark:ring-2  focus:dark:ring-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
+                                    <span
+                                        class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 dark:text-gray-100 sm:text-sm">%</span>
                                 </div>
                                 <div class="flex flex-col space-y-2">
                                     <InputError :message="form.errors.goal_expected_result"/>
@@ -147,9 +148,9 @@ watch(() => form.phase_id, function (next) {
                         </div>
                     </div>
                 </div>
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2 dark:border-black">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Disponibilité et Échéance</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Disponibilité et Échéance</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Les moyens pour atteindre l'objectif sont ils réunis ? Qu'elle sera l'échéance pour cette
                             objectif. </p>
                     </div>
@@ -173,9 +174,9 @@ watch(() => form.phase_id, function (next) {
                         </div>
                     </div>
                 </div>
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2 dark:border-black">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Évaluation</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Évaluation</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Renseigner les informations relatives à l'évaluation de cet objectif.</p>
                     </div>
                     <div class="md:col-span-2">
@@ -186,7 +187,7 @@ watch(() => form.phase_id, function (next) {
                                     <Listbox v-model="form.phase_id" as="div">
                                         <div class="relative mt-2">
                                             <ListboxButton
-                                                class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                                class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-2 dark:ring-gray-600 focus:dark:ring-2 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                                 <span class="block truncate">{{ phases.filter((type) => type.phase_id === form.phase_id)[0].phase_year }}</span>
                                                 <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                                 <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -194,10 +195,10 @@ watch(() => form.phase_id, function (next) {
                                             </ListboxButton>
                                             <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                                 <ListboxOptions
-                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                     <ListboxOption v-for="type in phases" :key="type.phase_id" v-slot="{ active, selected }" :value="type.phase_id"
                                                                    as="template">
-                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.phase_year }}</span>
                                                             <span v-if="selected"
                                                                   :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
@@ -217,7 +218,7 @@ watch(() => form.phase_id, function (next) {
                                     <Listbox v-model="form.evaluation_period_id" as="div">
                                         <div class="relative mt-2">
                                             <ListboxButton
-                                                class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                                class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-2 dark:ring-gray-600 focus:dark:ring-2 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                                 <span
                                                     class="block truncate">{{ periods.filter(p => p.evaluation_period_id === form.evaluation_period_id)[0].evaluation_period_name
                                                     }}</span>
@@ -227,10 +228,10 @@ watch(() => form.phase_id, function (next) {
                                             </ListboxButton>
                                             <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                                 <ListboxOptions
-                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                     <ListboxOption v-for="type in periods" :key="type.evaluation_period_id" v-slot="{ active, selected }"
                                                                    :value="type.evaluation_period_id" as="template">
-                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.evaluation_period_name
                                                                 }}</span>
                                                             <span v-if="selected"
@@ -257,9 +258,9 @@ watch(() => form.phase_id, function (next) {
                         </div>
                     </div>
                 </div>
-                <div v-if="!isEmpty(goal)" class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 border-t-2">
+                <div v-if="!isEmpty(goal)" class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 border-t-2 dark:border-black">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Suivi de l'objectif</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Suivi de l'objectif</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Faites le suivi de cet objectif en renseignant le taux réalisé et en laissant un commentaire.</p>
                         <GoalActivity :history="history"/>
                     </div>
@@ -270,10 +271,11 @@ watch(() => form.phase_id, function (next) {
                                 <div class="mt-2 flex rounded-md shadow-sm">
                                     <input
                                         v-model="form.goal_rate"
-                                        :class="form.errors.goal_rate !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300'"
-                                        class="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                                        :class="form.errors.goal_rate !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300 dark:ring-gray-600'"
+                                        class="bg-white dark:bg-grayish block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 dark:text-white ring-2 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
                                         maxlength="3" type="number"/>
-                                    <span class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">%</span>
+                                    <span
+                                        class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 dark:text-gray-100 sm:text-sm">%</span>
                                 </div>
                                 <div class="flex flex-col space-y-2">
                                     <InputError :message="form.errors.goal_rate"/>
@@ -292,7 +294,7 @@ watch(() => form.phase_id, function (next) {
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 dark:border-black px-4 py-4 sm:px-8 ">
                     <FormIndications/>
                     <SubmitButton :processing="form.processing"> Enregistrer</SubmitButton>
                 </div>

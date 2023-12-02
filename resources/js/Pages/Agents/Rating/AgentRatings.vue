@@ -43,15 +43,15 @@ watch(() => search.keyword, function (next) {
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Évaluations de {{ agent.user_display_name }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Évaluations de {{ agent.user_display_name }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Liste des Évaluations de {{ agent.user_display_name }}. Matricule : {{ agent.user_matricule }}
                     </p>
                 </div>
                 <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <Link
                         :href="route('agent-goals.index',{agent: agent.user_id})"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                     >
                         Objectif
                         <ChevronDoubleRightIcon class="-mr-0.5 h-5 w-5"/>
@@ -59,20 +59,20 @@ watch(() => search.keyword, function (next) {
                 </div>
             </div>
             <Separator title="Évaluations"/>
-            <div class="sm:flex sm:items-center border-b border-gray-400 pb-5">
+            <div class="sm:flex sm:items-center border-b border-gray-600 pb-5">
                 <SectionTitle desc="Tableau descriptif des évaluations." title="Évaluations"/>
                 <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <Link
                         :href="route('agent-ratings.create',{agent: agent.user_id})"
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
                         Évaluer cet agent
                         <PlusIcon class="-mr-0.5 h-5 w-5"/>
                     </Link>
                 </div>
             </div>
             <Datatable v-if="hasData(ratings.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Évaluateur</TableHeading>
                         <TableHeading>Évalué</TableHeading>
@@ -82,7 +82,7 @@ watch(() => search.keyword, function (next) {
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="e in displayedData" :key="e.evaluation_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ e.evaluator.user_display_name + ' ' + e.evaluator.user_matricule }}</TableData>
                         <TableData class="whitespace-pre-line">{{ e.evaluated.user_display_name + ' ' + e.evaluated.user_matricule }}</TableData>
@@ -95,8 +95,9 @@ watch(() => search.keyword, function (next) {
                             </span>
                         </TableData>
                         <TableData>
-                            <span :class="e.rating_is_validated ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
-                                  class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
+                            <span
+                                :class="e.rating_is_validated ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
+                                class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ e.rating_is_validated ? 'Validé' : 'En attende' }}
                             </span>
                         </TableData>
@@ -111,7 +112,7 @@ watch(() => search.keyword, function (next) {
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4">Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4">Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

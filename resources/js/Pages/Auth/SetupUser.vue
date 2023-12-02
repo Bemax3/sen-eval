@@ -16,7 +16,7 @@ const submit = () => {
 
 <template>
     <div class="flex items-center min-h-screen p-6 bg-gray-50 ">
-        <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl ">
+        <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white dark:bg-grayish rounded-lg shadow-xl ">
             <div class="flex flex-col overflow-y-auto md:flex-row">
                 <div class="h-20 md:h-auto md:w-1/3 flex items-center justify-center">
                     <img aria-hidden="true" class="object-cover w-30 h-30 alt=Office" src="../../assets/logo1637145113.png">
@@ -25,7 +25,7 @@ const submit = () => {
                     <h1 class="mb-4 font-bold text-3xl text-cyan-700">
                         Système d'Évaluation du Personnel
                     </h1>
-                    <h1 class="mb-2 font-semibold text-xl text-gray-700">
+                    <h1 class="mb-2 font-semibold text-xl text-gray-700 dark:text-white">
                         Nous ne trouvons pas votre matricule ! Veuillez le renseigner ici avant de continuer.
                     </h1>
                     <div class="w-full mt-4">

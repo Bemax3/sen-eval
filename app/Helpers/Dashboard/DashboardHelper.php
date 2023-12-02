@@ -121,7 +121,8 @@ if (!function_exists('getAverageChart')) {
                         },
                         "value": {
                             "fontSize": "40px",
-                            "show": true
+                            "show": true,
+                            "color": ""
                         }
                     }
                 }
@@ -428,6 +429,7 @@ if (!function_exists('getTrainingsBarChart')) {
                         "total": {
                            "enabled": true,
                            "style": {
+                              "color": "",
                               "fontSize": "13px",
                               "fontWeight": 900
                            }
@@ -514,6 +516,7 @@ if (!function_exists('getMobilitiesBarChart')) {
                         "total": {
                            "enabled": true,
                            "style": {
+                              "color": "",
                               "fontSize": "13px",
                               "fontWeight": 900
                            }

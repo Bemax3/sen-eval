@@ -94,17 +94,17 @@ watch(() => props.agents, function (next) {
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Mes Agents</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Mes Agents</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         La liste de mes agents à évaluer.
                     </p>
                 </div>
             </div>
             <Separator title="Trouver mes agents"/>
-            <div class="bg-white shadow sm:rounded-lg">
+            <div class="bg-white dark:bg-grayish shadow sm:rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900">Trouver vos agents</h3>
-                    <div class="mt-2 max-w-xl text-sm text-gray-500">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Trouver vos agents</h3>
+                    <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
                         <p>Rechercher les agents que vous devrez évaluer en utilisant leur matricule, nom ou prénom. </p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center" @submit.prevent="addAgent">
@@ -115,16 +115,16 @@ watch(() => props.agents, function (next) {
                                         :class="form.errors.agent_id !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"
                                         :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0];
                                                             return selected ? selected.user_matricule + ' ' + selected.user_display_name : ''}"
-                                        class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
+                                        class="w-full rounded-md border-0 bg-white dark:bg-grayish py-1.5 pl-3 pr-12 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                         placeholder="Chercher un agent..."
                                         @change="searchAgent.keyword = query = $event.target.value; "/>
                                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                         <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
                                     </ComboboxButton>
                                     <ComboboxOptions v-if="filteredN1.length > 0"
-                                                     class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                     class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                         <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" v-slot="{ active, selected }" :value="n1.user_id" as="template">
-                                            <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900']">
+                                            <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white']">
                                                 <div class="flex">
                                                     <span :class="['truncate', selected && 'font-semibold']">
                                                         {{ n1?.user_matricule + ' ' + n1?.user_display_name }}
@@ -146,8 +146,8 @@ watch(() => props.agents, function (next) {
             </div>
             <Separator title="Mes agents"/>
             <Datatable v-if="hasData(agents.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Matricule</TableHeading>
                         <TableHeading>Nom</TableHeading>
@@ -159,7 +159,7 @@ watch(() => props.agents, function (next) {
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="user in displayedData" :key="user.user_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ user.user_matricule }}</TableData>
                         <TableData>{{ user.user_display_name }}</TableData>
@@ -184,7 +184,7 @@ watch(() => props.agents, function (next) {
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState v-else message="Trouver vos agents à l'aide de la barre de recherche plus haut" title="Vous n'avez aucun agent a évaluer."/>
             <RemoveAgentModal :id="idToDelete" :opened="open" @close-modal="open = false"/>

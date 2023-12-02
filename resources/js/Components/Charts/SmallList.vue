@@ -19,13 +19,13 @@ const tops = props.data.map(p => {
                 <div class="w-px bg-gray-200"/>
             </div>
 
-            <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
+            <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white dark:bg-grayish">
                 <div class="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"/>
             </div>
-            <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
-                <span class="font-medium text-gray-900">{{ topItem.item.name }}</span>
+            <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500 dark:text-gray-100">
+                <span class="font-medium text-gray-900 dark:text-white">{{ topItem.item.name }}</span>
             </p>
-            <p class="flex-none py-0.5 text-xs leading-5 text-gray-500">{{ topItem.count }}</p>
+            <p class="flex-none py-0.5 text-xs leading-5 text-gray-500 dark:text-gray-100">{{ topItem.count }}</p>
         </li>
     </ul>
 </template>

@@ -22,7 +22,7 @@ const color = computed(() => {
         <div class="sm:flex-auto">
             <div class="flex justify-between items-center">
                 <div class="sm:flex sm:justify-between sm:items-center gap-2">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">
                         Évaluation de {{ agent.user_display_name }}
                     </h1>
                     <p v-if="rating.rating_is_validated"
@@ -50,19 +50,14 @@ const color = computed(() => {
 
                 </span>
             </div>
-            Matricule : {{ agent.user_matricule }}
-            Année : {{ rating.phase.phase_year }}
-            <div class="sm:flex sm:items-center gap-2">
+            <p class="dark:text-white">
+                Matricule : {{ agent.user_matricule }}
+                Année : {{ rating.phase.phase_year }}
+            </p>
+            <div class="sm:flex sm:items-center gap-2 dark:text-white">
                 Évaluateur:
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-gray-700 dark:text-white">
                     {{ rating.evaluator.user_display_name }}. Matricule : {{ rating.evaluator.user_matricule }}.
-                </p>
-
-            </div>
-            <div v-if="rating.validated_by_n2" class="sm:flex sm:items-center gap-2">
-                (N + 2):
-                <p class="text-sm text-gray-700">
-                    {{ rating.validator.user_display_name }}. Matricule : {{ rating.validator.user_matricule }}.
                 </p>
             </div>
         </div>

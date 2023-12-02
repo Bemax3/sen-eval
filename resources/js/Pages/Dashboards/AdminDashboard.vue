@@ -170,16 +170,16 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Dashboard</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Dashboard</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Statistiques des évaluations.
                     </p>
                 </div>
             </div>
-            <div class="mt-8 bg-white shadow sm:rounded-lg">
+            <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <!--                    <h3 class="text-base font-semibold leading-6 text-gray-900">Filtres</h3>-->
-                    <!--                    <div class="mt-2 max-w-xl text-sm text-gray-500">-->
+                    <!--                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Filtres</h3>-->
+                    <!--                    <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">-->
                     <!--                        <p>Filtrer les données en fonction de l'année et de la direction</p>-->
                     <!--                    </div>-->
                     <form class="sm:flex sm:items-center gap-10" @submit.prevent="filterDashboard">
@@ -189,7 +189,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <Listbox v-model="form.org_id" as="div">
                                     <div class="relative mt-2">
                                         <ListboxButton
-                                            class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                            class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                             <span class="block truncate">{{ orgs.filter((type) => type.org_id === form.org_id)[0]?.org_name || 'Tout' }}</span>
                                             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                                 <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -197,10 +197,10 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                         </ListboxButton>
                                         <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                             <ListboxOptions
-                                                class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 <ListboxOption v-slot="{ active, selected }" :value="-1"
                                                                as="template">
-                                                    <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                    <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                         <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">Tout</span>
                                                         <span v-if="selected"
                                                               :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
@@ -210,7 +210,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                                 </ListboxOption>
                                                 <ListboxOption v-for="type in orgs" :key="type.org_id" v-slot="{ active, selected }" :value="type.org_id"
                                                                as="template">
-                                                    <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                    <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                         <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.org_name }}</span>
                                                         <span v-if="selected"
                                                               :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
@@ -231,7 +231,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <Listbox v-model="form.phase_id" as="div">
                                     <div class="relative mt-2">
                                         <ListboxButton
-                                            class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                            class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                             <span class="block truncate">{{ phases.filter((type) => type.phase_id === form.phase_id)[0]?.phase_year }}</span>
                                             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                                 <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -239,10 +239,10 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                         </ListboxButton>
                                         <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                             <ListboxOptions
-                                                class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 <ListboxOption v-for="type in phases" :key="type.phase_id" v-slot="{ active, selected }" :value="type.phase_id"
                                                                as="template">
-                                                    <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                    <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                         <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.phase_year }}</span>
                                                         <span v-if="selected"
                                                               :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
@@ -269,21 +269,21 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
             </div>
             <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <Indicator v-for="item in stats" :key="item.id" :icon="item.icon" :link="item.link" :name="item.name" :value="item.stat"
-                           class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6"/>
+                           class="relative overflow-hidden rounded-lg bg-white dark:bg-grayish px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6"/>
             </dl>
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
-                <div class="col-span-2 mt-8 bg-white shadow sm:rounded-lg">
+                <div class="col-span-2 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:p-6">
-                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 flex items-center">
+                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                             Moyenne {{ form.org_id === -1 ? 'générale' : 'de la direction' }}
                         </h3>
                         <RadialBarChart :chart-options="averageChart.chartOptions" :series="averageChart.series"/>
                     </div>
                 </div>
-                <div class="col-span-2 mt-8 bg-white shadow sm:rounded-lg">
+                <div class="col-span-2 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:p-6">
-                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 flex items-center">
+                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                             Meilleures notes
                             <a :href="route('admin-dashboard.leaderboard',{phase_id: form.phase_id, org_id: form.org_id})"
@@ -297,18 +297,18 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                 </div>
             </div>
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
-                <div class="col-span-2 mt-8 bg-white shadow sm:rounded-lg">
+                <div class="col-span-2 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:p-6">
-                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 flex items-center">
+                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                             Moyenne par compétence générale
                         </h3>
                         <BarChart :chart-options="skillsChart.chartOptions" :series="skillsChart.series"/>
                     </div>
                 </div>
-                <div class="col-span-2 mt-8 bg-white shadow sm:rounded-lg">
+                <div class="col-span-2 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:p-6">
-                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 flex items-center">
+                        <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                             Moyennes par compétence spécifique
                         </h3>
@@ -324,7 +324,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                             <div class="hidden sm:block">
                                 <nav class="-mb-px flex space-x-8">
                                     <button v-for="tab in tabs" :key="tab.name" :aria-current="tab.current ? 'page' : undefined"
-                                            :class="[tab.id === selectedTab.id ? 'border-cyan-600 text-cyan-700' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium']"
+                                            :class="[tab.id === selectedTab.id ? 'border-cyan-600 text-cyan-700' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-white', 'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium']"
                                             @click="changeTab(tab.id)"
                                     >{{ tab.name }}
                                     </button>
@@ -336,7 +336,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
             </div>
             <template v-if="selectedTab.id === 1">
                 <template v-if="trainings.length > 0">
-                    <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+                    <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                         <SectionTitle title="Besoin en Formation"/>
                         <div class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                             <a
@@ -348,14 +348,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
-                        <div class="col-span-3 mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="col-span-3 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
                                 <BarChart :chart-options="trainingsChart.chartOptions" :series="trainingsChart.series"/>
                             </div>
                         </div>
-                        <div class="mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
-                                <h3 class="text-base font-semibold leading-6 text-gray-900 flex items-center">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                                     <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                                     Formations les plus demandées
                                 </h3>
@@ -364,8 +364,8 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <SimpleTable v-if="trainings.length > 0">
-                        <table class="min-w-full divide-y divide-gray-300">
-                            <thead class="bg-gray-50">
+                        <table class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                            <thead class="bg-gray-50 dark:bg-grayish">
                             <tr>
                                 <TableHeading :first="true">Domaine</TableHeading>
                                 <TableHeading class="whitespace-nowrap">Proposée par la hiérarchie</TableHeading>
@@ -374,7 +374,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableHeading>Totaux</TableHeading>
                             </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
+                            <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="training in trainings" :key="training.training_type_id">
                                 <TableData :first="true">{{ training.training_type_name }}</TableData>
                                 <TableData>{{ training.trainings_by_evaluators }}</TableData>
@@ -399,7 +399,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
             </template>
             <template v-if="selectedTab.id === 2">
                 <template v-if="claimsChart && hasData(claimsChart.series)">
-                    <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+                    <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                         <SectionTitle title="Réclamations"/>
                         <div class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                             <a
@@ -411,14 +411,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
-                        <div class="col-span-3 mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="col-span-3 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
                                 <PieChart :chart-options="claimsChart.chartOptions" :series="claimsChart.series" class="max-w-4xl"/>
                             </div>
                         </div>
-                        <div class="mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
-                                <h3 class="text-base font-semibold leading-6 text-gray-900 flex items-center">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                                     <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                                     Réclamation les plus demandées
                                 </h3>
@@ -427,14 +427,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <SimpleTable v-if="claims.length > 0">
-                        <table class="min-w-full divide-y divide-gray-300">
-                            <thead class="bg-gray-50">
+                        <table class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                            <thead class="bg-gray-50 dark:bg-grayish">
                             <tr>
                                 <TableHeading :first="true">Type de la réclamation</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Exprimées</TableHeading>
                             </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
+                            <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="claim in claims" :key="claim.claim_type_id">
                                 <TableData :first="true">{{ claim.claim_type_name }}</TableData>
                                 <TableData>{{ claim.claims_count }}</TableData>
@@ -453,7 +453,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
             </template>
             <template v-if="selectedTab.id === 3">
                 <template v-if="mobilities.length > 0">
-                    <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+                    <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                         <SectionTitle title="Besoin en Mobilité"/>
                         <div class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                             <a
@@ -465,14 +465,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
-                        <div class="col-span-3 mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="col-span-3 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
                                 <BarChart :chart-options="mobilitiesChart.chartOptions" :series="mobilitiesChart.series"/>
                             </div>
                         </div>
-                        <div class="mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
-                                <h3 class="text-base font-semibold leading-6 text-gray-900 flex items-center">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                                     <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                                     Mobilités les plus demandées
                                 </h3>
@@ -481,8 +481,8 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <SimpleTable v-if="mobilities.length > 0">
-                        <table class="min-w-full divide-y divide-gray-300">
-                            <thead class="bg-gray-50">
+                        <table class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                            <thead class="bg-gray-50 dark:bg-grayish">
                             <tr>
                                 <TableHeading :first="true">Domaine</TableHeading>
                                 <TableHeading class="whitespace-nowrap">Proposée par la hiérarchie</TableHeading>
@@ -490,7 +490,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableHeading>Totaux</TableHeading>
                             </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
+                            <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="mobility in mobilities" :key="mobility.mobility_type_id">
                                 <TableData :first="true">{{ mobility.mobility_type_name }}</TableData>
                                 <TableData>{{ mobility.mobilities_by_evaluators }}</TableData>
@@ -513,7 +513,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
             </template>
             <template v-if="selectedTab.id === 4">
                 <template v-if="sanctionsChart && hasData(sanctionsChart.series)">
-                    <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+                    <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                         <SectionTitle title="Sanctions"/>
                         <div class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                             <a
@@ -525,14 +525,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-4">
-                        <div class="col-span-3 mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="col-span-3 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
                                 <PieChart :chart-options="sanctionsChart.chartOptions" :series="sanctionsChart.series" class="max-w-3xl"/>
                             </div>
                         </div>
-                        <div class="mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
-                                <h3 class="text-base font-semibold leading-6 text-gray-900 flex items-center">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                                     <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                                     Sanction les plus demandées
                                 </h3>
@@ -541,14 +541,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <SimpleTable v-if="sanctions.length > 0">
-                        <table class="min-w-full divide-y divide-gray-300">
-                            <thead class="bg-gray-50">
+                        <table class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                            <thead class="bg-gray-50 dark:bg-grayish">
                             <tr>
                                 <TableHeading :first="true">Type de la réclamation</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Exprimées</TableHeading>
                             </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
+                            <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="sanction in sanctions" :key="sanction.sanction_type_id">
                                 <TableData :first="true">{{ sanction.sanction_type_name }}</TableData>
                                 <TableData>{{ sanction.sanctions_count }}</TableData>
@@ -567,7 +567,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
             </template>
             <template v-if="selectedTab.id === 5">
                 <template v-if="promotions.length > 0">
-                    <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+                    <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                         <SectionTitle title="Promotions et avancements"/>
                         <div class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                             <a
@@ -579,18 +579,18 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                        <div class="mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
-                                <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 flex items-center">
+                                <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                                     <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                                     Promotions
                                 </h3>
                                 <PieChart :chart-options="promotionsChart.chartOptions" :series="promotionsChart.series" class="max-w-3xl"/>
                             </div>
                         </div>
-                        <div class="mt-8 bg-white shadow sm:rounded-lg">
+                        <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
-                                <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 flex items-center">
+                                <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                                     <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                                     Avancements
                                 </h3>
@@ -599,8 +599,8 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         </div>
                     </div>
                     <SimpleTable v-if="promotions.length > 0">
-                        <table class="min-w-full divide-y divide-gray-300">
-                            <thead class="bg-gray-50">
+                        <table class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                            <thead class="bg-gray-50 dark:bg-grayish">
                             <tr>
                                 <TableHeading :first="true">Type de la promotion</TableHeading>
                                 <TableHeading :first="true">Proposé et éligible</TableHeading>
@@ -608,7 +608,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableHeading class="whitespace-pre-line">Totaux</TableHeading>
                             </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
+                            <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="promotion in promotions" :key="promotion.promotion_type_id">
                                 <TableData :first="true">{{ promotion.promotion_type_name }}</TableData>
                                 <TableData>{{ promotion.eligible_count }}</TableData>

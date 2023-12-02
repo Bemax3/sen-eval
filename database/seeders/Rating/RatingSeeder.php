@@ -64,25 +64,25 @@ class RatingSeeder extends Seeder
                 ]);
                 if ($rand1) $validation1->update(['validated_at' => Carbon::now()->toDateTimeString()]);
 
-                $rand2 = rand(0, 1);
+
                 $validation2 = Validator::create([
                     'validator_id' => $rating->evaluator_id,
                     'rating_id' => $rating->rating_id,
-                    'has_validated' => $rand2,
+                    'has_validated' => $rand1,
                     'rating_validator_comment' => fake()->realText,
                 ]);
-                if ($rand2) $validation2->update(['validated_at' => Carbon::now()->toDateTimeString()]);
+                if ($rand1) $validation2->update(['validated_at' => Carbon::now()->toDateTimeString()]);
 
-                $rand3 = rand(0, 1);
+
                 $validation3 = Validator::create([
                     'validator_id' => $user->n1->n1_id,
                     'rating_id' => $rating->rating_id,
-                    'has_validated' => $rand3,
+                    'has_validated' => $rand1,
                     'rating_validator_comment' => fake()->realText,
                 ]);
-                if ($rand3) $validation3->update(['validated_at' => Carbon::now()->toDateTimeString()]);
+                if ($rand1) $validation3->update(['validated_at' => Carbon::now()->toDateTimeString()]);
 
-                if ($rand1 && $rand2 && $rand3) $rating->update(['rating_is_validated' => 1]);
+                if ($rand1) $rating->update(['rating_is_validated' => 1]);
 
                 foreach ($skills as $skill) {
                     $randMark = rand(3, $skill->phase_skill_marking);
@@ -113,7 +113,7 @@ class RatingSeeder extends Seeder
                             'goal_name' => fake()->sentence,
                             'goal_means_available' => rand(0, 1),
                             'goal_expected_date' => Carbon::createFromDate($phase->phase_year)->addDays(rand(0, 365))->toDateTimeString(),
-                            'goal_expected_result' => fake()->realText,
+                            'goal_expected_result' => '100',
                             'goal_marking' => 5,
                             'goal_rate' => rand(0, 100),
                             'evaluation_period_id' => $period->evaluation_period_id,
@@ -168,7 +168,7 @@ class RatingSeeder extends Seeder
                     'sanction_type_id' => SanctionType::inRandomOrder()->first()->sanction_type_id
                 ]);
 
-                $howMuch = rand(1, 10);
+                $howMuch = rand(3, 10);
 
                 for ($i = 0; $i <= $howMuch; $i++) {
                     $byted = rand(0, 1);

@@ -113,25 +113,25 @@ watch(() => queryOrgs.value, function (next) {
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Profil de {{ user.user_display_name }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Profil de {{ user.user_display_name }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Informations personnelles et administratives de l'agent.
                     </p>
                 </div>
             </div>
-            <div class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white">
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <div class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white dark:bg-grayish">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Informations Personnelles</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Informations Personnelles</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Vous ne pouvez pas modifier ces informations.</p>
                     </div>
                     <form class="md:col-span-2">
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                             <div class="col-span-full flex items-center gap-x-8">
-                                <img alt="" class="h-24 w-24 flex-none rounded-lg bg-cyan-600  object-cover"/>
+                                <img alt="" class="h-24 w-24 flex-none bg-cyan-600 dark:bg-black object-cover"/>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="first-name">Prénom</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="first-name">Prénom</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.user_first_name" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -140,7 +140,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="last-name">Nom</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="last-name">Nom</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.user_last_name" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -149,7 +149,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="col-span-full">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="email">Email</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="email">Email</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.email" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -168,30 +168,30 @@ watch(() => queryOrgs.value, function (next) {
                         <!--                        </div>-->
                     </form>
                 </div>
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2 dark:border-gray-600">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Informations Administratives</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Informations Administratives</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Changer le supérieur hiérarchique de l'agent ou son organisation.</p>
                     </div>
                     <form class="md:col-span-2" @submit.prevent="submitForm">
                         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                             <div class="col-span-full">
                                 <Combobox v-model="form.org_id" as="div">
-                                    <ComboboxLabel class="block text-sm font-medium leading-6 text-gray-900">Organisation</ComboboxLabel>
+                                    <ComboboxLabel class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Organisation</ComboboxLabel>
                                     <div class="relative mt-2">
                                         <ComboboxInput
                                             :display-value="(id) => { let selected = filteredOrgs.filter(org => org.org_id === id)[0] || user.org ;
                                                 return selected ? selected.org_name + ' ' + selected.org_responsibility_center : 'Non défini'}"
-                                            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
+                                            class="w-full rounded-md border-0 bg-white dark:bg-grayish py-1.5 pl-3 pr-12 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:ring-2 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                             @change="searchOrgs.keyword = queryOrgs = $event.target.value; "/>
                                         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                             <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
                                         </ComboboxButton>
                                         <ComboboxOptions v-if="filteredOrgs.length > 0"
-                                                         class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                         class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                             <ComboboxOption v-for="org in filteredOrgs" :key="org.org_id" v-slot="{ active, selected }" :value="org.org_id"
                                                             as="template">
-                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900']">
+                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white']">
                                                     <div class="flex">
                                                         <span :class="['truncate', selected && 'font-semibold']">
                                                             {{ org?.org_name + ' --> ' + org?.org_responsibility_center }}
@@ -208,7 +208,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </Combobox>
                             </div>
                             <div class="col-span-full">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="confirm-password">Poste</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="confirm-password">Poste</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.user_title" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -217,7 +217,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="col-span-full">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="confirm-password">College</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="confirm-password">College</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.group_name" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -226,7 +226,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="first-name">Matricule</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="first-name">Matricule</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.user_matricule" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -235,7 +235,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="last-name">Centre de Responsabilité</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="last-name">Centre de Responsabilité</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.user_responsibility_center" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -244,7 +244,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="first-name">GF</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="first-name">GF</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.user_gf" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -253,7 +253,7 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="last-name">NR</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="last-name">NR</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <TextInput v-model="data.user_nr" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -262,24 +262,24 @@ watch(() => queryOrgs.value, function (next) {
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="first-name">Date Promotion GF</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="first-name">Date Promotion GF</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <input
                                         :disabled="true"
                                         :value="capitalized(moment(data.user_gf_prom_date).format('DD MMMM YYYY'))"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
+                                        class="bg-white dark:bg-grayish block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:ring-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <LockClosedIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label class="block text-sm font-medium leading-6 text-gray-900" for="last-name">Date Promotion NR</label>
+                                <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" for="last-name">Date Promotion NR</label>
                                 <div class="relative shadow-sm rounded-md mt-2">
                                     <input
                                         :disabled="true"
                                         :value="capitalized(moment(data.user_nr_prom_date).format('DD MMMM YYYY'))"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
+                                        class="bg-white dark:bg-grayish block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:ring-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <LockClosedIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
                                     </div>
@@ -291,7 +291,7 @@ watch(() => queryOrgs.value, function (next) {
                                     <Listbox v-model="form.role_id" as="div">
                                         <div class="relative mt-2">
                                             <ListboxButton
-                                                class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                                class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                                 <span class="block truncate">{{ roles.filter((type) => type.role_id === form.role_id)[0].role_name }}</span>
                                                 <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                                 <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -299,10 +299,10 @@ watch(() => queryOrgs.value, function (next) {
                                             </ListboxButton>
                                             <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                                 <ListboxOptions
-                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                     <ListboxOption v-for="type in roles" :key="type.role_id" v-slot="{ active, selected }" :value="type.role_id"
                                                                    as="template">
-                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.role_name }}</span>
                                                             <span v-if="selected"
                                                                   :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
@@ -318,20 +318,21 @@ watch(() => queryOrgs.value, function (next) {
                             </div>
                             <div class="col-span-full">
                                 <Combobox v-model="form.n1_id" as="div">
-                                    <ComboboxLabel class="block text-sm font-medium leading-6 text-gray-900">Supérieure Hiérarchique (N + 1)</ComboboxLabel>
+                                    <ComboboxLabel class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Supérieure Hiérarchique (N + 1)
+                                    </ComboboxLabel>
                                     <div class="relative mt-2">
                                         <ComboboxInput
                                             :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0] || user.n1 ;
                                                 return selected ? selected.user_matricule + ' ' + selected.user_display_name : 'Non défini'}"
-                                            class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
+                                            class="w-full rounded-md border-0 bg-white dark:bg-grayish py-1.5 pl-3 pr-12 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:ring-2 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                             @change="search.keyword = query = $event.target.value; "/>
                                         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                             <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
                                         </ComboboxButton>
                                         <ComboboxOptions v-if="filteredN1.length > 0"
-                                                         class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                         class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                             <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" v-slot="{ active, selected }" :value="n1.user_id" as="template">
-                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900']">
+                                                <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white']">
                                                     <div class="flex">
                                                         <span :class="['truncate', selected && 'font-semibold']">
                                                             {{ n1?.user_matricule + ' ' + n1?.user_display_name }}

@@ -19,6 +19,6 @@
             Veuillez ne pas y répondre.<br/>
             {{--            Besoin d'aide ? Veuillez contacter <a class="text-cyan-600 hover:underline">natou.cisse@senelec.sn.</a>--}}
         </div>
-        {{--        <p class="mt-3 text-gray-500">© {{ new Date().getFullYear() }} Meraki UI. All Rights Reserved.</p>--}}
+        {{--        <p class="mt-3 text-gray-500 dark:text-gray-100">© {{ new Date().getFullYear() }} Meraki UI. All Rights Reserved.</p>--}}
     </footer>
 </section>

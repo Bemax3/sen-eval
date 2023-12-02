@@ -51,15 +51,15 @@ watch(() => props.orgs,
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Organisations</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Organisations</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         La liste des organisations de la Senelec.
                     </p>
                 </div>
             </div>
             <Datatable v-if="hasData(orgs.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Nom</TableHeading>
                         <TableHeading>Centre de Responsabilité</TableHeading>
@@ -70,7 +70,7 @@ watch(() => props.orgs,
 
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="org in displayedData" :key="org.org_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ org.org_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ org.org_responsibility_center }}</TableData>
@@ -90,7 +90,7 @@ watch(() => props.orgs,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

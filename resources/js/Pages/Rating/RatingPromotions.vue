@@ -76,7 +76,7 @@ watch(() => props.promotions,
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
             <Tabs :agent_id="props.agent.user_id" :evaluated="isEvaluated" :rating_id="props.rating.rating_id" :validator="isValidator"/>
-            <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+            <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                 <SectionTitle desc="Liste des promotions demandées pour cette évaluation" title="Promotions"/>
                 <div v-if="!isEvaluated && !isValidator && !rating.rating_is_validated" class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button
@@ -88,8 +88,8 @@ watch(() => props.promotions,
                 </div>
             </div>
             <Datatable v-if="hasData(promotions.data)" v-model="search" :pagination="pagination" :search="false">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Nature</TableHeading>
                         <TableHeading>Demandée par</TableHeading>
@@ -98,13 +98,14 @@ watch(() => props.promotions,
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="promotion in displayedData" :key="promotion.rating_promotion_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ promotion.type.promotion_type_name }}</TableData>
                         <TableData>{{ rating.evaluator.user_display_name }}</TableData>
                         <TableData>
-                            <span :class="promotion.evaluated_is_eligible ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
-                                  class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
+                            <span
+                                :class="promotion.evaluated_is_eligible ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
+                                class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ promotion.evaluated_is_eligible ? 'Éligible' : 'Non Éligible' }}
                             </span>
                         </TableData>
@@ -128,7 +129,7 @@ watch(() => props.promotions,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState v-else :message="isEvaluated ? '' : 'Demander une promotion en utilisant le formulaire en haut.'"
                         title="Aucune promotions ou avancement demandée pour l'instant."/>

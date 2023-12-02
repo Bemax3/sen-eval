@@ -60,7 +60,7 @@ const changeTab = () => {
             <div class="hidden sm:block">
                 <nav class="-mb-px flex space-x-8">
                     <Link v-for="tab in tabs" :key="tab.name" :aria-current="tab.current ? 'page' : undefined"
-                          :class="[tab.current ? 'border-cyan-600 text-cyan-700' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium']"
+                          :class="[tab.current ? 'border-cyan-600 text-cyan-700' : 'border-transparent text-gray-500 dark:text-gray-100 hover:border-gray-300 hover:text-gray-700 dark:text-white', 'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium']"
                           :href="tab.href">{{ tab.name }}
                     </Link>
                 </nav>

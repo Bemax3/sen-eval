@@ -51,8 +51,8 @@ watch(() => props.claims,
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Types de Réclamation</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Types de Réclamation</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         La liste des réclamations qu'il sera possible de faire lors de l'évaluation.
                     </p>
                 </div>
@@ -67,8 +67,8 @@ watch(() => props.claims,
                 </div>
             </div>
             <Datatable v-if="hasData(claims.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Nom</TableHeading>
                         <TableHeading>Description</TableHeading>
@@ -76,7 +76,7 @@ watch(() => props.claims,
                         <TableHeading>Modifier</TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="claim in displayedData" :key="claim.claim_type_id">
                         <TableData :first="true">{{ claim.claim_type_name }}</TableData>
                         <TableData>{{ claim.claim_type_desc }}</TableData>
@@ -85,7 +85,7 @@ watch(() => props.claims,
                                 <ToggleOnDatatable :link="route('claimTypes.update',{claimType: claim.claim_type_id})" :value="claim.claim_type_is_active"
                                                    obj="claim_type_is_active"/>
                                 <span
-                                    :class="claim.claim_type_is_active ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
+                                    :class="claim.claim_type_is_active ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
                                     class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                         {{ claim.claim_type_is_active ? 'Activé' : 'Désactivé' }}
                                 </span>
@@ -101,7 +101,7 @@ watch(() => props.claims,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

@@ -59,12 +59,13 @@ setForm()
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">{{ title }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">Ajouter ou modifier un type de formation qu'il sera possible de proposer ou demander lors de l'évaluation.</p>
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">{{ title }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">Ajouter ou modifier un type de formation qu'il sera possible de proposer ou demander lors de
+                        l'évaluation.</p>
                 </div>
             </div>
             <div class="mt-8 flow-root">
-                <form class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
+                <form class="bg-white dark:bg-grayish shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
                     <div class="px-4 py-6 sm:p-8">
                         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-4">

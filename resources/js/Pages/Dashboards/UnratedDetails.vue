@@ -36,16 +36,16 @@ const search = ''
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Agents non évalués pour l'année {{ phase.phase_year }}
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Agents non évalués pour l'année {{ phase.phase_year }}
                         {{ org !== -1 ? ' - ' + org.org_name : '' }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         La liste des agents non évalués pour l'année {{ phase.phase_year }}.
                     </p>
                 </div>
             </div>
             <Datatable v-if="hasData(users.data)" v-model="search" :pagination="pagination" :search="false">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Matricule</TableHeading>
                         <TableHeading>Nom</TableHeading>
@@ -57,7 +57,7 @@ const search = ''
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="user in displayedData" :key="user.user_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ user.user_matricule }}</TableData>
                         <TableData>{{ user.user_display_name }}</TableData>
@@ -76,7 +76,7 @@ const search = ''
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

@@ -50,15 +50,15 @@ const validate = () => {
                                      enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100"
                                      leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                         <DialogPanel
-                            class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                            class="relative transform overflow-hidden rounded-lg bg-white dark:bg-grayish px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                             <div class="sm:flex sm:items-start">
                                 <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                                     <ExclamationTriangleIcon aria-hidden="true" class="h-6 w-6 text-red-600"/>
                                 </div>
                                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900">Validation</DialogTitle>
+                                    <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Validation</DialogTitle>
                                     <div class="mt-2">
-                                        <p class="text-sm text-gray-500">Êtes vous sûre de vouloir valider cet évaluation?
+                                        <p class="text-sm text-gray-500 dark:text-gray-100">Êtes vous sûre de vouloir valider cet évaluation?
                                             Aprés validation par toute les parties aucune modification ne pourra être apportés.
                                             Cette action est irréversible.
                                         </p>
@@ -72,7 +72,7 @@ const validate = () => {
                                     @click="validate();open = false;$emit('closeModal');">Valider
                                 </button>
                                 <button ref="cancelButtonRef"
-                                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-grayish px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                         type="button" @click="open = false;$emit('closeModal')">Annuler
                                 </button>
                             </div>

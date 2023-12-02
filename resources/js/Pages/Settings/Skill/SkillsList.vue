@@ -51,8 +51,8 @@ watch(() => props.skills,
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Compétences</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Compétences</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         La liste des compétences qu'il sera possible de noter lors de l'évaluation.
                     </p>
                 </div>
@@ -67,8 +67,8 @@ watch(() => props.skills,
                 </div>
             </div>
             <Datatable v-if="hasData(skills.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Nom</TableHeading>
                         <TableHeading>Description</TableHeading>
@@ -79,7 +79,7 @@ watch(() => props.skills,
                         <TableHeading>Modifier</TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="skill in displayedData" :key="skill.skill_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ skill.skill_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ skill.skill_desc }}</TableData>
@@ -87,7 +87,7 @@ watch(() => props.skills,
                             <div v-if="!skill.group" class="flex space-x-4">
                                 <ToggleOnDatatable :link="route('skills.update',{skill: skill.skill_id})" :value="skill.skill_is_active" obj="skill_is_active"/>
                                 <span
-                                    :class="skill.skill_is_active ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
+                                    :class="skill.skill_is_active ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
                                     class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                     {{ skill.skill_is_active ? 'Activé' : 'Désactivé' }}
                                 </span>
@@ -110,7 +110,7 @@ watch(() => props.skills,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

@@ -37,7 +37,7 @@ if ([1, 2, 4].includes(user.value.role_id)) navigation.push({
     name: 'Dashboard',
     href: route('admin-dashboard.index'),
     icon: ChartPieIcon,
-    current: currentRoute === 'admin-dashboard'
+    current: ['admin-dashboard', 'home'].includes(currentRoute)
 });
 
 navigation.push(

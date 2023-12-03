@@ -68,9 +68,9 @@ if (!function_exists('getPendingRatings')) {
     function getPendingRatings($phase_id, $org_id): object
     {
         if (!isset($org_id) || $org_id == -1) {
-            $rated = Helper::getRatingsByPhaseAndStatus($phase_id, 0)->with('evaluated', 'evaluator', 'phase');
+            $rated = Helper::getRatingsByPhaseAndStatus($phase_id, 0)->with('evaluated', 'evaluator', 'phase', 'validators');
         } else {
-            $rated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 0)->with('evaluated', 'evaluator', 'phase');
+            $rated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 0)->with('evaluated', 'evaluator', 'phase', 'validators');
         }
 
         return $rated;

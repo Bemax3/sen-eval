@@ -290,8 +290,6 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                class="font-medium text-cyan-600 hover:text-cyan-500 text-sm m-2"
                             >Voir tout le classement</a>
                         </h3>
-
-
                         <TopRatings :tops="tops"/>
                     </div>
                 </div>

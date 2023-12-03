@@ -6,7 +6,6 @@ use App\Http\Controllers\Agent\AgentsController;
 use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Dashboards\DownloadController;
 use App\Http\Controllers\Goal\GoalsController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Phase\PeriodsController;
 use App\Http\Controllers\Phase\PhaseController;
 use App\Http\Controllers\Phase\PhaseSkillController;
@@ -49,7 +48,7 @@ use Illuminate\Support\Facades\Route;
 ////    return new App\Mail\OtherValidation($rating, $rating->validators()->where('rating_validator_id', '=', 9)->first(), $rating->validators()->where('rating_validator_id', '=', 8)->first());
 //});
 
-Route::get('/', [HomeController::class, 'index'])->middleware('auth', 'viewer')->name('home');
+Route::get('/', [AdminDashboardController::class, 'index'])->middleware('auth', 'viewer')->name('home');
 Route::group(['middleware' => ['auth']], function () {
     Route::put('/goals/{goal}/updateMark', [GoalsController::class, 'updateMark'])->name('goals.update-mark');
     Route::post('/profile/setup', [ProfileController::class, 'setup'])->name('profile.setup');
@@ -116,6 +115,7 @@ Route::group(['middleware' => ['auth', 'viewer']], function () {
     Route::get('/dashboard/download-sanctions', [DownloadController::class, 'downloadSanctions'])->name('admin-dashboard.download-sanctions');
     Route::get('/dashboard/download-mobilities', [DownloadController::class, 'downloadMobilities'])->name('admin-dashboard.download-mobilities');
     Route::get('/dashboard/download-promotions', [DownloadController::class, 'downloadPromotions'])->name('admin-dashboard.download-promotions');
+    Route::get('/dashboard/download-pending', [DownloadController::class, 'downloadPending'])->name('admin-dashboard.download-pending');
 });
 
 require __DIR__ . '/auth.php';

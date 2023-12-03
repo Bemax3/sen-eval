@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Dashboards;
 
 use App\Exports\ClaimsExport;
 use App\Exports\MobilitiesExport;
+use App\Exports\PendingRatingsExport;
 use App\Exports\PromotionsExport;
 use App\Exports\SanctionsExport;
 use App\Exports\TrainingsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Organisation;
 use App\Models\Phase\Phase;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DownloadController extends Controller
@@ -30,7 +32,7 @@ class DownloadController extends Controller
             $string = $string . ' - ' . $org->org_name;
         }
         $phase = Phase::findOrFail($phase_id);
-        return $string . ' - ' . $phase->phase_year;
+        return $string . ' - Année ' . $phase->phase_year;
     }
 
     public function downloadClaims(Request $request)
@@ -63,5 +65,13 @@ class DownloadController extends Controller
         $phase_id = $request->get('phase_id');
 
         return \Excel::download(new PromotionsExport($phase_id, $org_id), 'Promotions et avancements' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
+    }
+
+    public function downloadPending(Request $request)
+    {
+        $org_id = $request->get('org_id') ?? -1;
+        $phase_id = $request->get('phase_id');
+
+        return \Excel::download(new PendingRatingsExport($phase_id, $org_id), 'Évaluation en attende de validation' . self::getNameComplement($phase_id, $org_id) . ' - ' . Carbon::today()->isoFormat('DD MMMM YYYY') . '.xlsx');
     }
 }

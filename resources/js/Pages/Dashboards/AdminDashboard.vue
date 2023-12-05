@@ -3,7 +3,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Indicator from "@/Components/Charts/Indicator.vue";
 import {CheckIcon, ExclamationCircleIcon, UsersIcon, XMarkIcon} from '@heroicons/vue/24/outline'
-import {Head, router} from "@inertiajs/vue3";
+import {Head, Link, router} from "@inertiajs/vue3";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import SectionTitle from "@/Components/LayoutParts/SectionTitle.vue";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
@@ -286,9 +286,10 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                         <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                             Meilleures notes
-                            <a :href="route('admin-dashboard.leaderboard',{phase_id: form.phase_id, org_id: form.org_id})"
-                               class="font-medium text-cyan-600 hover:text-cyan-500 text-sm m-2"
-                            >Voir tout le classement</a>
+                            <Link :href="route('admin-dashboard.leaderboard',{phase_id: form.phase_id, org_id: form.org_id})"
+                                  class="font-medium text-cyan-600 hover:text-cyan-500 text-sm m-2"
+                            >Voir tout le classement
+                            </Link>
                         </h3>
                         <TopRatings :tops="tops"/>
                     </div>
@@ -370,6 +371,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableHeading class="whitespace-pre-line">Souhaitée par les agents</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Exprimés par les deux parties</TableHeading>
                                 <TableHeading>Totaux</TableHeading>
+                                <TableHeading class="whitespace-pre-line"></TableHeading>
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
@@ -379,6 +381,13 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableData>{{ training.trainings_by_evaluated }}</TableData>
                                 <TableData>{{ training.asked_by_both }}</TableData>
                                 <TableData class="font-bold">{{ training.trainings_count }}</TableData>
+                                <TableData>
+                                    <Link
+                                        :href="route('admin-dashboard.trainings-details',{phase_id: form.phase_id, org_id: form.org_id,type: training.training_type_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir détails
+                                    </Link>
+                                </TableData>
                             </tr>
                             <tr>
                                 <TableData :first="true">Totaux</TableData>
@@ -388,6 +397,13 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableData class="font-bold">{{ total.by_evaluated }}</TableData>
                                 <TableData class="font-bold">{{ total.by_both }}</TableData>
                                 <TableData class="font-bold">{{ total.all }}</TableData>
+                                <TableData class="font-bold">
+                                    <Link
+                                        :href="route('admin-dashboard.all-trainings',{phase_id: form.phase_id, org_id: form.org_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir Tout
+                                    </Link>
+                                </TableData>
                             </tr>
                             </tbody>
                         </table>
@@ -430,17 +446,32 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                             <tr>
                                 <TableHeading :first="true">Type de la réclamation</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Exprimées</TableHeading>
+                                <TableHeading class="whitespace-pre-line"></TableHeading>
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="claim in claims" :key="claim.claim_type_id">
                                 <TableData :first="true">{{ claim.claim_type_name }}</TableData>
                                 <TableData>{{ claim.claims_count }}</TableData>
+                                <TableData>
+                                    <Link
+                                        :href="route('admin-dashboard.claims-details',{phase_id: form.phase_id, org_id: form.org_id,type: claim.claim_type_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir détails
+                                    </Link>
+                                </TableData>
                             </tr>
                             <tr>
                                 <TableData :first="true">Total</TableData>
                                 <TableData class="font-bold">
                                     {{ total_claims }}
+                                </TableData>
+                                <TableData class="font-bold">
+                                    <Link
+                                        :href="route('admin-dashboard.all-claims',{phase_id: form.phase_id, org_id: form.org_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir Tout
+                                    </Link>
                                 </TableData>
                             </tr>
                             </tbody>
@@ -486,6 +517,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableHeading class="whitespace-nowrap">Proposée par la hiérarchie</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Souhaitée par les agents</TableHeading>
                                 <TableHeading>Totaux</TableHeading>
+                                <TableHeading class="whitespace-pre-line"></TableHeading>
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
@@ -494,6 +526,13 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableData>{{ mobility.mobilities_by_evaluators }}</TableData>
                                 <TableData>{{ mobility.mobilities_by_evaluated }}</TableData>
                                 <TableData class="font-bold">{{ mobility.mobilities_count }}</TableData>
+                                <TableData>
+                                    <Link
+                                        :href="route('admin-dashboard.mobilities-details',{phase_id: form.phase_id, org_id: form.org_id,type: mobility.mobility_type_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir détails
+                                    </Link>
+                                </TableData>
                             </tr>
                             <tr>
                                 <TableData :first="true">Totaux</TableData>
@@ -502,6 +541,13 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 </TableData>
                                 <TableData class="font-bold">{{ total_mobilities.by_evaluated }}</TableData>
                                 <TableData class="font-bold">{{ total_mobilities.all }}</TableData>
+                                <TableData class="font-bold">
+                                    <Link
+                                        :href="route('admin-dashboard.all-mobilities',{phase_id: form.phase_id, org_id: form.org_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir Tout
+                                    </Link>
+                                </TableData>
                             </tr>
                             </tbody>
                         </table>
@@ -544,17 +590,32 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                             <tr>
                                 <TableHeading :first="true">Type de la réclamation</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Exprimées</TableHeading>
+                                <TableHeading class="whitespace-pre-line"></TableHeading>
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="sanction in sanctions" :key="sanction.sanction_type_id">
                                 <TableData :first="true">{{ sanction.sanction_type_name }}</TableData>
                                 <TableData>{{ sanction.sanctions_count }}</TableData>
+                                <TableData>
+                                    <Link
+                                        :href="route('admin-dashboard.sanctions-details',{phase_id: form.phase_id, org_id: form.org_id,type: sanction.sanction_type_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir détails
+                                    </Link>
+                                </TableData>
                             </tr>
                             <tr>
                                 <TableData :first="true">Total</TableData>
                                 <TableData class="font-bold">
                                     {{ total_sanctions }}
+                                </TableData>
+                                <TableData class="font-bold">
+                                    <Link
+                                        :href="route('admin-dashboard.all-sanctions',{phase_id: form.phase_id, org_id: form.org_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir Tout
+                                    </Link>
                                 </TableData>
                             </tr>
                             </tbody>
@@ -604,6 +665,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableHeading :first="true">Proposé et éligible</TableHeading>
                                 <TableHeading :first="true">Proposé et non éligible</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Totaux</TableHeading>
+                                <TableHeading class="whitespace-pre-line"></TableHeading>
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
@@ -612,6 +674,13 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 <TableData>{{ promotion.eligible_count }}</TableData>
                                 <TableData>{{ promotion.others }}</TableData>
                                 <TableData class="font-bold">{{ promotion.eligible_count + promotion.others }}</TableData>
+                                <TableData>
+                                    <Link
+                                        :href="route('admin-dashboard.promotions-details',{phase_id: form.phase_id, org_id: form.org_id,type: promotion.promotion_type_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >Voir détails
+                                    </Link>
+                                </TableData>
                             </tr>
                             <tr>
                                 <TableData :first="true">Totaux</TableData>
@@ -623,6 +692,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                 </TableData>
                                 <TableData class="font-bold">
                                     {{ total_promotions.all }}
+                                </TableData>
+                                <TableData class="font-bold">
+                                    <Link
+                                        :href="route('admin-dashboard.all-promotions',{phase_id: form.phase_id, org_id: form.org_id})"
+                                        class="font-medium text-cyan-600 hover:text-cyan-500"
+                                    >
+                                        Voir Tout
+                                    </Link>
                                 </TableData>
                             </tr>
                             </tbody>

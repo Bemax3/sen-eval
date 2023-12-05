@@ -42,7 +42,7 @@ const search = '';
                         Liste des évaluations en attente de validation pour l'année {{ phase.phase_year }}.
                     </p>
                 </div>
-                <div class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                <div v-if="displayedData.length > 0" class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <a
                         :href="route('admin-dashboard.download-pending',{org_id: org.org_id, phase_id: phase.phase_id})"
                         class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
@@ -79,7 +79,7 @@ const search = '';
                             <span
                                 :class="e.rating_is_validated ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
                                 class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
-                                {{ e.rating_is_validated ? 'Validé' : 'En attende' }}
+                                {{ e.rating_is_validated ? 'Validé' : 'En attente' }}
                             </span>
                         </TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

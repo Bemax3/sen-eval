@@ -175,7 +175,7 @@ watch(() => query.value, function (next) {
                             <div class="min-w-0">
                                 <div class="flex items-start gap-x-3">
                                     <p class="text-base font-bold leading-6 text-gray-900 dark:text-white">{{ goal.goal_name }}</p>
-                                    <p class="text-gray-700 dark:text-white bg-gray-50 ring-gray-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
+                                    <p class="text-white bg-gray-500 ring-gray-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
                                         {{ goal.period.evaluation_period_name }}
                                     </p>
                                     <p v-if="goal.goal_mark_is_claimed"

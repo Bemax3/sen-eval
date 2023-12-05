@@ -28,6 +28,11 @@ class Mobility extends Model
         return $this->belongsTo(User::class, 'asked_by', 'user_id');
     }
 
+    public function asker(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'asked_by', 'user_id');
+    }
+
     public function type(): BelongsTo
     {
         return $this->belongsTo(MobilityType::class, 'mobility_type_id', 'mobility_type_id');

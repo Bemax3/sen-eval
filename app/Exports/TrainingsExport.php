@@ -17,9 +17,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class TrainingsExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithDefaultStyles
 {
 
-    private $phase_id;
-    private $org_id;
-    private $line_count;
+    private mixed $phase_id;
+    private mixed $org_id;
+    private mixed $line_count;
 
     public function __construct($phase_id, $org_id)
     {

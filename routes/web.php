@@ -87,7 +87,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/agent/{agent}/agent-goals/search', [AgentGoalsController::class, 'search'])->name('agent-goals.search');
 });
 
-Route::group(['middleware' => ['auth', 'root']], function () {
+Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::put('/phases/{phase}/updateStatus', [PhaseController::class, 'updateStatus'])->name('phases.update-status');
     Route::resources([
         'claimTypes' => ClaimTypeController::class,
@@ -97,7 +97,6 @@ Route::group(['middleware' => ['auth', 'root']], function () {
         'trainingTypes' => TrainingTypeController::class,
         'skills' => SkillController::class,
         'phases' => PhaseController::class,
-        'users' => UserController::class,
         'roles' => RoleController::class,
         'phaseSkills' => PhaseSkillController::class,
         'periods' => PeriodsController::class,
@@ -105,17 +104,37 @@ Route::group(['middleware' => ['auth', 'root']], function () {
     ]);
 });
 Route::group(['middleware' => ['auth', 'viewer']], function () {
+    Route::resources([
+        'users' => UserController::class,
+    ]);
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard.index');
     Route::get('/dashboard/rated', [AdminDashboardController::class, 'rated'])->name('admin-dashboard.rated');
     Route::get('/dashboard/pending', [AdminDashboardController::class, 'pending'])->name('admin-dashboard.pending');
     Route::get('/dashboard/unrated', [AdminDashboardController::class, 'unrated'])->name('admin-dashboard.unrated');
     Route::get('/dashboard/leaderboard', [AdminDashboardController::class, 'leaderboard'])->name('admin-dashboard.leaderboard');
+    Route::get('/dashboard/trainings-details', [AdminDashboardController::class, 'trainingsDetails'])->name('admin-dashboard.trainings-details');
+    Route::get('/dashboard/all-trainings', [AdminDashboardController::class, 'allTrainings'])->name('admin-dashboard.all-trainings');
+    Route::get('/dashboard/claims-details', [AdminDashboardController::class, 'claimsDetails'])->name('admin-dashboard.claims-details');
+    Route::get('/dashboard/all-claims', [AdminDashboardController::class, 'allClaims'])->name('admin-dashboard.all-claims');
+    Route::get('/dashboard/mobilities-details', [AdminDashboardController::class, 'mobilitiesDetails'])->name('admin-dashboard.mobilities-details');
+    Route::get('/dashboard/all-mobilities', [AdminDashboardController::class, 'allMobilities'])->name('admin-dashboard.all-mobilities');
+    Route::get('/dashboard/sanctions-details', [AdminDashboardController::class, 'sanctionsDetails'])->name('admin-dashboard.sanctions-details');
+    Route::get('/dashboard/all-sanctions', [AdminDashboardController::class, 'allSanctions'])->name('admin-dashboard.all-sanctions');
+    Route::get('/dashboard/promotions-details', [AdminDashboardController::class, 'promotionsDetails'])->name('admin-dashboard.promotions-details');
+    Route::get('/dashboard/all-promotions', [AdminDashboardController::class, 'allPromotions'])->name('admin-dashboard.all-promotions');
     Route::get('/dashboard/download-trainings', [DownloadController::class, 'downloadTrainings'])->name('admin-dashboard.download-trainings');
+    Route::get('/dashboard/download-trainings-details', [DownloadController::class, 'downloadTrainingsDetails'])->name('admin-dashboard.download-trainings-details');
     Route::get('/dashboard/download-claims', [DownloadController::class, 'downloadClaims'])->name('admin-dashboard.download-claims');
+    Route::get('/dashboard/download-claims-details', [DownloadController::class, 'downloadClaimsDetails'])->name('admin-dashboard.download-claims-details');
     Route::get('/dashboard/download-sanctions', [DownloadController::class, 'downloadSanctions'])->name('admin-dashboard.download-sanctions');
+    Route::get('/dashboard/download-sanctions-details', [DownloadController::class, 'downloadSanctionsDetails'])->name('admin-dashboard.download-sanctions-details');
     Route::get('/dashboard/download-mobilities', [DownloadController::class, 'downloadMobilities'])->name('admin-dashboard.download-mobilities');
+    Route::get('/dashboard/download-mobilities-details', [DownloadController::class, 'downloadMobilitiesDetails'])->name('admin-dashboard.download-mobilities-details');
     Route::get('/dashboard/download-promotions', [DownloadController::class, 'downloadPromotions'])->name('admin-dashboard.download-promotions');
+    Route::get('/dashboard/download-promotions-details', [DownloadController::class, 'downloadPromotionsDetails'])->name('admin-dashboard.download-promotions-details');
     Route::get('/dashboard/download-pending', [DownloadController::class, 'downloadPending'])->name('admin-dashboard.download-pending');
+    Route::get('/dashboard/download-unrated', [DownloadController::class, 'downloadUnrated'])->name('admin-dashboard.download-unrated');
+    Route::get('/dashboard/download-rated', [DownloadController::class, 'downloadRated'])->name('admin-dashboard.download-rated');
 });
 
 require __DIR__ . '/auth.php';

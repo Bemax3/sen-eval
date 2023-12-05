@@ -121,4 +121,21 @@ class Helper
     }
 
 
+    public static function queryByPhaseAndOrg($query, $phase_id, $org_id)
+    {
+        return $query->where('ratings.phase_id', '=', $phase_id)
+            ->whereHas('evaluated', function ($query) use ($org_id) {
+                $query->whereHas('org', function ($query) use ($org_id) {
+                    $query->where('organisations.org_id', '=', $org_id)
+                        ->orWhere('organisations.parent_id', '=', $org_id);
+                });
+            });
+    }
+
+    public static function queryByPhase($query, $phase_id)
+    {
+        return $query->where('ratings.phase_id', '=', $phase_id);
+    }
+
+
 }

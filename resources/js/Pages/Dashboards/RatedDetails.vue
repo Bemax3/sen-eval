@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, Link} from '@inertiajs/vue3';
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import {getPagination, hasData} from "@/helpers/helper.js";
-import {EyeIcon} from "@heroicons/vue/20/solid/index.js";
+import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/vue/20/solid/index.js";
 import Datatable from "@/Components/Common/Tables/Datatable.vue";
 import EmptyState from "@/Components/Common/EmptyState.vue";
 import TableData from "@/Components/Common/Tables/TableData.vue";
@@ -43,6 +43,14 @@ const search = '';
                     <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Liste des évaluations validées pour l'année {{ phase.phase_year }}.
                     </p>
+                </div>
+                <div v-if="displayedData.length > 0" class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    <a
+                        :href="route('admin-dashboard.download-rated',{org_id: org.org_id, phase_id: phase.phase_id})"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        Télécharger
+                        <ArrowDownTrayIcon class="-mr-0.5 h-5 w-5"/>
+                    </a>
                 </div>
             </div>
             <Datatable v-if="hasData(ratings.data)" v-model="search" :pagination="pagination" :search="false">

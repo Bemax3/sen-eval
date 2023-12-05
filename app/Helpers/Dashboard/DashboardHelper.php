@@ -1,6 +1,11 @@
 <?php
 
 use App\Models\Phase\PhaseSkill;
+use App\Models\Rating\Claim;
+use App\Models\Rating\Mobility;
+use App\Models\Rating\Promotion;
+use App\Models\Rating\Sanction;
+use App\Models\Rating\Training;
 use App\Models\Settings\ClaimType;
 use App\Models\Settings\MobilityType;
 use App\Models\Settings\PromotionType;
@@ -82,11 +87,11 @@ if (!function_exists('getUnratedUsers')) {
     {
         if (!isset($org_id) || $org_id == -1) {
             $unrated = User::where('role_id', '!=', 1)->whereDoesntHave('ratings', function ($query) use ($phase_id) {
-                $query->where('ratings.phase_id', '=', $phase_id);
+                Helper::queryByPhase($query, $phase_id);
             });
         } else {
             $unrated = User::where('role_id', '!=', 1)->whereDoesntHave('ratings', function ($query) use ($phase_id) {
-                $query->where('ratings.phase_id', '=', $phase_id);
+                Helper::queryByPhase($query, $phase_id);
             })->whereHas('org', function ($query) use ($org_id) {
                 $query->where('organisations.org_id', '=', $org_id)
                     ->orWhere('organisations.parent_id', '=', $org_id);
@@ -110,7 +115,7 @@ if (!function_exists('getAverageChart')) {
             "plotOptions": {
                 "radialBar": {
                     "hollow": {
-                        "size": "70%"
+                        "size": "80%"
                     },
                     "dataLabels": {
                         "show": true,
@@ -134,7 +139,7 @@ if (!function_exists('getAverageChart')) {
                 "enabled": true,
                 "theme": "dark"
             },
-            "labels": ["Moyenne"]
+            "labels": ["Moyenne des notes"]
         }');
         $result->series = $series;
         $result->chartOptions = $chartOptions;
@@ -197,6 +202,90 @@ if (!function_exists('getTrainingsData')) {
     }
 }
 
+if (!function_exists('getTrainingsDetails')) {
+    function getTrainingsDetails($phase_id, $org_id, $type): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $trainings = Training::where('training_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $trainings = Training::where('training_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $trainings;
+    }
+}
+
+if (!function_exists('getAllTrainings')) {
+    function getAllTrainings($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $trainings = Training::whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $trainings = Training::whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $trainings;
+    }
+}
+
+if (!function_exists('getClaimsData')) {
+    function getClaimsData($phase_id, $org_id): object
+    {
+
+        if (!isset($org_id) || $org_id == -1) {
+            $claims = ClaimType::withCount(['claims' => function ($query) use ($phase_id) {
+                Helper::filterByPhase($query, $phase_id);
+            }])->orHaving('claims_count', '>', 0)
+                ->get();
+        } else {
+            $claims = ClaimType::withCount(['claims' => function ($query) use ($phase_id, $org_id) {
+                Helper::filterByPhaseAndOrg($query, $phase_id, $org_id);
+            }])->orHaving('claims_count', '>', 0)
+                ->get();
+        }
+        return $claims;
+
+    }
+}
+
+if (!function_exists('getClaimsDetails')) {
+    function getClaimsDetails($phase_id, $org_id, $type): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $claims = Claim::where('claim_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $claims = Claim::where('claim_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $claims;
+    }
+}
+
+if (!function_exists('getAllClaims')) {
+    function getAllClaims($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $claims = Claim::whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $claims = Claim::whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $claims;
+    }
+}
+
 if (!function_exists('getMobilitiesData')) {
     function getMobilitiesData($phase_id, $org_id): object
     {
@@ -225,23 +314,35 @@ if (!function_exists('getMobilitiesData')) {
     }
 }
 
-if (!function_exists('getClaimsData')) {
-    function getClaimsData($phase_id, $org_id): object
+if (!function_exists('getMobilitiesDetails')) {
+    function getMobilitiesDetails($phase_id, $org_id, $type): object
     {
-
         if (!isset($org_id) || $org_id == -1) {
-            $claims = ClaimType::withCount(['claims' => function ($query) use ($phase_id) {
-                Helper::filterByPhase($query, $phase_id);
-            }])->orHaving('claims_count', '>', 0)
-                ->get();
+            $mobilities = Mobility::where('mobility_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
         } else {
-            $claims = ClaimType::withCount(['claims' => function ($query) use ($phase_id, $org_id) {
-                Helper::filterByPhaseAndOrg($query, $phase_id, $org_id);
-            }])->orHaving('claims_count', '>', 0)
-                ->get();
+            $mobilities = Mobility::where('mobility_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
         }
-        return $claims;
+        return $mobilities;
+    }
+}
 
+if (!function_exists('getAllMobilities')) {
+    function getAllMobilities($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $mobilities = Mobility::whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $mobilities = Mobility::whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $mobilities;
     }
 }
 
@@ -262,6 +363,38 @@ if (!function_exists('getSanctionsData')) {
         }
         return $sanctions;
 
+    }
+}
+
+if (!function_exists('getSanctionsDetails')) {
+    function getSanctionsDetails($phase_id, $org_id, $type): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $sanctions = Sanction::where('sanction_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $sanctions = Sanction::where('sanction_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $sanctions;
+    }
+}
+
+if (!function_exists('getAllSanctions')) {
+    function getAllSanctions($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $sanctions = Sanction::whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $sanctions = Sanction::whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $sanctions;
     }
 }
 
@@ -292,6 +425,39 @@ if (!function_exists('getPromotionsData')) {
         return $promotions;
 
     }
+}
+
+if (!function_exists('getPromotionsDetails')) {
+    function getPromotionsDetails($phase_id, $org_id, $type): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $promotions = Promotion::where('promotion_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $promotions = Promotion::where('promotion_type_id', '=', $type)->whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $promotions;
+    }
+}
+
+if (!function_exists('getAllPromotions')) {
+    function getAllPromotions($phase_id, $org_id): object
+    {
+        if (!isset($org_id) || $org_id == -1) {
+            $promotions = Promotion::whereHas('rating', function ($query) use ($phase_id) {
+                Helper::queryByPhase($query, $phase_id);
+            });
+        } else {
+            $promotions = Promotion::whereHas('rating', function ($query) use ($phase_id, $org_id) {
+                Helper::queryByPhaseAndOrg($query, $phase_id, $org_id);
+            });
+        }
+        return $promotions;
+    }
+
 }
 
 if (!function_exists('getSkillsBarChart')) {

@@ -33,7 +33,7 @@ const currentRoute = getCurrentRoute();
 
 let navigation = []
 
-if ([1, 2, 4].includes(user.value.role_id)) navigation.push({
+if ([1, 4].includes(user.value.role_id)) navigation.push({
     name: 'Dashboard',
     href: route('admin-dashboard.index'),
     icon: ChartPieIcon,
@@ -77,14 +77,19 @@ if ([1, 2].includes(user.value.role_id)) {
             ],
         })
 }
-if ([1].includes(user.value.role_id)) {
+if ([1, 4, 2].includes(user.value.role_id)) {
     navigation.push(
         {
-            name: 'Agents',
+            name: 'Tous les Agents',
             icon: UsersIcon,
             current: currentRoute === 'users',
             href: route('users.index')
         },
+    );
+}
+
+if ([1].includes(user.value.role_id)) {
+    navigation.push(
         {
             name: 'Roles',
             icon: LockClosedIcon,

@@ -14,8 +14,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PendingRatingsExport implements FromCollection, ShouldAutoSize, WithHeadings, WithMapping, WithStyles, WithDefaultStyles
 {
-    private $phase_id;
-    private $org_id;
+    private mixed $phase_id;
+    private mixed $org_id;
 
 
     public function __construct($phase_id, $org_id)

@@ -37,7 +37,7 @@ const search = ''
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Besoin de formation en "{{ type.training_type_name }}" pour l'année
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Formation en "{{ type.training_type_name }}" pour l'année
                         {{ phase.phase_year }}
                         {{ org !== -1 ? ' - ' + org.org_name : '' }}</h1>
                     <p class="mt-2 text-sm text-gray-700 dark:text-white">

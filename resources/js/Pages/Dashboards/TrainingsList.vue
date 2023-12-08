@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {computed, ref} from 'vue';
 import {Head} from '@inertiajs/vue3';
 import {getPagination, hasData} from '@/helpers/helper.js';
+import {ArrowDownTrayIcon} from "@heroicons/vue/20/solid/index.js";
 import EmptyState from '@/Components/Common/EmptyState.vue';
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import Datatable from "@/Components/Common/Tables/Datatable.vue";
@@ -21,7 +22,7 @@ const pages = [{
     name: 'Statistiques',
     href: route('admin-dashboard.index', {org_id: props.org.org_id, phase_id: props.phase.phase_id}),
     current: false
-}, {name: 'Détails des formations demandées', href: '#', current: true}]
+}, {name: 'Liste des formations demandées', href: '#', current: true}]
 const pagination = computed(() => getPagination(props.trainings));
 const displayedData = ref(props.trainings.data);
 const search = ''
@@ -35,21 +36,21 @@ const search = ''
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Besoin de formation pour l'année
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Formations demandées pour l'année
                         {{ phase.phase_year }}
                         {{ org !== -1 ? ' - ' + org.org_name : '' }}</h1>
                     <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         La liste des formations demandées pour l'année {{ phase.phase_year }}.
                     </p>
                 </div>
-                <!--                <div v-if="displayedData.length > 0" class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">-->
-                <!--                    <a-->
-                <!--                        :href="route('admin-dashboard.download-trainings-details',{org_id: org.org_id, phase_id: phase.phase_id})"-->
-                <!--                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">-->
-                <!--                        Télécharger-->
-                <!--                        <ArrowDownTrayIcon class="-mr-0.5 h-5 w-5"/>-->
-                <!--                    </a>-->
-                <!--                </div>-->
+                <div v-if="displayedData.length > 0" class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    <a
+                        :href="route('admin-dashboard.download-all-trainings',{org_id: org.org_id, phase_id: phase.phase_id})"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        Télécharger
+                        <ArrowDownTrayIcon class="-mr-0.5 h-5 w-5"/>
+                    </a>
+                </div>
             </div>
             <Datatable v-if="hasData(trainings.data)" v-model="search" :pagination="pagination" :search="false">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">

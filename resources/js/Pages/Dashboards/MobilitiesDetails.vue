@@ -23,7 +23,7 @@ const pages = [{
     name: 'Statistiques',
     href: route('admin-dashboard.index', {org_id: props.org.org_id, phase_id: props.phase.phase_id}),
     current: false
-}, {name: 'Détails des formations demandées', href: '#', current: true}]
+}, {name: 'Détails des mobilités demandées', href: '#', current: true}]
 const pagination = computed(() => getPagination(props.mobilities));
 const displayedData = ref(props.mobilities.data);
 const search = ''
@@ -37,7 +37,7 @@ const search = ''
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Besoin en mobilité de type "{{ type.mobility_type_name }}" pour l'année
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Mobilités de type "{{ type.mobility_type_name }}" pour l'année
                         {{ phase.phase_year }}
                         {{ org !== -1 ? ' - ' + org.org_name : '' }}</h1>
                     <p class="mt-2 text-sm text-gray-700 dark:text-white">

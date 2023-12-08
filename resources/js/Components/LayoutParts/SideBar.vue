@@ -160,12 +160,11 @@ defineEmits(['closeSidebar'])
                                                     <DisclosurePanel as="ul" class="mt-1 px-2">
                                                         <li v-for="subItem in item.children" :key="subItem.name">
                                                             <!-- 44px -->
-                                                            <DisclosureButton
+                                                            <Link
                                                                 :class="[subItem.current ? 'bg-cyan-600  text-white' : 'text-gray-300 hover:text-white hover:bg-cyan-600    ', 'block rounded-md py-2 pr-2 pl-9 font-semibold text-base leading-6']"
-                                                                :href="subItem.href"
-                                                                as="a">
+                                                                :href="subItem.href">
                                                                 {{ subItem.name }}
-                                                            </DisclosureButton>
+                                                            </Link>
                                                         </li>
                                                     </DisclosurePanel>
                                                 </Disclosure>
@@ -212,12 +211,11 @@ defineEmits(['closeSidebar'])
                                     <DisclosurePanel as="ul" class="mt-1 px-2 space-y-1">
                                         <li v-for="subItem in item.children" :key="subItem.name">
                                             <!-- 44px -->
-                                            <DisclosureButton
+                                            <Link
                                                 :class="[subItem.current ? 'bg-cyan-600  text-white' : 'text-gray-300 hover:text-white hover:bg-cyan-600    ', 'block rounded-md py-2 pr-2 pl-9 text-base font-semibold leading-6']"
-                                                :href="subItem.href"
-                                                as="a">
+                                                :href="subItem.href">
                                                 {{ subItem.name }}
-                                            </DisclosureButton>
+                                            </Link>
                                         </li>
                                     </DisclosurePanel>
                                 </Disclosure>

@@ -8,6 +8,7 @@ import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import Datatable from "@/Components/Common/Tables/Datatable.vue";
 import TableHeading from "@/Components/Common/Tables/TableHeading.vue";
 import TableData from "@/Components/Common/Tables/TableData.vue";
+import {ArrowDownTrayIcon} from "@heroicons/vue/20/solid/index.js";
 
 const props = defineProps({
     sanctions: {
@@ -21,7 +22,7 @@ const pages = [{
     name: 'Statistiques',
     href: route('admin-dashboard.index', {org_id: props.org.org_id, phase_id: props.phase.phase_id}),
     current: false
-}, {name: 'Détails des formations demandées', href: '#', current: true}]
+}, {name: 'Liste des sanctions demandées', href: '#', current: true}]
 const pagination = computed(() => getPagination(props.sanctions));
 const displayedData = ref(props.sanctions.data);
 const search = ''
@@ -42,14 +43,14 @@ const search = ''
                         La liste des sanctions demandées pour l'année {{ phase.phase_year }}.
                     </p>
                 </div>
-                <!--                <div v-if="displayedData.length > 0" class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">-->
-                <!--                    <a-->
-                <!--                        :href="route('admin-dashboard.download-sanctions-details',{org_id: org.org_id, phase_id: phase.phase_id})"-->
-                <!--                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">-->
-                <!--                        Télécharger-->
-                <!--                        <ArrowDownTrayIcon class="-mr-0.5 h-5 w-5"/>-->
-                <!--                    </a>-->
-                <!--                </div>-->
+                <div v-if="displayedData.length > 0" class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    <a
+                        :href="route('admin-dashboard.download-all-sanctions',{org_id: org.org_id, phase_id: phase.phase_id})"
+                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600">
+                        Télécharger
+                        <ArrowDownTrayIcon class="-mr-0.5 h-5 w-5"/>
+                    </a>
+                </div>
             </div>
             <Datatable v-if="hasData(sanctions.data)" v-model="search" :pagination="pagination" :search="false">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">

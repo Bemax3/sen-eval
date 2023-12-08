@@ -92,7 +92,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $ratings = getValidatedRatings($phase_id, $org_id);
         return Inertia::render('Dashboards/RatedDetails', [
-            'ratings' => $ratings->paginate(10)->withQueryString(),
+            'ratings' => $ratings->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
         ]);
@@ -103,7 +103,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $ratings = getRatingsInMarkOrder($phase_id, $org_id);
         return Inertia::render('Dashboards/LeaderBoard', [
-            'ratings' => $ratings->paginate(10)->withQueryString(),
+            'ratings' => $ratings->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
         ]);
@@ -114,7 +114,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $ratings = getPendingRatings($phase_id, $org_id);
         return Inertia::render('Dashboards/PendingDetails', [
-            'ratings' => $ratings->paginate(10)->withQueryString(),
+            'ratings' => $ratings->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
         ]);
@@ -126,7 +126,7 @@ class AdminDashboardController extends Controller
         $users = getUnratedUsers($phase_id, $org_id);
 
         return Inertia::render('Dashboards/UnratedDetails', [
-            'users' => $users->with('org')->paginate(10)->withQueryString(),
+            'users' => $users->with('org')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
         ]);
@@ -138,7 +138,7 @@ class AdminDashboardController extends Controller
         $type = $request->get('type');
         $trainings = getTrainingsDetails($phase_id, $org_id, $type);
         return Inertia::render('Dashboards/TrainingsDetails', [
-            'trainings' => $trainings->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(10)->withQueryString(),
+            'trainings' => $trainings->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
             'type' => TrainingType::findOrFail($type)
@@ -151,7 +151,7 @@ class AdminDashboardController extends Controller
         $type = $request->get('type');
         $claims = getClaimsDetails($phase_id, $org_id, $type);
         return Inertia::render('Dashboards/ClaimsDetails', [
-            'claims' => $claims->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(10)->withQueryString(),
+            'claims' => $claims->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
             'type' => ClaimType::findOrFail($type)
@@ -164,7 +164,7 @@ class AdminDashboardController extends Controller
         $type = $request->get('type');
         $mobilities = getMobilitiesDetails($phase_id, $org_id, $type);
         return Inertia::render('Dashboards/MobilitiesDetails', [
-            'mobilities' => $mobilities->with('rating', 'rating.evaluator', 'rating.evaluated', 'asked_by')->paginate(10)->withQueryString(),
+            'mobilities' => $mobilities->with('rating', 'rating.evaluator', 'rating.evaluated', 'asked_by')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
             'type' => MobilityType::findOrFail($type)
@@ -177,7 +177,7 @@ class AdminDashboardController extends Controller
         $type = $request->get('type');
         $sanctions = getSanctionsDetails($phase_id, $org_id, $type);
         return Inertia::render('Dashboards/SanctionsDetails', [
-            'sanctions' => $sanctions->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(10)->withQueryString(),
+            'sanctions' => $sanctions->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
             'type' => SanctionType::findOrFail($type)
@@ -190,7 +190,7 @@ class AdminDashboardController extends Controller
         $type = $request->get('type');
         $promotions = getPromotionsDetails($phase_id, $org_id, $type);
         return Inertia::render('Dashboards/PromotionsDetails', [
-            'promotions' => $promotions->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(10)->withQueryString(),
+            'promotions' => $promotions->with('rating', 'rating.evaluator', 'rating.evaluated')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
             'type' => PromotionType::findOrFail($type)
@@ -202,7 +202,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $promotions = getAllPromotions($phase_id, $org_id);
         return Inertia::render('Dashboards/PromotionsList', [
-            'promotions' => $promotions->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(10)->withQueryString(),
+            'promotions' => $promotions->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
         ]);
@@ -213,7 +213,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $sanctions = getAllSanctions($phase_id, $org_id);
         return Inertia::render('Dashboards/SanctionsList', [
-            'sanctions' => $sanctions->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(10)->withQueryString(),
+            'sanctions' => $sanctions->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
         ]);
@@ -224,7 +224,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $mobilities = getAllMobilities($phase_id, $org_id);
         return Inertia::render('Dashboards/MobilitiesList', [
-            'mobilities' => $mobilities->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(10)->withQueryString(),
+            'mobilities' => $mobilities->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
         ]);
@@ -235,7 +235,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $claims = getAllClaims($phase_id, $org_id);
         return Inertia::render('Dashboards/ClaimsList', [
-            'claims' => $claims->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(10)->withQueryString(),
+            'claims' => $claims->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
         ]);
@@ -246,7 +246,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $trainings = getAllTrainings($phase_id, $org_id);
         return Inertia::render('Dashboards/TrainingsList', [
-            'trainings' => $trainings->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(10)->withQueryString(),
+            'trainings' => $trainings->with('rating', 'rating.evaluator', 'rating.evaluated', 'type')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
         ]);

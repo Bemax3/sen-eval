@@ -12,18 +12,16 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class MobilitiesDetailsExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithDefaultStyles
+class AllPromotionsExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithDefaultStyles
 {
     private mixed $phase_id;
     private mixed $org_id;
-    private mixed $type;
 
 
-    public function __construct($phase_id, $org_id, $type)
+    public function __construct($phase_id, $org_id)
     {
         $this->phase_id = $phase_id;
         $this->org_id = $org_id;
-        $this->type = $type;
     }
 
     /**
@@ -31,16 +29,17 @@ class MobilitiesDetailsExport implements FromCollection, WithHeadings, WithMappi
      */
     public function collection(): Collection
     {
-        return getMobilitiesDetails($this->phase_id, $this->org_id, $this->type->mobility_type_id)->with('rating', 'rating.evaluated', 'rating.evaluator', 'asker')->get();
+        return getAllPromotions($this->phase_id, $this->org_id)->with('rating', 'rating.evaluated', 'rating.evaluator', 'type')->get();
     }
 
     public function headings(): array
     {
         return [
-            'Mobilité',
+            'Type',
             'Évalué',
             'Évaluateur',
             'Demandée par',
+            'Éligibilité',
             'Commentaire'
         ];
     }
@@ -49,11 +48,15 @@ class MobilitiesDetailsExport implements FromCollection, WithHeadings, WithMappi
     public function map($row): array
     {
         return [
-            $this->type->mobility_type_name,
+            $row->type->promotion_type_name,
             $row->rating->evaluated->user_display_name,
             $row->rating->evaluator->user_display_name,
-            $row->asker->user_display_name,
-            $row->rating_mobility_comment
+            $row->rating->evaluated->user_display_name,
+            match ($row->evaluated_is_eligible) {
+                0 => 'Non éligible',
+                default => 'Éligible'
+            },
+            $row->rating_promotion_comment
         ];
     }
 

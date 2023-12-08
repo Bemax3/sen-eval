@@ -23,7 +23,7 @@ const pages = [{
     name: 'Statistiques',
     href: route('admin-dashboard.index', {org_id: props.org.org_id, phase_id: props.phase.phase_id}),
     current: false
-}, {name: 'Détails des formations demandées', href: '#', current: true}]
+}, {name: 'Détails des promotions demandées', href: '#', current: true}]
 const pagination = computed(() => getPagination(props.promotions));
 const displayedData = ref(props.promotions.data);
 const search = ''

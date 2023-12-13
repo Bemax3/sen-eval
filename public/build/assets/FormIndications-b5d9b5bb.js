@@ -1,1 +1,0 @@
-import{r as e}from"./InputLabel-29a6a3dc.js";import{o as s,c as t,f as a,u as r,a as o}from"./app-97f24108.js";const c={class:"flex items-center gap-2"},n=o("p",{class:"text-xs text-red-600"},"Champs Obligatoires",-1),l={__name:"FormIndications",setup(_){return(i,m)=>(s(),t("div",c,[a(r(e),{class:"text-red-600 h-1.5 w-1.5"}),n]))}};export{l as _};

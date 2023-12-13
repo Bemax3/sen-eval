@@ -22,7 +22,7 @@ const props = defineProps({
         default: {}
     },
 })
-const title = isEmpty(props.evaluation) ? 'Nouvelle evaluation' : 'Modifier l\'évaluation';
+const title = isEmpty(props.evaluation) ? 'Nouvelle évaluation' : 'Modifier l\'évaluation';
 const desc = isEmpty(props.evaluation) ? 'Créer une evaluation pour cet agent' : 'Modifier une evaluation pour cet agent';
 const pages = [
     {name: 'Évaluations', href: route('agent-ratings.index', {agent: props.agent.user_id}), current: false},
@@ -66,8 +66,9 @@ setForm();
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Évaluations de {{ agent.user_first_name + ' ' + agent.user_last_name }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Évaluations de {{ agent.user_first_name + ' ' + agent.user_last_name
+                        }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Liste des Évaluations de {{ agent.user_first_name + ' ' + agent.user_last_name }}. Matricule : {{ agent.user_matricule }}
                     </p>
                 </div>
@@ -84,7 +85,7 @@ setForm();
             <Separator title="Évaluations"/>
             <SectionTitle :desc="desc" :title="title"/>
             <div class="mt-8 flow-root">
-                <form class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
+                <form class="bg-white dark:bg-grayish shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" @submit.prevent="submit">
                     <div class="px-4 py-6 sm:p-8">
                         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-4">
@@ -94,7 +95,7 @@ setForm();
                                         <div class="relative mt-2">
                                             <ListboxButton
                                                 :class="form.errors.phase_id ? 'ring-red-300':'ring-gray-300'"
-                                                class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                                class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                                 <span v-if="hasData(phases)"
                                                       class="block truncate">{{ phases.filter((type) => type.phase_id === form.phase_id)[0].phase_year }}</span>
                                                 <span v-else class="block truncate">Aucune année disponible pour l'instant.</span>
@@ -104,10 +105,10 @@ setForm();
                                             </ListboxButton>
                                             <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
                                                 <ListboxOptions v-if="hasData(phases)"
-                                                                class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                                class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                     <ListboxOption v-for="type in phases" :key="type.phase_id" v-slot="{ active, selected }" :value="type.phase_id"
                                                                    as="template">
-                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                             <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.phase_year }}</span>
                                                             <span v-if="selected"
                                                                   :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">

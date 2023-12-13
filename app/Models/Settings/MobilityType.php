@@ -12,7 +12,7 @@ class MobilityType extends Model implements Searchable
 {
     protected $table = 'mobility_types';
     protected $primaryKey = 'mobility_type_id';
-    protected $fillable = ['mobility_type_name', 'mobility_type_desc', 'mobility_type_is_active', 'updated_by'];
+    protected $fillable = ['mobility_type_name', 'mobility_type_desc', 'mobility_type_is_active', 'updated_by', 'mobilities_by_evaluators', 'mobilities_by_evaluated'];
 
     public function getForeignKey()
     {

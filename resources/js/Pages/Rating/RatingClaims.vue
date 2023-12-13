@@ -80,7 +80,7 @@ watch(() => props.claims,
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
             <Tabs :agent_id="props.agent.user_id" :evaluated="isEvaluated" :rating_id="props.rating.rating_id" :validator="isValidator"/>
-            <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+            <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                 <SectionTitle desc="Liste des réclamations demandées pour cette évaluation" title="Réclamations"/>
                 <div v-if="isEvaluated && !rating.rating_is_validated" class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button
@@ -92,15 +92,15 @@ watch(() => props.claims,
                 </div>
             </div>
             <Datatable v-if="hasData(claims.data)" v-model="search" :pagination="pagination" :search="false">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Type</TableHeading>
                         <TableHeading class="whitespace-pre-line">Commentaire</TableHeading>
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="claim in displayedData" :key="claim.rating_claim_id">
                         <TableData :first="true">{{ claim.type.claim_type_name }}</TableData>
                         <TableData class="whitespace-pre-line">{{ claim.rating_claim_comment || '__' }}</TableData>
@@ -123,7 +123,7 @@ watch(() => props.claims,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState v-else :message="isEvaluated ? 'Demander une réclamation en utilisant la liste déroulante en haut.' : ''"
                         title="Aucune réclamation faite pour l'instant."/>

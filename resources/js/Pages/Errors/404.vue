@@ -5,13 +5,13 @@ import {Link} from "@inertiajs/vue3";
 </script>
 
 <template>
-    <div class="flex justify-center items-center min-h-screen h-screen px-4 bg-white place-content-center">
+    <div class="flex justify-center items-center min-h-screen h-screen px-4 bg-white dark:bg-grayish place-content-center">
         <div class="text-center">
             <h1 class="sm:text-[400px] text-9xl font-black text-gray-200">404</h1>
-            <p class="text-2xl font-bold text-gray-900">
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">
                 Uh-oh!
             </p>
-            <p class="mb-4 text-gray-500">Cette Page N'existe Pas</p>
+            <p class="mb-4 text-gray-500 dark:text-gray-100">Cette Page N'existe Pas</p>
             <Link
                 :href="route('agents.index')"
                 as="button"

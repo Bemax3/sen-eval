@@ -51,16 +51,16 @@ setForm();
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Objectif</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Objectif</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Details de l'Objectif
                     </p>
                 </div>
             </div>
-            <form class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white" @submit.prevent="submit">
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <form class="mt-8 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white dark:bg-grayish" @submit.prevent="submit">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Libellé et Valeur Cible</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Libellé et Valeur Cible</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Informations sur le libellé de l'objectif ainsi que la valeur cible.</p>
                     </div>
                     <div class="md:col-span-2">
@@ -75,7 +75,7 @@ setForm();
                                 </div>
                             </div>
                             <div class="sm:col-span-full">
-                                <InputLabel for="start_date" required>Libelle</InputLabel>
+                                <InputLabel for="start_date" required>Valeur Cible</InputLabel>
                                 <div class="relative mt-2">
                                     <TextInput v-model="goal.goal_expected_result" :disabled="true"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -87,9 +87,9 @@ setForm();
                         </div>
                     </div>
                 </div>
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2 dark:border-black">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Disponibilité et Échéance</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Disponibilité et Échéance</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Les moyens pour atteindre l'objectif sont ils réunis ? Qu'elle sera l'échéance pour cette
                             objectif. </p>
                     </div>
@@ -99,7 +99,7 @@ setForm();
                                 <InputLabel for="start_date" required>Échéance</InputLabel>
                                 <div class="relative mt-2">
                                     <input :disabled="true" :value="capitalized(moment(goal.goal_expected_date).format('DD MMMM YYYY'))"
-                                           class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
+                                           class="bg-white dark:bg-grayish block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:ring-2 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"/>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <LockClosedIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
                                     </div>
@@ -114,9 +114,9 @@ setForm();
                         </div>
                     </div>
                 </div>
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8 border-t-2 dark:border-black">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Évaluation</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Évaluation</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Informations relatives à l'évaluation de cet objectif.</p>
                     </div>
                     <div class="md:col-span-2">
@@ -151,9 +151,9 @@ setForm();
                         </div>
                     </div>
                 </div>
-                <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 border-t-2">
+                <div class="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 border-t-2 dark:border-black">
                     <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Suivi de l'objectif</h2>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Suivi de l'objectif</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-400">Faites le suivi de cet objectif renseignant le taux d'évaluation et en laissant un
                             commentaire.</p>
                         <GoalActivity :history="history"/>
@@ -165,10 +165,11 @@ setForm();
                                 <div class="mt-2 flex rounded-md shadow-sm">
                                     <input
                                         v-model="form.goal_rate"
-                                        :class="form.errors.goal_rate !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300'"
-                                        class="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                                        :class="form.errors.goal_rate !== undefined ? 'focus:ring-red-400 ring-red-500':'focus:ring-cyan-600 ring-gray-300 dark:ring-gray-600'"
+                                        class="bg-white dark:bg-grayish block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 dark:text-white ring-1 dark:ring-2 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
                                         maxlength="3" type="number"/>
-                                    <span class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">%</span>
+                                    <span
+                                        class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 dark:text-gray-100 sm:text-sm">%</span>
                                 </div>
                                 <div class="flex flex-col space-y-2">
                                     <InputError :message="form.errors.goal_rate"/>

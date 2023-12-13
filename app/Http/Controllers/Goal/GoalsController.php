@@ -26,8 +26,8 @@ class GoalsController extends Controller
     public function index(Request $request)
     {
         $phase = $request->get('phase_id');
-        if (!isset($phase) || $phase == -1) $goals = Goal::where('evaluated_id', '=', \Auth::id())->with('phase', 'period')->paginate(10);
-        else $goals = Goal::where('evaluated_id', '=', \Auth::id())->where('phase_id', '=', $phase)->with('phase', 'period')->paginate(10);
+        if (!isset($phase) || $phase == -1) $goals = Goal::where('evaluated_id', '=', \Auth::id())->with('phase', 'period')->orderBy('phase_id')->orderBy('evaluation_period_id')->paginate(10);
+        else $goals = Goal::where('evaluated_id', '=', \Auth::id())->where('phase_id', '=', $phase)->with('phase', 'period')->orderBy('phase_id')->orderBy('evaluation_period_id')->paginate(10);
         return Inertia::render('Goals/GoalsList', [
             'goals' => $goals,
             'phases' => Phase::all(),

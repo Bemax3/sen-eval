@@ -8,10 +8,10 @@ const props = defineProps({
 </script>
 
 <template>
-    <td v-if="first" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+    <td v-if="first" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
         <slot/>
     </td>
-    <td v-else class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+    <td v-else class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-100">
         <slot/>
     </td>
 </template>

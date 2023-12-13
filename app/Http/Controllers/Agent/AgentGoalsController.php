@@ -33,8 +33,8 @@ class AgentGoalsController extends Controller
     public function index(Request $request, string $id)
     {
         $phase = $request->get('phase_id');
-        if (!isset($phase) || $phase == -1) $goals = Goal::where('evaluator_id', '=', Auth::id())->where('evaluated_id', '=', $id)->with('phase', 'period')->paginate(10);
-        else $goals = Goal::where('evaluator_id', '=', Auth::id())->where('evaluated_id', '=', $id)->where('phase_id', '=', $phase)->with('phase', 'period')->paginate(10);
+        if (!isset($phase) || $phase == -1) $goals = Goal::where('evaluator_id', '=', Auth::id())->where('evaluated_id', '=', $id)->with('phase', 'period')->orderBy('phase_id')->orderBy('evaluation_period_id')->paginate(10);
+        else $goals = Goal::where('evaluator_id', '=', Auth::id())->where('evaluated_id', '=', $id)->where('phase_id', '=', $phase)->with('phase', 'period')->orderBy('phase_id')->orderBy('evaluation_period_id')->paginate(10);
         try {
             return Inertia::render('Agents/Goal/AgentGoals', [
                 'agent' => User::with('org')->findOrFail($id),

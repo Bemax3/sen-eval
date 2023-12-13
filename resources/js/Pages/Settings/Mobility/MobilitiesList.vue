@@ -46,8 +46,8 @@ watch(() => props.mobilities,
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Types de Mobilité</h1>
-                    <p class="mt-2 text-sm text-gray-700"
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Types de Mobilité</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white"
                     >La liste des mobilités qu'il sera possible de proposer ou demander lors de l'évaluation.</p>
                 </div>
                 <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -62,8 +62,8 @@ watch(() => props.mobilities,
                 </div>
             </div>
             <Datatable v-if="hasData(mobilities.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Nom</TableHeading>
                         <TableHeading>Description</TableHeading>
@@ -71,7 +71,7 @@ watch(() => props.mobilities,
                         <TableHeading>Modifier</TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="mobility in displayedData" :key="mobility.mobility_type_id">
                         <TableData :first="true">{{ mobility.mobility_type_name }}</TableData>
                         <TableData>{{ mobility.mobility_type_desc }}</TableData>
@@ -80,7 +80,7 @@ watch(() => props.mobilities,
                                 <ToggleOnDatatable :link="route('mobilityTypes.update',{mobilityType: mobility.mobility_type_id})"
                                                    :value="mobility.mobility_type_is_active" obj="mobility_type_is_active"/>
                                 <span
-                                    :class="mobility.mobility_type_is_active ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
+                                    :class="mobility.mobility_type_is_active ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
                                     class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                     {{ mobility.mobility_type_is_active ? 'Activé' : 'Désactivé' }}
                                 </span>
@@ -96,7 +96,7 @@ watch(() => props.mobilities,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

@@ -79,7 +79,7 @@ watch(() => props.mobilities,
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
             <Tabs :agent_id="props.agent.user_id" :evaluated="isEvaluated" :rating_id="props.rating.rating_id" :validator="isValidator"/>
-            <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+            <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                 <SectionTitle desc="Liste des mobilités demandées pour cette évaluation" title="Mobilités"/>
                 <div v-if="!isValidator && !rating.rating_is_validated" class=" space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button
@@ -91,8 +91,8 @@ watch(() => props.mobilities,
                 </div>
             </div>
             <Datatable v-if="hasData(mobilities.data)" v-model="search" :pagination="pagination" :search="false">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Nature</TableHeading>
                         <TableHeading>Demandée par</TableHeading>
@@ -101,7 +101,7 @@ watch(() => props.mobilities,
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="mobility in displayedData" :key="mobility.rating_mobility_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ mobility.type.mobility_type_name }}</TableData>
                         <TableData>
@@ -133,7 +133,7 @@ watch(() => props.mobilities,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState v-else message="Demander une mobilité en utilisant le formulaire en haut." title="Aucune mobilité demandée pour l'instant."/>
         </div>

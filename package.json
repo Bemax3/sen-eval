@@ -20,8 +20,10 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.16",
         "@heroicons/vue": "^2.0.18",
+        "apexcharts": "^3.44.0",
         "color": "^4.2.3",
         "dayjs": "^1.11.10",
-        "vue-tailwind-datepicker": "^1.6.1"
+        "vue-tailwind-datepicker": "^1.6.1",
+        "vue3-apexcharts": "^1.4.4"
     }
 }

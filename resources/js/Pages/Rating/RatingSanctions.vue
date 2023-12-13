@@ -78,7 +78,7 @@ watch(() => props.sanctions,
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
             <Tabs :agent_id="props.agent.user_id" :evaluated="isEvaluated" :rating_id="props.rating.rating_id" :validator="isValidator"/>
-            <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+            <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                 <SectionTitle desc="Liste des sanctions demandées pour cette évaluation" title="Sanctions"/>
                 <div v-if="!isEvaluated && !isValidator && !rating.rating_is_validated" class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button
@@ -90,8 +90,8 @@ watch(() => props.sanctions,
                 </div>
             </div>
             <Datatable v-if="hasData(sanctions.data)" v-model="search" :pagination="pagination" :search="false">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Type</TableHeading>
                         <TableHeading>Demandée par</TableHeading>
@@ -99,7 +99,7 @@ watch(() => props.sanctions,
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="sanction in displayedData" :key="sanction.rating_sanction_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ sanction.type.sanction_type_name }}</TableData>
                         <TableData>{{ rating.evaluator.user_display_name }}</TableData>
@@ -123,7 +123,7 @@ watch(() => props.sanctions,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState v-else :message="isEvaluated ? '' : 'Demander une sanction en utilisant la liste déroulante en haut.'"
                         title="Aucune sanction demandée pour l'instant."/>

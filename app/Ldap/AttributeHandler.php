@@ -6,7 +6,7 @@ use App\Models\User as DatabaseUser;
 use LdapRecord\Models\ActiveDirectory\User as LdapUSer;
 
 
-class AttributeHandler
+class  AttributeHandler
 {
     public function handle(LdapUser $ldap, DatabaseUser $database): void
     {

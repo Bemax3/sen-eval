@@ -91,11 +91,11 @@ const emit = defineEmits(['closeModal'])
                                      enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100"
                                      leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                         <DialogPanel
-                            class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl sm:p-6">
+                            class="relative transform overflow-hidden rounded-lg bg-white dark:bg-grayish px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl sm:p-6">
                             <form v-if="!isValidator && !rating.rating_is_validated"
                                   @submit.prevent="submit">
-                                <h3 class="text-base font-semibold leading-6 text-gray-900">Demander une formation</h3>
-                                <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Demander une formation</h3>
+                                <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
                                     <p>Rechercher une formation et ajouter la à la liste des demandes pour cette évaluation. </p>
                                 </div>
                                 <div class="px-4 py-6 sm:p-8">
@@ -106,7 +106,7 @@ const emit = defineEmits(['closeModal'])
                                                 <div class="relative">
                                                     <ListboxButton
                                                         :class="form.errors.phase_id ? 'ring-red-300':'ring-gray-300'"
-                                                        class="w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
+                                                        class="w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
                                         <span v-if="hasData(types)"
                                               class="block truncate">{{ types.filter((type) => type.training_type_id === form.training_type_id)[0].training_type_name
                                             }}</span>
@@ -118,11 +118,11 @@ const emit = defineEmits(['closeModal'])
                                                     <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100"
                                                                 leave-to-class="opacity-0">
                                                         <ListboxOptions v-if="hasData(types)"
-                                                                        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                                        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                             <ListboxOption v-for="type in types" :key="type.training_type_id" v-slot="{ active, selected }"
                                                                            :value="type.training_type_id"
                                                                            as="template">
-                                                                <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                                                                <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                                                                     <span
                                                                         :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.training_type_name
                                                                         }}</span>

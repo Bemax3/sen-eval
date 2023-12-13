@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Phase\SavePhaseSkillRequest;
 use App\Http\Requests\Utilities\SearchRequest;
 use App\Models\Phase\Phase;
+use App\Models\Rating\RatingSkill;
 use App\Models\Settings\Skill;
 use Exception;
 use Inertia\Inertia;
@@ -35,9 +36,12 @@ class PhaseSkillController extends Controller
         try {
             $phase = Phase::findOrFail($id);
             $data = $request->validated();
-            $phase->skills()->updateExistingPivot($data['skill_id'], $request->only('phase_skill_is_active', 'phase_skill_marking', 'updated_by'));
-            $phase->save();
-            alert_success('Phase modifié avec succès.');
+            if (RatingSkill::whereRelation('rating', 'phase_id', '=', $id)->exists()) alert_error('Impossible de modifier cette compétence. Des évaluations existent déjà.');
+            else {
+                $phase->skills()->updateExistingPivot($data['skill_id'], $request->only('phase_skill_is_active', 'phase_skill_marking', 'updated_by'));
+                $phase->save();
+                alert_success('Phase modifié avec succès.');
+            }
         } catch (UnknownException $e) {
             alert_error($e->getMessage());
         } finally {

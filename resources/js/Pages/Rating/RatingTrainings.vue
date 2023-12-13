@@ -82,7 +82,7 @@ watch(() => props.trainings,
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
             <Tabs :agent_id="props.agent.user_id" :evaluated="isEvaluated" :rating_id="props.rating.rating_id" :validator="isValidator"/>
-            <div class="sm:flex sm:items-center border-b border-gray-400 pb-5 mt-8">
+            <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
                 <SectionTitle desc="Liste des formations demandées pour cette évaluation" title="Formations"/>
                 <div v-if="!isValidator && !rating.rating_is_validated" class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button
@@ -94,8 +94,8 @@ watch(() => props.trainings,
                 </div>
             </div>
             <Datatable v-if="hasData(trainings.data)" v-model="search" :pagination="pagination" :search="false">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Type</TableHeading>
                         <TableHeading>Demandée par l'évaluateur</TableHeading>
@@ -105,18 +105,20 @@ watch(() => props.trainings,
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="training in displayedData" :key="training.rating_training_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ training.type.training_type_name }}</TableData>
                         <TableData>
-                            <span :class="training.asked_by_evaluator ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
-                                  class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
+                            <span
+                                :class="training.asked_by_evaluator ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
+                                class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ training.asked_by_evaluator ? 'Oui' : 'Non' }}
                             </span>
                         </TableData>
                         <TableData>
-                            <span :class="training.asked_by_evaluated ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
-                                  class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
+                            <span
+                                :class="training.asked_by_evaluated ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
+                                class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ training.asked_by_evaluated ? 'Oui' : 'Non' }}
                             </span>
                         </TableData>
@@ -143,7 +145,7 @@ watch(() => props.trainings,
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState v-else message="Demander une formation en utilisant la liste déroulante en haut." title="Aucune formation demandée pour l'instant."/>
         </div>

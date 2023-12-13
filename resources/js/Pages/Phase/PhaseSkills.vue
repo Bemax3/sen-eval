@@ -81,8 +81,8 @@ onBeforeUpdate(() => inputs.value = [])
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Paramètres {{ phase.phase_name }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Paramètres {{ phase.phase_name }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Details et paramètres de l'évaluation.
                     </p>
                 </div>
@@ -106,8 +106,8 @@ onBeforeUpdate(() => inputs.value = [])
                 desc="La liste des compétences que les évaluateurs pourront noter lors de cette évaluation. Vous pouvez changer le barème de chaque compétence pour cette évaluation sans affecter les autres."
                 title="Compétences"/>
             <Datatable v-if="hasData(props.skills.data)" v-model="search.keyword" :pagination="pagination">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Nom</TableHeading>
                         <!--                        <TableHeading>Description</TableHeading>-->
@@ -117,7 +117,7 @@ onBeforeUpdate(() => inputs.value = [])
                         <TableHeading>Type</TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="skill in displayedData" :key="skill.skill_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ skill.skill_name }}</TableData>
                         <!--                        <TableData class="whitespace-pre-line">{{ skill.skill_desc }}</TableData>-->
@@ -132,7 +132,7 @@ onBeforeUpdate(() => inputs.value = [])
                                     @toggled="search.keyword = ''"
                                 />
                                 <span
-                                    :class="skill.pivot.phase_skill_is_active ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'"
+                                    :class="skill.pivot.phase_skill_is_active ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
                                     class="rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ skill.pivot.phase_skill_is_active ? 'Activé' : 'Désactivé' }}
                         </span>
@@ -145,13 +145,13 @@ onBeforeUpdate(() => inputs.value = [])
                                 </template>
                                 <template v-else>
                                     <input :ref="el => {inputs[skill.skill_id] = el}" :value="skill.pivot.phase_skill_marking"
-                                           class=" w-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
+                                           class=" w-10 rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 dark:bg-grayish dark:text-white focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
                                            type="text"/>
                                 </template>
                                 <p class="ml-0.5">points</p>
                                 <template v-if="!editMark(skill.skill_id)">
                                     <button
-                                        class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                                        class="rounded-full bg-cyan-600 p-2 text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                         type="button"
                                         @click="edits.find(s => s.id === skill.skill_id).edit = true">
                                         <PencilSquareIcon aria-hidden="true" class="h-5 w-5"/>
@@ -159,7 +159,7 @@ onBeforeUpdate(() => inputs.value = [])
                                 </template>
                                 <template v-else>
                                     <button
-                                        class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                                        class="rounded-full bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                         type="button"
                                         @click="updateMark(skill.skill_id)">
                                         <CheckIcon aria-hidden="true" class="h-5 w-5"/>
@@ -172,7 +172,7 @@ onBeforeUpdate(() => inputs.value = [])
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

@@ -27,7 +27,7 @@ class ValidatedRating extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Validated Rating',
+            subject: 'Votre évaluation a été validée.',
         );
     }
 

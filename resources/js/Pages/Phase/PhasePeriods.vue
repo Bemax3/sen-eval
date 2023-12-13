@@ -62,8 +62,8 @@ watch(() => props.periods, function (next) {
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Paramètres {{ phase.phase_name }}</h1>
-                    <p class="mt-2 text-sm text-gray-700">
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Paramètres {{ phase.phase_name }}</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
                         Details et paramètres de l'évaluation.
                     </p>
                 </div>
@@ -97,8 +97,8 @@ watch(() => props.periods, function (next) {
                 </div>
             </div>
             <Datatable v-if="hasData(props.periods.data)" v-model="search.keyword" :pagination="getPagination(periods)">
-                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300">
-                    <thead class="bg-gray-50">
+                <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                    <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Identifiant</TableHeading>
                         <TableHeading>Nom</TableHeading>
@@ -107,7 +107,7 @@ watch(() => props.periods, function (next) {
                         <TableHeading></TableHeading>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="(period,i) in displayedData" :key="period.evaluation_period_id">
                         <TableData :first="true">{{ i + 1 }}</TableData>
                         <TableData>{{ period.evaluation_period_name }}</TableData>
@@ -126,7 +126,7 @@ watch(() => props.periods, function (next) {
                     </tr>
                     </tbody>
                 </table>
-                <div v-else class="text-center bg-white text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
             <EmptyState
                 v-else

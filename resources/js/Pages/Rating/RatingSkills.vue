@@ -110,24 +110,25 @@ watch(() => query.value, function (next) {
                 <div class="px-4 py-4 sm:px-0">
                     <SectionMark :mark="rating.specific_skills_sum_rating_skill_mark" :marking="marking.specific"
                                  title="Compétences Spécifiques (Savoir, Savoir Faire, Savoir Être)"/>
-                    <ul v-if="hasData(specific_skills)" class="divide-y divide-gray-100" role="list">
+                    <ul v-if="hasData(specific_skills)" class="divide-y divide-gray-100 dark:divide-gray-600" role="list">
                         <li v-for="skill in specific_skills " :key="skill.rating_skill_id" class="flex items-center justify-between gap-x-6 py-5">
                             <div class="min-w-0">
                                 <div class="flex items-start gap-x-3">
-                                    <p class="text-base font-bold leading-6 text-gray-900">{{ skill.rating_skill_name || skill.phase_skill.skill.skill_name }}</p>
+                                    <p class="text-base font-bold leading-6 text-gray-900 dark:text-white">{{ skill.rating_skill_name ||
+                                    skill.phase_skill.skill.skill_name }}</p>
                                 </div>
-                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
+                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500 dark:text-gray-100">
                                     <p class="whitespace-break-spaces">
                                         {{ skill.phase_skill.skill.skill_desc }}
                                     </p>
                                 </div>
-                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500 dark:text-gray-100">
                                     <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
                                 <div class="flex items-center justify-center space-x-4">
-                                    <p class="ml-0.5 font-bold"> {{ skill.rating_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
+                                    <p class="ml-0.5 font-bold dark:text-white"> {{ skill.rating_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
                                 </div>
                             </div>
                         </li>
@@ -136,24 +137,24 @@ watch(() => query.value, function (next) {
                 </div>
                 <div class="px-4 py-4 sm:px-0">
                     <SectionMark :mark="rating.general_skills_sum_rating_skill_mark" :marking="marking.general" title="Compétences Générales"/>
-                    <ul class="divide-y divide-gray-100" role="list">
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-600" role="list">
                         <li v-for="skill in skills " :key="skill.rating_skill_id" class="flex items-center justify-between gap-x-6 py-5">
                             <div class="min-w-0">
                                 <div class="flex items-start gap-x-3">
-                                    <p class="text-base font-bold leading-6 text-gray-900">{{ skill.phase_skill.skill.skill_name }}</p>
+                                    <p class="text-base font-bold leading-6 text-gray-900 dark:text-white">{{ skill.phase_skill.skill.skill_name }}</p>
                                 </div>
-                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
+                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500 dark:text-gray-100">
                                     <p class="whitespace-break-spaces">
                                         {{ skill.phase_skill.skill.skill_desc }}
                                     </p>
                                 </div>
-                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                <div v-if="skill.rating_skill_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500 dark:text-gray-100">
                                     <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(skill.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
                                 <div class="flex items-center justify-center space-x-4">
-                                    <p class="ml-0.5 font-bold"> {{ skill.rating_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
+                                    <p class="ml-0.5 font-bold dark:text-white"> {{ skill.rating_skill_mark }} / {{ skill.phase_skill.phase_skill_marking }} </p>
                                 </div>
                             </div>
                         </li>
@@ -161,27 +162,27 @@ watch(() => query.value, function (next) {
                 </div>
                 <div class="px-4 py-4 sm:px-0">
                     <SectionMark :mark="goalsTotal" :marking="marking.perf" title="Performances"/>
-                    <ul v-if="hasData(goals)" class="divide-y divide-gray-100" role="list">
+                    <ul v-if="hasData(goals)" class="divide-y divide-gray-100 dark:divide-gray-600" role="list">
                         <li v-for="goal in goals " :key="goal.goal_id" class="flex items-center justify-between gap-x-6 py-5">
                             <div class="min-w-0">
                                 <div class="flex items-start gap-x-3">
-                                    <p class="text-base font-bold leading-6 text-gray-900">{{ goal.goal_name }}</p>
+                                    <p class="text-base font-bold leading-6 text-gray-900 dark:text-white">{{ goal.goal_name }}</p>
                                     <p class="text-white bg-gray-500 ring-gray-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
                                         {{ goal.period.evaluation_period_name }}
                                     </p>
                                 </div>
-                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500">
+                                <div class="mt-1 flex items-center gap-x-2 text-base leading-5 text-gray-500 dark:text-gray-100">
                                     <p class="whitespace-break-spaces">
                                         Taux de réalisation : {{ goal.goal_rate }} % / Valeur Cible : {{ goal.goal_expected_result }} %
                                     </p>
                                 </div>
-                                <div v-if="goal.goal_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500">
+                                <div v-if="goal.goal_mark > 0" class="mt-1 flex items-center gap-x-2 text-sm leading-5 text-gray-500 dark:text-gray-100">
                                     <p class="whitespace-break-spaces">Note attribué le {{ capitalized(moment(goal.updated_at).format('DD MMMM YYYY à HH:mm')) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
                                 <div class="flex items-center justify-center space-x-4">
-                                    <p class="ml-0.5 font-bold"> {{ goal.goal_mark }} / {{ goal.goal_marking }} </p>
+                                    <p class="ml-0.5 font-bold dark:text-white"> {{ goal.goal_mark }} / {{ goal.goal_marking }} </p>
                                 </div>
                             </div>
                         </li>
@@ -200,12 +201,12 @@ watch(() => query.value, function (next) {
             </div>
             <div class="px-4 py-4 sm:px-0">
                 <SectionMark title="Validation"/>
-                <div class="mt-8 bg-white shadow sm:rounded-lg">
+                <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                     <form @submit.prevent="save">
                         <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                             <div class="px-4 py-5 sm:p-6">
-                                <h3 class="text-base font-semibold leading-6 text-gray-900">Commentaire</h3>
-                                <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Commentaire</h3>
+                                <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
                                     <p>Ajouter un commentaire. </p>
                                 </div>
                                 <div class="mt-5 sm:flex sm:items-center">
@@ -222,8 +223,8 @@ watch(() => query.value, function (next) {
                                 </div>
                             </div>
                             <!--                            <div class="px-4 py-5 sm:p-6">-->
-                            <!--                                <h3 class="text-base font-semibold leading-6 text-gray-900">Transférer</h3>-->
-                            <!--                                <div class="mt-2 max-w-xl text-sm text-gray-500">-->
+                            <!--                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Transférer</h3>-->
+                            <!--                                <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">-->
                             <!--                                    <p>Transférer l'évaluation au supérieur hiérarchique. </p>-->
                             <!--                                </div>-->
                             <!--                                <div class="mt-6 w-full sm:max-w-xl">-->
@@ -233,17 +234,17 @@ watch(() => query.value, function (next) {
                             <!--                                                :class="commentForm.errors.validator_id !== undefined ? 'focus:ring-red-600 ring-red-600' : ''"-->
                             <!--                                                :display-value="(id) => { let selected = filteredN1.filter(n => n.user_id === id)[0];-->
                             <!--                                                                    return selected ? selected.user_matricule + ' ' + selected.user_display_name : agent_n2.user_matricule + ' ' + agent_n2.user_display_name}"-->
-                            <!--                                                class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"-->
+                            <!--                                                class="w-full rounded-md border-0 bg-white dark:bg-grayish py-1.5 pl-3 pr-12 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"-->
                             <!--                                                placeholder="Trouver votre N + 1"-->
                             <!--                                                @change="searchAgent.keyword = query = $event.target.value; "/>-->
                             <!--                                            <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">-->
                             <!--                                                <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>-->
                             <!--                                            </ComboboxButton>-->
                             <!--                                            <ComboboxOptions v-if="filteredN1.length > 0"-->
-                            <!--                                                             class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">-->
+                            <!--                                                             class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">-->
                             <!--                                                <ComboboxOption v-for="n1 in filteredN1" :key="n1.user_id" v-slot="{ active, selected }" :value="n1.user_id"-->
                             <!--                                                                as="template">-->
-                            <!--                                                    <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900']">-->
+                            <!--                                                    <li :class="['relative cursor-default select-none py-2 pl-3 pr-9', active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white']">-->
                             <!--                                                        <div class="flex">-->
                             <!--                                                        <span :class="['truncate', selected && 'font-semibold']">-->
                             <!--                                                            {{ n1?.user_matricule + ' ' + n1?.user_display_name }}-->

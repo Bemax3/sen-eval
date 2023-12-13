@@ -57,12 +57,15 @@ export default {
                     '900': '#950660',
                     '950': '#5c0037',
                 },
+                'dark-gray': '#0E0E10',
+                'grayish': '#18181B',
                 "vtd-primary": colors.cyan,
 
             }
         },
 
     },
+    darkMode: 'class',
 
     plugins: [forms],
 };

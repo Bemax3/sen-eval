@@ -4,11 +4,11 @@ import {
     BuildingOfficeIcon,
     CalendarDaysIcon,
     ChartBarIcon,
+    ChartPieIcon,
     CheckBadgeIcon,
     ChevronRightIcon,
     Cog6ToothIcon,
     DocumentCheckIcon,
-    HomeIcon,
     IdentificationIcon,
     LockClosedIcon,
     UserGroupIcon,
@@ -33,19 +33,19 @@ const currentRoute = getCurrentRoute();
 
 let navigation = []
 
-if ([1, 2, 4].includes(user.value.role_id)) navigation.push({
+if ([1, 4].includes(user.value.role_id)) navigation.push({
     name: 'Dashboard',
     href: route('admin-dashboard.index'),
-    icon: HomeIcon,
-    current: currentRoute === 'admin-dashboard'
+    icon: ChartPieIcon,
+    current: ['admin-dashboard', 'home'].includes(currentRoute)
 });
 
 navigation.push(
-    {name: 'Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents', 'agent-goals', 'agent-ratings'].includes(currentRoute)},
-    {name: 'Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals'},
-    {name: 'Évaluations', href: route('ratings.index'), icon: ChartBarIcon, current: currentRoute === 'ratings'},
+    {name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents', 'agent-goals', 'agent-ratings'].includes(currentRoute)},
+    {name: 'Mes Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals'},
+    {name: 'Mes Évaluations', href: route('ratings.index'), icon: ChartBarIcon, current: currentRoute === 'ratings'},
     {name: 'À Valider', href: route('validations.index'), icon: CheckBadgeIcon, current: currentRoute === 'validations'},
-    {name: 'Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile'},
+    {name: 'Mon Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile'},
 )
 
 if ([1, 2].includes(user.value.role_id)) {
@@ -77,14 +77,19 @@ if ([1, 2].includes(user.value.role_id)) {
             ],
         })
 }
-if ([1].includes(user.value.role_id)) {
+if ([1, 4, 2].includes(user.value.role_id)) {
     navigation.push(
         {
-            name: 'Agents',
+            name: 'Tous les Agents',
             icon: UsersIcon,
             current: currentRoute === 'users',
             href: route('users.index')
         },
+    );
+}
+
+if ([1].includes(user.value.role_id)) {
+    navigation.push(
         {
             name: 'Roles',
             icon: LockClosedIcon,
@@ -125,7 +130,7 @@ defineEmits(['closeSidebar'])
                             </div>
                         </TransitionChild>
                         <!-- Sidebar component, swap this element with another sidebar if you like -->
-                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700  px-6 pb-4">
+                        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 dark:bg-grayish  px-6 pb-4">
                             <div class="flex h-16 shrink-0 items-center">
                                 <img alt="Your Company" class="h-8 w-auto" src="../../assets/logo1637145113.png"/>
                             </div>
@@ -155,12 +160,11 @@ defineEmits(['closeSidebar'])
                                                     <DisclosurePanel as="ul" class="mt-1 px-2">
                                                         <li v-for="subItem in item.children" :key="subItem.name">
                                                             <!-- 44px -->
-                                                            <DisclosureButton
+                                                            <Link
                                                                 :class="[subItem.current ? 'bg-cyan-600  text-white' : 'text-gray-300 hover:text-white hover:bg-cyan-600    ', 'block rounded-md py-2 pr-2 pl-9 font-semibold text-base leading-6']"
-                                                                :href="subItem.href"
-                                                                as="a">
+                                                                :href="subItem.href">
                                                                 {{ subItem.name }}
-                                                            </DisclosureButton>
+                                                            </Link>
                                                         </li>
                                                     </DisclosurePanel>
                                                 </Disclosure>
@@ -180,7 +184,7 @@ defineEmits(['closeSidebar'])
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700  px-3 pb-4">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-cyan-700 dark:bg-grayish  px-3 pb-4">
             <div class="mt-2 flex h-24 shrink-0 items-center justify-center p-6">
                 <img alt="Your Company" class="h-24 w-auto" src="../../assets/logo1637145113.png"/>
             </div>
@@ -207,12 +211,11 @@ defineEmits(['closeSidebar'])
                                     <DisclosurePanel as="ul" class="mt-1 px-2 space-y-1">
                                         <li v-for="subItem in item.children" :key="subItem.name">
                                             <!-- 44px -->
-                                            <DisclosureButton
+                                            <Link
                                                 :class="[subItem.current ? 'bg-cyan-600  text-white' : 'text-gray-300 hover:text-white hover:bg-cyan-600    ', 'block rounded-md py-2 pr-2 pl-9 text-base font-semibold leading-6']"
-                                                :href="subItem.href"
-                                                as="a">
+                                                :href="subItem.href">
                                                 {{ subItem.name }}
-                                            </DisclosureButton>
+                                            </Link>
                                         </li>
                                     </DisclosurePanel>
                                 </Disclosure>

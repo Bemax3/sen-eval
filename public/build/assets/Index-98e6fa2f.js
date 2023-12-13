@@ -1,0 +1,1 @@
+import{_ as e}from"./AuthenticatedLayout-a2654eb8.js";import{o as s,d as t,e as a,a as o}from"./app-589b6ab5.js";import"./logo1637145113-c7398df9.js";import"./helper-9d93711f.js";const m=o("div",{class:"space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none"}," Home ! ",-1),d={__name:"Index",setup(r){return(_,c)=>(s(),t(e,null,{default:a(()=>[m]),_:1}))}};export{d as default};

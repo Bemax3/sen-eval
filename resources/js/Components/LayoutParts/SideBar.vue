@@ -41,11 +41,11 @@ if ([1, 4].includes(user.value.role_id)) navigation.push({
 });
 
 navigation.push(
-    {name: 'Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents', 'agent-goals', 'agent-ratings'].includes(currentRoute)},
-    {name: 'Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals'},
-    {name: 'Évaluations', href: route('ratings.index'), icon: ChartBarIcon, current: currentRoute === 'ratings'},
+    {name: 'Mes Agents', href: route('agents.index'), icon: UserGroupIcon, current: ['agents', 'agent-goals', 'agent-ratings'].includes(currentRoute)},
+    {name: 'Mes Objectifs', href: route('goals.index'), icon: DocumentCheckIcon, current: currentRoute === 'goals'},
+    {name: 'Mes Évaluations', href: route('ratings.index'), icon: ChartBarIcon, current: currentRoute === 'ratings'},
     {name: 'À Valider', href: route('validations.index'), icon: CheckBadgeIcon, current: currentRoute === 'validations'},
-    {name: 'Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile'},
+    {name: 'Mon Profil', href: route('profile.index'), icon: IdentificationIcon, current: currentRoute === 'profile'},
 )
 
 if ([1, 2].includes(user.value.role_id)) {

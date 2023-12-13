@@ -22,7 +22,7 @@ const props = defineProps({
         default: {}
     },
 })
-const title = isEmpty(props.evaluation) ? 'Nouvelle evaluation' : 'Modifier l\'évaluation';
+const title = isEmpty(props.evaluation) ? 'Nouvelle évaluation' : 'Modifier l\'évaluation';
 const desc = isEmpty(props.evaluation) ? 'Créer une evaluation pour cet agent' : 'Modifier une evaluation pour cet agent';
 const pages = [
     {name: 'Évaluations', href: route('agent-ratings.index', {agent: props.agent.user_id}), current: false},

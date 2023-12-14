@@ -29,7 +29,7 @@ class RatedAgentsExport implements FromCollection, ShouldAutoSize, WithHeadings,
      */
     public function collection(): Collection
     {
-        return getPendingRatings($this->phase_id, $this->org_id)->orderBy('rating_mark', 'desc')->get();
+        return getValidatedRatings($this->phase_id, $this->org_id)->orderBy('rating_mark', 'desc')->get();
     }
 
     public function headings(): array

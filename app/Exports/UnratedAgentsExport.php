@@ -29,7 +29,7 @@ class UnratedAgentsExport implements FromCollection, ShouldAutoSize, WithHeading
      */
     public function collection(): Collection
     {
-        return getUnratedUsers($this->phase_id, $this->org_id)->with('org')->orderBy('rating_mark', 'desc')->get();
+        return getUnratedUsers($this->phase_id, $this->org_id)->with('org')->get();
     }
 
     public function headings(): array

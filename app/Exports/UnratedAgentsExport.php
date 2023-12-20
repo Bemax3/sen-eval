@@ -45,8 +45,8 @@ class UnratedAgentsExport implements FromCollection, ShouldAutoSize, WithHeading
     {
         return [
             $row->user_display_name,
-            $row->user_matricule,
-            $row->org ? $row->org_name : '',
+            $row->user_matricule ?? '',
+            $row->org ? $row->org_name : 'Direction Inconnu',
         ];
     }
 

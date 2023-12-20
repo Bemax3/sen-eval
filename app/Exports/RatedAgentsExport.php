@@ -49,8 +49,8 @@ class RatedAgentsExport implements FromCollection, ShouldAutoSize, WithHeadings,
     {
         return [
             $row->evaluated->user_display_name,
-            $row->evaluated->user_matricule,
-            $row->evaluated->org->org_name,
+            $row->evaluated->user_matricule ?? '',
+            $row->evaluated->org ? $row->evaluated->org->org_name : "Direction Inconnu",
             $row->evaluator->user_display_name,
             $row->rating_mark,
             match (true) {

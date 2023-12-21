@@ -106,13 +106,13 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         'roles' => RoleController::class,
         'phaseSkills' => PhaseSkillController::class,
         'periods' => PeriodsController::class,
-        'orgs' => OrgController::class
     ]);
 });
 
 Route::group(['middleware' => ['auth', 'viewer']], function () {
     Route::resources([
         'users' => UserController::class,
+        'orgs' => OrgController::class
     ]);
 
     /*

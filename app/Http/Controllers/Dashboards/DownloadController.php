@@ -35,10 +35,17 @@ class DownloadController extends Controller
 {
     public function downloadTrainings(Request $request)
     {
+        [$phase_id, $org_id] = self::getFilters($request);
+        return \Excel::download(new TrainingsExport($phase_id, $org_id), 'Décompte des Formations' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
+    }
+
+    public static function getFilters($request)
+    {
         $org_id = $request->get('org_id') ?? -1;
         $phase_id = $request->get('phase_id');
-
-        return \Excel::download(new TrainingsExport($phase_id, $org_id), 'Décompte des Formations' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
+        $phases = Phase::get();
+        if (!isset($phase_id)) $phase_id = $phases[0]->phase_id;
+        return [$phase_id, $org_id];
     }
 
     public static function getNameComplement($phase_id, $org_id)
@@ -54,132 +61,108 @@ class DownloadController extends Controller
 
     public function downloadTrainingsDetails(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         $type = TrainingType::findOrFail($request->get('type'));
         return \Excel::download(new TrainingsDetailsExport($phase_id, $org_id, $type), 'Formations en ' . $type->training_type_name . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadAllTrainings(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new AllTrainingsExport($phase_id, $org_id), 'Formations' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadAllClaims(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new AllClaimsExport($phase_id, $org_id), 'Réclamations' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadAllMobilities(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new AllMobilitiesExport($phase_id, $org_id), 'Mobilités' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadAllSanctions(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new AllSanctionsExport($phase_id, $org_id), 'Sanctions' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadAllPromotions(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new AllPromotionsExport($phase_id, $org_id), 'Promotions' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadClaimsDetails(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         $type = ClaimType::findOrFail($request->get('type'));
         return \Excel::download(new ClaimsDetailsExport($phase_id, $org_id, $type), 'Réclamations du type ' . $type->claim_type_name . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadMobilitiesDetails(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         $type = MobilityType::findOrFail($request->get('type'));
         return \Excel::download(new MobilitiesDetailsExport($phase_id, $org_id, $type), 'Mobilités du type ' . $type->mobility_type_name . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadSanctionsDetails(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         $type = SanctionType::findOrFail($request->get('type'));
         return \Excel::download(new SanctionsDetailsExport($phase_id, $org_id, $type), 'Sanctions du type ' . $type->sanction_type_name . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadPromotionsDetails(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
+        [$phase_id, $org_id] = self::getFilters($request);
         $type = PromotionType::findOrFail($request->get('type'));
         return \Excel::download(new PromotionsDetailsExport($phase_id, $org_id, $type), 'Demandes de type ' . $type->promotion_type_name . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadClaims(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
-
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new ClaimsExport($phase_id, $org_id), 'Décompte des Réclamations' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadSanctions(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
-
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new SanctionsExport($phase_id, $org_id), 'Décompte des Sanctions' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadMobilities(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
-
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new MobilitiesExport($phase_id, $org_id), 'Décompte des Mobilités' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadPromotions(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
-
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new PromotionsExport($phase_id, $org_id), 'Décompte des promotions et avancements' . self::getNameComplement($phase_id, $org_id) . '.xlsx');
     }
 
     public function downloadPending(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
-
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new PendingRatingsExport($phase_id, $org_id), 'Évaluation en attende de validation' . self::getNameComplement($phase_id, $org_id) . ' - ' . Carbon::today()->isoFormat('DD MMMM YYYY') . '.xlsx');
     }
 
     public function downloadUnrated(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
-
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new UnratedAgentsExport($phase_id, $org_id), 'Agents non évalués' . self::getNameComplement($phase_id, $org_id) . ' - ' . Carbon::today()->isoFormat('DD MMMM YYYY') . '.xlsx');
     }
 
     public function downloadRated(Request $request)
     {
-        $org_id = $request->get('org_id') ?? -1;
-        $phase_id = $request->get('phase_id');
-
+        [$phase_id, $org_id] = self::getFilters($request);
         return \Excel::download(new RatedAgentsExport($phase_id, $org_id), 'Évaluations validées' . self::getNameComplement($phase_id, $org_id) . ' - ' . Carbon::today()->isoFormat('DD MMMM YYYY') . '.xlsx');
     }
 }

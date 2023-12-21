@@ -77,6 +77,7 @@ class AdminDashboardController extends Controller
         ]);
     }
 
+    // Get filters from the request
     public static function getFilters($request)
     {
         $org_id = $request->get('org_id') ?? -1;
@@ -87,6 +88,7 @@ class AdminDashboardController extends Controller
         return [$phase_id, $org_id, $phases];
     }
 
+    // Show rated agents
     public function rated(Request $request)
     {
         [$phase_id, $org_id, $phases] = self::getFilters($request);
@@ -98,6 +100,7 @@ class AdminDashboardController extends Controller
         ]);
     }
 
+    // Show rated agents by merit order
     public function leaderboard(Request $request)
     {
         [$phase_id, $org_id, $phases] = self::getFilters($request);

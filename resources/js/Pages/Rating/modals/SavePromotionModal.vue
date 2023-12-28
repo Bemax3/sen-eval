@@ -27,11 +27,13 @@ let form;
 const setupForm = (promotion) => {
     form = useForm(promotion === undefined ? {
         evaluated_is_eligible: 0,
+        is_proposed: 0,
         rating_promotion_comment: '',
         promotion_type_id: hasData(props.types) ? props.types[0].promotion_type_id : null
     } : {
         rating_promotion_id: promotion.rating_promotion_id,
         evaluated_is_eligible: promotion.evaluated_is_eligible,
+        is_proposed: promotion.is_proposed,
         rating_promotion_comment: promotion.rating_promotion_comment || '',
         promotion_type_id: promotion.promotion_type_id
     })
@@ -101,12 +103,6 @@ const emit = defineEmits(['closeModal'])
                                 </div>
                                 <div class="px-4 py-6 sm:p-8">
                                     <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                        <div class="col-span-full">
-                                            <div class="mt-2">
-                                                <Switch v-model="form.evaluated_is_eligible" desc="L'évalué est-il éligible à cette avancement ou promotion ?"
-                                                        label="Non Éligible / Éligible"/>
-                                            </div>
-                                        </div>
 
                                         <div class="col-span-full relative">
                                             <InputLabel for="start_date" required>Nature</InputLabel>
@@ -146,6 +142,19 @@ const emit = defineEmits(['closeModal'])
                                             </Listbox>
                                             <InputError :message="form.errors.promotion_type_id"/>
                                         </div>
+                                        <div class="col-span-full">
+                                            <div class="mt-2">
+                                                <Switch v-model="form.evaluated_is_eligible" desc="L'évalué est-il éligible à cette avancement ou promotion ?"
+                                                        label="Non Éligible / Éligible"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-full">
+                                            <div class="mt-2">
+                                                <Switch v-model="form.is_proposed" desc="Proposez-vous un avancement ou une promotion pour cette évalué ?"
+                                                        label="Non Proposé / Proposé"/>
+                                            </div>
+                                        </div>
+
                                         <div class="col-span-full">
                                             <InputLabel for="">Commentaire</InputLabel>
                                             <div class=" mt-2">

@@ -10,7 +10,7 @@ class Promotion extends Model
 {
     protected $table = 'rating_promotions';
     protected $primaryKey = 'rating_promotion_id';
-    protected $fillable = ['rating_id', 'promotion_type_id', 'evaluated_is_eligible', 'rating_promotion_comment'];
+    protected $fillable = ['rating_id', 'promotion_type_id', 'evaluated_is_eligible', 'rating_promotion_comment', 'is_proposed'];
 
     public function getForeignKey()
     {

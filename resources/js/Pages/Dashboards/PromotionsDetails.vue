@@ -62,6 +62,7 @@ const search = ''
                         <TableHeading>Évaluateur</TableHeading>
                         <TableHeading>Demandée par</TableHeading>
                         <TableHeading>Éligibilité</TableHeading>
+                        <TableHeading>Proposition</TableHeading>
                         <TableHeading>Commentaire</TableHeading>
                     </tr>
                     </thead>
@@ -71,13 +72,20 @@ const search = ''
                         <TableData>{{ promotion.rating.evaluated.user_display_name }}</TableData>
                         <TableData>{{ promotion.rating.evaluator.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">
-                            {{ promotion.rating.evaluator.user_display_name }}
+                            L'évaluateur
                         </TableData>
                         <TableData>
                             <span
                                 :class="promotion.evaluated_is_eligible ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
                                 class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
                                 {{ promotion.evaluated_is_eligible ? 'Éligible' : 'Non Éligible' }}
+                            </span>
+                        </TableData>
+                        <TableData>
+                            <span
+                                :class="promotion.is_proposed ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
+                                class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
+                                {{ promotion.is_proposed ? 'Proposé' : 'Non Proposé' }}
                             </span>
                         </TableData>
                         <TableData class="whitespace-pre-line">

@@ -50,7 +50,7 @@ class AllClaimsExport implements FromCollection, WithHeadings, WithMapping, Shou
             $row->type->claim_type_name,
             $row->rating->evaluated->user_display_name,
             $row->rating->evaluator->user_display_name,
-            $row->rating->evaluated->user_display_name,
+            'L\'évalué',
             $row->rating_claim_comment
         ];
     }

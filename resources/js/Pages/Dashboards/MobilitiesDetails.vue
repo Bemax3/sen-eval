@@ -70,7 +70,7 @@ const search = ''
                         <TableData>{{ mobility.rating.evaluated.user_display_name }}</TableData>
                         <TableData>{{ mobility.rating.evaluator.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">
-                            {{ mobility.asked_by.user_display_name }}
+                            {{ mobility.asked_by.user_id === mobility.rating.evaluated.user_id ? 'L\'évalué' : 'L\'évaluateur' }}
                         </TableData>
                         <TableData class="whitespace-pre-line">
                             {{ mobility.rating_mobility_comment }}

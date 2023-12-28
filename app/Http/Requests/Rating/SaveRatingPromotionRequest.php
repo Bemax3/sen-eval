@@ -10,6 +10,7 @@ class SaveRatingPromotionRequest extends FormRequest
     {
         return [
             'evaluated_is_eligible' => ['sometimes'],
+            'is_proposed' => ['sometimes'],
             'promotion_type_id' => ['required'],
             'rating_promotion_comment' => ['sometimes'],
             'updated_by' => ['sometimes']

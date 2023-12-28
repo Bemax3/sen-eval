@@ -81,7 +81,7 @@ const search = '';
                             <span
                                 :class="e.rating_is_validated ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
                                 class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
-                                {{ e.rating_is_validated ? 'Validé' : 'En attende' }}
+                                {{ e.rating_is_validated ? 'Validé' : 'En attente' }}
                             </span>
                         </TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

@@ -40,6 +40,7 @@ class AllPromotionsExport implements FromCollection, WithHeadings, WithMapping, 
             'Évaluateur',
             'Demandée par',
             'Éligibilité',
+            'Proposition',
             'Commentaire'
         ];
     }
@@ -51,10 +52,14 @@ class AllPromotionsExport implements FromCollection, WithHeadings, WithMapping, 
             $row->type->promotion_type_name,
             $row->rating->evaluated->user_display_name,
             $row->rating->evaluator->user_display_name,
-            $row->rating->evaluated->user_display_name,
+            'L\'évaluateur',
             match ($row->evaluated_is_eligible) {
                 0 => 'Non éligible',
                 default => 'Éligible'
+            },
+            match ($row->is_proposed) {
+                0 => 'Non Proposé',
+                default => 'Proposé'
             },
             $row->rating_promotion_comment
         ];

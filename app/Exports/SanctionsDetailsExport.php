@@ -52,7 +52,7 @@ class SanctionsDetailsExport implements FromCollection, WithHeadings, WithMappin
             $this->type->sanction_type_name,
             $row->rating->evaluated->user_display_name,
             $row->rating->evaluator->user_display_name,
-            $row->rating->evaluator->user_display_name,
+            'L\'évaluateur',
             $row->rating_sanction_comment
         ];
     }

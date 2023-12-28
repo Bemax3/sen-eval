@@ -85,7 +85,7 @@ class RatingSeeder extends Seeder
                 if ($rand1) $rating->update(['rating_is_validated' => 1]);
 
                 foreach ($skills as $skill) {
-                    $randMark = rand(3, $skill->phase_skill_marking);
+                    $randMark = rand(1, $skill->phase_skill_marking);
                     RatingSkill::create([
                         'rating_id' => $rating->rating_id,
                         'phase_skill_id' => $skill->phase_skill_id,
@@ -97,7 +97,7 @@ class RatingSeeder extends Seeder
                 $skills = PhaseSkill::where('phase_id', '=', $phase->phase_id)->whereRelation('skill', 'group_id', '=', null)->inRandomOrder()->limit(6)->get();
 
                 foreach ($skills as $skill) {
-                    $randMark = rand(3, $skill->phase_skill_marking);
+                    $randMark = rand(1, $skill->phase_skill_marking);
                     RatingSkill::create([
                         'rating_id' => $rating->rating_id,
                         'phase_skill_id' => $skill->phase_skill_id,
@@ -158,7 +158,8 @@ class RatingSeeder extends Seeder
                     'rating_id' => $rating->rating_id,
                     'promotion_type_id' => PromotionType::inRandomOrder()->first()->promotion_type_id,
                     'rating_promotion_comment' => fake()->realText,
-                    'evaluated_is_eligible' => rand(0, 1)
+                    'evaluated_is_eligible' => rand(0, 1),
+                    'is_proposed' => rand(0, 1)
                 ]);
 
                 $if = rand(0, 1);
@@ -168,7 +169,7 @@ class RatingSeeder extends Seeder
                     'sanction_type_id' => SanctionType::inRandomOrder()->first()->sanction_type_id
                 ]);
 
-                $howMuch = rand(3, 10);
+                $howMuch = rand(3, 5);
 
                 for ($i = 0; $i <= $howMuch; $i++) {
                     $byted = rand(0, 1);

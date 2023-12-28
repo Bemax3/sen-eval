@@ -69,13 +69,13 @@ const search = ''
                         <TableData>{{ training.rating.evaluator.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">
                             <template v-if="training.asked_by_evaluator && !training.asked_by_evaluated">
-                                {{ training.rating.evaluator.user_display_name }}
+                                L'évaluateur
                             </template>
                             <template v-if="training.asked_by_evaluated && !training.asked_by_evaluator">
-                                {{ training.rating.evaluated.user_display_name }}
+                                L'évalué
                             </template>
                             <template v-if="training.asked_by_evaluated && training.asked_by_evaluator">
-                                {{ training.rating.evaluated.user_display_name + ' et ' + training.rating.evaluator.user_display_name }}
+                                L'évaluateur et l'évalué
                             </template>
                         </TableData>
                     </tr>

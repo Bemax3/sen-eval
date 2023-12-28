@@ -111,6 +111,52 @@ const filterDashboard = () => {
 
 const search = '';
 
+const modifiedSkillsChart = computed(() => {
+    let chart = props.skillsChart;
+    let colors = []
+    chart.series[0].data.forEach(el => {
+        let reference = el.goals[0].value / 2;
+        switch (true) {
+            case el.y > reference:
+                colors.push("#0891b2")
+                break;
+            case el.y < reference:
+                colors.push("#dc2626")
+                break;
+            default:
+                colors.push("#ea580c")
+
+        }
+    })
+
+    chart.chartOptions.colors = colors;
+
+    return chart;
+})
+
+const modifiedSpecificSkillsChart = computed(() => {
+    let chart = props.specificSkillsChart;
+    let colors = []
+    chart.series[0].data.forEach(el => {
+        let reference = el.goals[0].value / 2;
+        switch (true) {
+            case el.y > reference:
+                colors.push("#0891b2")
+                break;
+            case el.y < reference:
+                colors.push("#dc2626")
+                break;
+            default:
+                colors.push("#ea580c")
+
+        }
+    })
+
+    chart.chartOptions.colors = colors;
+
+    return chart;
+})
+
 const total = computed(() => {
     let by_evaluators = 0;
     let by_evaluated = 0;
@@ -141,16 +187,28 @@ const total_mobilities = computed(() => {
 })
 
 const total_promotions = computed(() => {
-    let eligible = 0;
-    let others = 0;
+    let eligible_and_proposed = 0;
+    let eligible_and_not_proposed = 0;
+    let not_eligible_and_proposed = 0;
+    let not_eligible_and_not_proposed = 0;
     let all = 0;
     props.promotions.forEach(el => {
-        eligible += el.eligible_count;
-        others += el.others;
-        all += el.eligible_count + el.others;
+        eligible_and_proposed += el.eligible_and_proposed_count;
+        eligible_and_not_proposed += el.eligible_and_not_proposed_count;
+        not_eligible_and_proposed += el.not_eligible_and_proposed_count;
+        not_eligible_and_not_proposed += el.not_eligible_and_not_proposed_count;
+        all += el.eligible_and_proposed_count + el.eligible_and_not_proposed_count + el.not_eligible_and_proposed_count + el.not_eligible_and_not_proposed_count;
     });
-    return {eligible: eligible, others: others, all: all};
+    return {
+        eligible_and_proposed: eligible_and_proposed,
+        eligible_and_not_proposed: eligible_and_not_proposed,
+        not_eligible_and_proposed: not_eligible_and_proposed,
+        not_eligible_and_not_proposed: not_eligible_and_not_proposed,
+        all: all
+    };
 })
+
+console.log(total_promotions.value)
 
 
 const top_trainings = props.trainings.sort((a, b) => a.trainings_count > b.trainings_count ? -1 : 1);
@@ -276,7 +334,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                     <div class="px-4 py-5 sm:p-6">
                         <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
-                            Moyenne {{ form.org_id === -1 ? 'générale' : 'de la direction' }}
+                            Moyenne {{ form.org_id === -1 ? 'générale' : 'de la direction' }} (Évaluations validées)
                         </h3>
                         <RadialBarChart :chart-options="averageChart.chartOptions" :series="averageChart.series"/>
                     </div>
@@ -285,7 +343,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                     <div class="px-4 py-5 sm:p-6">
                         <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
-                            Meilleures notes
+                            Classement
                             <Link :href="route('admin-dashboard.leaderboard',{phase_id: form.phase_id, org_id: form.org_id})"
                                   class="font-medium text-cyan-600 hover:text-cyan-500 text-sm m-2"
                             >Voir tout le classement
@@ -300,18 +358,18 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                     <div class="px-4 py-5 sm:p-6">
                         <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
-                            Moyenne par compétence générale
+                            Moyenne des notes par compétence générale
                         </h3>
-                        <BarChart :chart-options="skillsChart.chartOptions" :series="skillsChart.series"/>
+                        <BarChart :chart-options="modifiedSkillsChart.chartOptions" :series="modifiedSkillsChart.series"/>
                     </div>
                 </div>
                 <div class="col-span-2 mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:p-6">
                         <h3 class="m-3 text-base font-semibold leading-6 text-gray-900 dark:text-white flex items-center">
                             <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
-                            Moyennes par compétence spécifique
+                            Moyennes des notes par compétence spécifique
                         </h3>
-                        <BarChart :chart-options="specificSkillsChart.chartOptions" :series="specificSkillsChart.series"/>
+                        <BarChart :chart-options="modifiedSpecificSkillsChart.chartOptions" :series="modifiedSpecificSkillsChart.series"/>
                     </div>
                 </div>
             </div>
@@ -662,8 +720,10 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                             <thead class="bg-gray-50 dark:bg-grayish">
                             <tr>
                                 <TableHeading :first="true">Type de la promotion</TableHeading>
-                                <TableHeading :first="true">Proposé et éligible</TableHeading>
-                                <TableHeading :first="true">Proposé et non éligible</TableHeading>
+                                <TableHeading>Proposé et éligible</TableHeading>
+                                <TableHeading>Proposé et non éligible</TableHeading>
+                                <TableHeading>Non Proposé et éligible</TableHeading>
+                                <TableHeading>Non Proposé et non éligible</TableHeading>
                                 <TableHeading class="whitespace-pre-line">Totaux</TableHeading>
                                 <TableHeading class="whitespace-pre-line"></TableHeading>
                             </tr>
@@ -671,9 +731,14 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                             <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                             <tr v-for="promotion in promotions" :key="promotion.promotion_type_id">
                                 <TableData :first="true">{{ promotion.promotion_type_name }}</TableData>
-                                <TableData>{{ promotion.eligible_count }}</TableData>
-                                <TableData>{{ promotion.others }}</TableData>
-                                <TableData class="font-bold">{{ promotion.eligible_count + promotion.others }}</TableData>
+                                <TableData>{{ promotion.eligible_and_proposed_count }}</TableData>
+                                <TableData>{{ promotion.not_eligible_and_proposed_count }}</TableData>
+                                <TableData>{{ promotion.eligible_and_not_proposed_count }}</TableData>
+                                <TableData>{{ promotion.not_eligible_and_not_proposed_count }}</TableData>
+                                <TableData class="font-bold">
+                                    {{ promotion.eligible_and_proposed_count + promotion.not_eligible_and_proposed_count + promotion.eligible_and_not_proposed_count + promotion.not_eligible_and_not_proposed_count
+                                    }}
+                                </TableData>
                                 <TableData>
                                     <Link
                                         :href="route('admin-dashboard.promotions-details',{phase_id: form.phase_id, org_id: form.org_id,type: promotion.promotion_type_id})"
@@ -685,10 +750,16 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                             <tr>
                                 <TableData :first="true">Totaux</TableData>
                                 <TableData class="font-bold">
-                                    {{ total_promotions.eligible }}
+                                    {{ total_promotions.eligible_and_proposed }}
                                 </TableData>
                                 <TableData class="font-bold">
-                                    {{ total_promotions.others }}
+                                    {{ total_promotions.not_eligible_and_proposed }}
+                                </TableData>
+                                <TableData class="font-bold">
+                                    {{ total_promotions.eligible_and_not_proposed }}
+                                </TableData>
+                                <TableData class="font-bold">
+                                    {{ total_promotions.not_eligible_and_not_proposed }}
                                 </TableData>
                                 <TableData class="font-bold">
                                     {{ total_promotions.all }}

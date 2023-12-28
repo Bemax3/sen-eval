@@ -69,7 +69,7 @@ const search = ''
                         <TableData>{{ sanction.rating.evaluated.user_display_name }}</TableData>
                         <TableData>{{ sanction.rating.evaluator.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">
-                            {{ sanction.rating.evaluator.user_display_name }}
+                            L'évaluateur
                         </TableData>
                         <TableData class="whitespace-pre-line">
                             {{ sanction.rating_sanction_comment }}

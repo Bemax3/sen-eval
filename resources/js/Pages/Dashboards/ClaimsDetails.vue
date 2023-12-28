@@ -70,7 +70,7 @@ const search = ''
                         <TableData>{{ claim.rating.evaluated.user_display_name }}</TableData>
                         <TableData>{{ claim.rating.evaluator.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">
-                            {{ claim.rating.evaluated.user_display_name }}
+                            L'évalué
                         </TableData>
                         <TableData class="whitespace-pre-line">
                             {{ claim.rating_claim_comment }}

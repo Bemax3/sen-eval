@@ -22,7 +22,7 @@ if (!function_exists('getRatingsData')) {
             $users_count = User::where('role_id', '!=', 1)->count();
             $rated = Helper::getRatingsByPhaseAndStatus($phase_id, 1)->count();
             $not_validated = Helper::getRatingsByPhaseAndStatus($phase_id, 0)->count();
-            $average = Helper::getRatingsByPhase($phase_id)->avg('rating_mark');
+            $average = Helper::getRatingsByPhase($phase_id)->where('rating_is_validated', '=', 1)->avg('rating_mark');
             $top = Helper::getRatingsByPhase($phase_id)->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
         } else {
             $users_count = User::where('role_id', '!=', 1)->whereHas('org', function ($query) use ($org_id) {
@@ -31,7 +31,7 @@ if (!function_exists('getRatingsData')) {
             })->count();
             $rated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 1)->count();
             $not_validated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 0)->count();
-            $average = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->avg('rating_mark');
+            $average = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->where('rating_is_validated', '=', 1)->avg('rating_mark');
             $top = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
         }
         $data->average = $average;
@@ -45,16 +45,37 @@ if (!function_exists('getRatingsData')) {
 }
 
 if (!function_exists('getRatingsInMarkOrder')) {
-    function getRatingsInMarkOrder($phase_id, $org_id): object
+    function getRatingsInMarkOrder($phase_id, $org_id, $order): object
     {
         if (!isset($org_id) || $org_id == -1) {
-            $rated = Helper::getRatingsByPhase($phase_id)->with('evaluated', 'evaluator', 'phase')->orderBy('rating_mark', 'desc');
+            $rated = Helper::getRatingsByPhase($phase_id)->with('evaluated', 'evaluator', 'phase')->orderBy('rating_mark', $order);
         } else {
-            $rated = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id,)->with('evaluated', 'evaluator', 'phase')->orderBy('rating_mark', 'desc');
+            $rated = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id,)->with('evaluated', 'evaluator', 'phase')->orderBy('rating_mark', $order);
         }
         return $rated;
     }
 }
+
+//if (!function_exists('getUsersWithRating')) {
+//    function getUsersWithRating($phase_id, $org_id, $order): object
+//    {
+//        if (!isset($org_id) || $org_id == -1) {
+//            $users = User::select('user_display_name')->join('ratings', 'ratings.evaluated_id', '=', 'users.user_id')
+//                ->where('ratings.phase_id', '=', $phase_id)
+//                ->orderBy('ratings.rating_mark', $order);
+//        } else {
+//            $users = User::select('user_display_name')->join('ratings', 'ratings.evaluated_id', '=', 'users.user_id')
+//                ->where('ratings.phase_id', '=', $phase_id)
+//                ->whereHas('org', function ($query) use ($org_id) {
+//                    $query->where('organisations.org_id', '=', $org_id)
+//                        ->orWhere('organisations.parent_id', '=', $org_id);
+//                })
+//                ->orderBy('ratings.rating_mark', $order);
+//        }
+//        return $users;
+//    }
+//}
+
 
 if (!function_exists('getValidatedRatings')) {
     function getValidatedRatings($phase_id, $org_id): object
@@ -154,11 +175,25 @@ if (!function_exists('getSkillsData')) {
         if (!isset($org_id) || $org_id == -1) {
             $skills = PhaseSkill::where('phase_id', '=', $phase_id)->whereRelation('skill', 'skill_type_id', '=', $type)->withAvg(['rating_skills' => function ($query) use ($phase_id) {
                 Helper::filterByPhase($query, $phase_id);
-            }], 'rating_skill_mark')->with('skill')->get();
+            }], 'rating_skill_mark')
+                ->withMin(['rating_skills' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id);
+                }], 'rating_skill_mark')
+                ->withMax(['rating_skills' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id);
+                }], 'rating_skill_mark')
+                ->with('skill')->get();
         } else {
             $skills = PhaseSkill::where('phase_id', '=', $phase_id)->whereRelation('skill', 'skill_type_id', '=', $type)->withAvg(['rating_skills' => function ($query) use ($phase_id, $org_id) {
                 Helper::filterByPhaseAndOrg($query, $phase_id, $org_id);
-            }], 'rating_skill_mark')->with('skill')->get();
+            }], 'rating_skill_mark')
+                ->withMin(['rating_skills' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id);
+                }], 'rating_skill_mark')
+                ->withMax(['rating_skills' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id);
+                }], 'rating_skill_mark')
+                ->with('skill')->get();
         }
         return $skills;
     }
@@ -403,23 +438,38 @@ if (!function_exists('getPromotionsData')) {
     {
 
         if (!isset($org_id) || $org_id == -1) {
-            $promotions = PromotionType::withCount(['promotions as eligible_count' => function ($query) use ($phase_id) {
-                Helper::filterByPhase($query, $phase_id)->where('rating_promotions.evaluated_is_eligible', '=', 1);
-            }, 'promotions as others' => function ($query) use ($phase_id) {
-                Helper::filterByPhase($query, $phase_id)->where('rating_promotions.evaluated_is_eligible', '=', 0);
-            }])
-                ->orHaving('eligible_count', '>', 0)
-                ->orHaving('others', '>', 0)
+            $promotions = PromotionType::withCount([
+                'promotions as eligible_and_proposed_count' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id)->where('rating_promotions.evaluated_is_eligible', '=', 1)->where('rating_promotions.is_proposed', '=', 1);
+                }, 'promotions as eligible_and_not_proposed_count' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id)->where('rating_promotions.evaluated_is_eligible', '=', 1)->where('rating_promotions.is_proposed', '=', 0);
+                }, 'promotions as not_eligible_and_proposed_count' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id)->where('rating_promotions.evaluated_is_eligible', '=', 0)->where('rating_promotions.is_proposed', '=', 1);
+                }, 'promotions as not_eligible_and_not_proposed_count' => function ($query) use ($phase_id) {
+                    Helper::filterByPhase($query, $phase_id)->where('rating_promotions.evaluated_is_eligible', '=', 0)->where('rating_promotions.is_proposed', '=', 0);
+                },
+            ])
+                ->orHaving('eligible_and_proposed_count', '>', 0)
+                ->orHaving('eligible_and_not_proposed_count', '>', 0)
+                ->orHaving('not_eligible_and_proposed_count', '>', 0)
+                ->orHaving('not_eligible_and_not_proposed_count', '>', 0)
                 ->get();
         } else {
-            $promotions = PromotionType::withCount(['promotions as eligible_count' => function ($query) use ($phase_id, $org_id) {
-                Helper::filterByPhaseAndOrg($query, $phase_id, $org_id)->where('rating_promotions.evaluated_is_eligible', '=', 1);
-            }, 'promotions as others' => function ($query) use ($phase_id, $org_id) {
-                Helper::filterByPhaseAndOrg($query, $phase_id, $org_id)->where('rating_promotions.evaluated_is_eligible', '=', 0);
-            }
+            $promotions = PromotionType::withCount([
+                'promotions as eligible_and_proposed_count' => function ($query) use ($phase_id, $org_id) {
+                    Helper::filterByPhaseAndOrg($query, $phase_id, $org_id)->where('rating_promotions.evaluated_is_eligible', '=', 1)->where('rating_promotions.is_proposed', '=', 1);
+                }, 'promotions as eligible_and_not_proposed_count' => function ($query) use ($phase_id, $org_id) {
+                    Helper::filterByPhaseAndOrg($query, $phase_id, $org_id)->where('rating_promotions.evaluated_is_eligible', '=', 1)->where('rating_promotions.is_proposed', '=', 0);
+                }, 'promotions as not_eligible_and_proposed_count' => function ($query) use ($phase_id, $org_id) {
+                    Helper::filterByPhaseAndOrg($query, $phase_id, $org_id)->where('rating_promotions.evaluated_is_eligible', '=', 0)->where('rating_promotions.is_proposed', '=', 1);
+                }, 'promotions as not_eligible_and_not_proposed_count' => function ($query) use ($phase_id, $org_id) {
+                    Helper::filterByPhaseAndOrg($query, $phase_id, $org_id)->where('rating_promotions.evaluated_is_eligible', '=', 0)->where('rating_promotions.is_proposed', '=', 0);
+                },
             ])
-                ->orHaving('eligible_count', '>', 0)
-                ->orHaving('others', '>', 0)
+                ->orHaving('eligible_and_proposed_count', '>', 0)
+                ->orHaving('eligible_and_not_proposed_count', '>', 0)
+                ->orHaving('not_eligible_and_proposed_count', '>', 0)
+                ->orHaving('not_eligible_and_not_proposed_count', '>', 0)
                 ->get();
         }
         return $promotions;
@@ -477,9 +527,24 @@ if (!function_exists('getSkillsBarChart')) {
                 [
                     'name' => 'Barème',
                     'value' => $s->phase_skill_marking,
+                    'strokeWidth' => 10,
+                    'strokeHeight' => 0,
+                    'strokeLineCap' => 'round',
+                    'strokeColor' => '#775DD0'
+                ], (object)
+                [
+                    'name' => 'Min',
+                    'value' => $s->rating_skills_min_rating_skill_mark,
                     'strokeWidth' => 3,
                     'strokeDashArray' => 0,
-                    'strokeColor' => '#775DD0'
+                    'strokeColor' => '#dc2626'
+                ], (object)
+                [
+                    'name' => 'Max',
+                    'value' => $s->rating_skills_max_rating_skill_mark,
+                    'strokeWidth' => 3,
+                    'strokeDashArray' => 0,
+                    'strokeColor' => '#0d9488'
                 ]
                 ]
             ];
@@ -508,12 +573,11 @@ if (!function_exists('getSkillsBarChart')) {
                },
                "plotOptions":{
                   "bar":{
-                     "horizontal":true
+                     "horizontal":true,
+                     "distributed":true
                   }
                },
-               "colors":[
-                  "#06B6D4FF"
-               ],
+               "colors":[],
                "dataLabels":{
                   "enabled":true
                },
@@ -528,7 +592,7 @@ if (!function_exists('getSkillsBarChart')) {
                   }
                },
                "legend":{
-                  "show":true,
+                  "show":false,
                   "markers":{
                      "fillColors":[
                         "#06B6D4FF"
@@ -848,11 +912,13 @@ if (!function_exists('getPromotionsPieChartByType')) {
     {
         $result = (object)[];
         $data = [];
-        $labels = ['Éligibles', 'Non Éligibles'];
+        $labels = ['Éligibles et Proposés', 'Éligibles et Non Proposés', 'Non Éligibles et Proposés', 'Non Éligibles et Non Proposés'];
         foreach ($promotions_data as $promotion) {
             if ($promotion->promotion_type_id !== $type) continue;
-            $data[] = $promotion->eligible_count;
-            $data[] = $promotion->others;
+            $data[] = $promotion->eligible_and_proposed_count;
+            $data[] = $promotion->eligible_and_not_proposed_count;
+            $data[] = $promotion->not_eligible_and_proposed_count;
+            $data[] = $promotion->not_eligible_and_not_proposed_count;
         }
 
         $chartOptions = json_decode('{

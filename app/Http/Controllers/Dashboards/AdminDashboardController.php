@@ -94,7 +94,7 @@ class AdminDashboardController extends Controller
         [$phase_id, $org_id, $phases] = self::getFilters($request);
         $ratings = getValidatedRatings($phase_id, $org_id);
         return Inertia::render('Dashboards/RatedDetails', [
-            'ratings' => $ratings->paginate(15)->withQueryString(),
+            'ratings' => $ratings->orderBy('rating_mark', 'desc')->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
             'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
         ]);
@@ -104,11 +104,15 @@ class AdminDashboardController extends Controller
     public function leaderboard(Request $request)
     {
         [$phase_id, $org_id, $phases] = self::getFilters($request);
-        $ratings = getRatingsInMarkOrder($phase_id, $org_id);
+        $order = $request->get('order') ?? 'desc';
+        $ratings = getRatingsInMarkOrder($phase_id, $org_id, $order);
+//        $users = getUsersWithRating($phase_id, $org_id, $order);
         return Inertia::render('Dashboards/LeaderBoard', [
             'ratings' => $ratings->paginate(15)->withQueryString(),
+//            'users' => $users->paginate(15)->withQueryString(),
             'phase' => $phases->where('phase_id', '=', $phase_id)->first(),
-            'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1
+            'org' => Organisation::where('org_id', '=', $org_id)->first() ?? -1,
+            'asc' => $order === 'asc'
         ]);
     }
 

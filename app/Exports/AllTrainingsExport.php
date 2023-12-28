@@ -50,9 +50,9 @@ class AllTrainingsExport implements FromCollection, WithHeadings, WithMapping, S
             $row->rating->evaluated->user_display_name,
             $row->rating->evaluator->user_display_name,
             match (true) {
-                $row->asked_by_evaluted == 1 && !$row->asked_by_evaluator == Null => $row->rating->evaluated->user_display_name,
-                !$row->asked_by_evaluted == Null && $row->asked_by_evaluator == 1 => $row->rating->evaluator->user_display_name,
-                default => $row->rating->evaluated->user_display_name . ' et ' . $row->rating->evaluator->user_display_name,
+                ($row->asked_by_evaluated == null && $row->asked_by_evaluator == 1) => 'L\'évaluateur',
+                ($row->asked_by_evaluator == null && $row->asked_by_evaluated == 1) => 'L\'évalué',
+                default => 'L\'évalué et L\'évaluateur'
             }
         ];
     }

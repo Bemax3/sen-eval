@@ -94,6 +94,7 @@ watch(() => props.promotions,
                         <TableHeading :first="true">Nature</TableHeading>
                         <TableHeading>Demandée par</TableHeading>
                         <TableHeading>Éligibilité</TableHeading>
+                        <TableHeading>Proposition</TableHeading>
                         <TableHeading class="whitespace-pre-line">Commentaire</TableHeading>
                         <TableHeading></TableHeading>
                     </tr>
@@ -109,11 +110,18 @@ watch(() => props.promotions,
                                 {{ promotion.evaluated_is_eligible ? 'Éligible' : 'Non Éligible' }}
                             </span>
                         </TableData>
+                        <TableData>
+                            <span
+                                :class="promotion.is_proposed ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
+                                class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
+                                {{ promotion.is_proposed ? 'Proposé' : 'Non Proposé' }}
+                            </span>
+                        </TableData>
                         <TableData class="whitespace-pre-line">{{ promotion.rating_promotion_comment }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div v-if="!isEvaluated && !isValidator && !rating.rating_is_validated" class="flex items-center justify-center gap-2">
                                 <button
-                                    class="rounded-lg bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                                    class="rounded-lg bg-cyan-600  p-2 text-white shadow-sm hover:bg-cyan-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                                     type="button"
                                     @click="setupEdit(promotion.rating_promotion_id)">
                                     <PencilSquareIcon aria-hidden="true" class="h-5 w-5"/>

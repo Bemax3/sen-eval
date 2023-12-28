@@ -31,19 +31,24 @@ class PromotionsExport implements FromCollection, WithHeadings, WithMapping, Sho
     public function collection(): Collection
     {
         $data = getPromotionsData($this->phase_id, $this->org_id);
-        $eligible = 0;
-        $others = 0;
-        $all = 0;
+        $eligible_and_proposed = 0;
+        $eligible_and_not_proposed = 0;
+        $not_eligible_and_proposed = 0;
+        $not_eligible_and_not_proposed = 0;
+
         foreach ($data as $promotion) {
-            $eligible += $promotion->eligible_count;
-            $others += $promotion->others;
-            $all += $promotion->eligible_count + $promotion->others;
+            $eligible_and_proposed += $promotion->eligible_and_proposed_count;
+            $eligible_and_not_proposed += $promotion->eligible_and_not_proposed_count;
+            $not_eligible_and_proposed += $promotion->not_eligible_and_proposed_count;
+            $not_eligible_and_not_proposed += $promotion->not_eligible_and_not_proposed_count;
         }
 
         $data->add(new PromotionType([
             'promotion_type_name' => 'Totaux',
-            'eligible_count' => $eligible,
-            'others' => $others,
+            'eligible_and_proposed_count' => $eligible_and_proposed,
+            'eligible_and_not_proposed_count' => $eligible_and_not_proposed,
+            'not_eligible_and_proposed_count' => $not_eligible_and_proposed,
+            'not_eligible_and_not_proposed_count' => $not_eligible_and_not_proposed,
         ]));
 
         $this->line_count = count($data) + 1;
@@ -54,20 +59,23 @@ class PromotionsExport implements FromCollection, WithHeadings, WithMapping, Sho
     {
         return [
             'Type de promotion',
-            'Proposé et éligible',
-            'Proposé et non éligible',
+            'Éligibles et Proposés',
+            'Éligibles et Non Proposés',
+            'Non Éligibles et Proposés',
+            'Non Éligibles et Non Proposés',
             'Totaux',
         ];
     }
-
 
     public function map($row): array
     {
         return [
             $row->promotion_type_name,
-            $row->eligible_count,
-            $row->others,
-            $row->eligible_count + $row->others
+            $row->eligible_and_proposed_count,
+            $row->eligible_and_not_proposed_count,
+            $row->not_eligible_and_proposed_count,
+            $row->not_eligible_and_not_proposed_count,
+            $row->eligible_and_proposed_count + $row->eligible_and_not_proposed_count + $row->not_eligible_and_proposed_count + $row->not_eligible_and_not_proposed_count
         ];
     }
 

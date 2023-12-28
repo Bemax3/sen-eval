@@ -30,9 +30,9 @@ const color = computed(() => {
             <p class="flex-auto py-0.5 text-base leading-5 text-gray-500 dark:text-gray-100 space-x-3">
                 <span class="font-medium text-gray-900 dark:text-white">{{ topItem.evaluated.user_display_name + ' - ' + topItem.evaluated.user_matricule }}</span>
                 <span
-                    :class="topItem.rating_is_validated ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-600 dark:text-white'"
+                    :class="topItem.rating_is_validated ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-600 dark:text-white' : 'bg-orange-50 text-orange-700 ring-orange-600/20 dark:bg-red-600 dark:text-white'"
                     class="inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium ring-1 ring-inset ">
-                                        {{ topItem.rating_is_validated ? 'Validé' : 'En attende' }}
+                                        {{ topItem.rating_is_validated ? 'Validé' : 'En attente' }}
                                     </span>
             </p>
             <p :class="color === 'red' ? 'text-red-600' : (color === 'amber' ? 'text-amber-600' : (color === 'green' ? 'text-green-600' : 'text-cyan-600'))"

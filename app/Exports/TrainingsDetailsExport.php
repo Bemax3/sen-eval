@@ -52,9 +52,9 @@ class TrainingsDetailsExport implements FromCollection, WithHeadings, WithMappin
             $row->rating->evaluated->user_display_name,
             $row->rating->evaluator->user_display_name,
             match (true) {
-                $row->asked_by_evaluted == 1 && !$row->asked_by_evaluator == Null => $row->rating->evaluated->user_display_name,
-                !$row->asked_by_evaluted == Null && $row->asked_by_evaluator == 1 => $row->rating->evaluator->user_display_name,
-                default => $row->rating->evaluated->user_display_name . ' et ' . $row->rating->evaluator->user_display_name,
+                $row->asked_by_evaluated == 1 && $row->asked_by_evaluator == NULL => 'L\'évalué',
+                $row->asked_by_evaluated == NULL && $row->asked_by_evaluator == 1 => 'L\'évaluateur',
+                default => 'L\'évalué et L\'évaluateur'
             }
         ];
     }

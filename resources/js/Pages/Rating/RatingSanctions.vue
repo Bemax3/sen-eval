@@ -6,7 +6,7 @@ import Title from "@/Components/Rating/Title.vue";
 import Breadcrumbs from "@/Components/Common/Breadcrumbs.vue";
 import Tabs from "@/Components/Rating/Tabs.vue";
 import {computed, ref, watch} from "vue";
-import {PencilSquareIcon, PlusIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
+import {PencilSquareIcon, TrashIcon} from "@heroicons/vue/20/solid/index.js";
 import {getPagination, hasData} from "@/helpers/helper.js";
 import Datatable from "@/Components/Common/Tables/Datatable.vue";
 import EmptyState from "@/Components/Common/EmptyState.vue";
@@ -14,7 +14,6 @@ import TableData from "@/Components/Common/Tables/TableData.vue";
 import TableHeading from "@/Components/Common/Tables/TableHeading.vue";
 import DeleteModal from "@/Components/Common/DeleteModal.vue";
 import SaveSanctionModal from "@/Pages/Rating/modals/SaveSanctionModal.vue";
-import SectionTitle from "@/Components/LayoutParts/SectionTitle.vue";
 
 const props = defineProps({
     agent: {},
@@ -78,23 +77,23 @@ watch(() => props.sanctions,
             <Breadcrumbs :pages="pages"/>
             <Title :agent="agent" :rating="rating"/>
             <Tabs :agent_id="props.agent.user_id" :evaluated="isEvaluated" :rating_id="props.rating.rating_id" :validator="isValidator"/>
-            <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">
-                <SectionTitle desc="Liste des sanctions demandées pour cette évaluation" title="Sanctions"/>
-                <div v-if="!isEvaluated && !isValidator && !rating.rating_is_validated" class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                    <button
-                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
-                        @click="saveSanction()">
-                        Nouvelle Sanction
-                        <PlusIcon class="-mr-0.5 h-5 w-5"/>
-                    </button>
-                </div>
-            </div>
+            <!--            <div class="sm:flex sm:items-center border-b border-gray-400  pb-5 mt-8">-->
+            <!--                <SectionTitle desc="Liste des sanctions demandées pour cette évaluation" title="Sanctions"/>-->
+            <!--                <div v-if="!isEvaluated && !isValidator && !rating.rating_is_validated" class="space-x-2 mt-4 sm:ml-16 sm:mt-0 sm:flex-none">-->
+            <!--                    <button-->
+            <!--                        class="inline-flex gap-x-1.5 rounded-md bg-cyan-600  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-700     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"-->
+            <!--                        @click="saveSanction()">-->
+            <!--                        Nouvelle Sanction-->
+            <!--                        <PlusIcon class="-mr-0.5 h-5 w-5"/>-->
+            <!--                    </button>-->
+            <!--                </div>-->
+            <!--            </div>-->
             <Datatable v-if="hasData(sanctions.data)" v-model="search" :pagination="pagination" :search="false">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
                     <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Type</TableHeading>
-                        <TableHeading>Demandée par</TableHeading>
+                        <!--                        <TableHeading>Demandée par</TableHeading>-->
                         <TableHeading>Commentaire</TableHeading>
                         <TableHeading></TableHeading>
                     </tr>
@@ -102,7 +101,7 @@ watch(() => props.sanctions,
                     <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="sanction in displayedData" :key="sanction.rating_sanction_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ sanction.type.sanction_type_name }}</TableData>
-                        <TableData>{{ rating.evaluator.user_display_name }}</TableData>
+                        <!--                        <TableData>{{ // rating.evaluator.user_display_name  }}</TableData>-->
                         <TableData class="whitespace-pre-line">{{ sanction.rating_sanction_comment || '__' }}</TableData>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <div v-if="!isEvaluated && !isValidator && !rating.rating_is_validated" class="flex items-center justify-center gap-2">

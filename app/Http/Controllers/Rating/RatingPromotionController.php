@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Rating;
 
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\Rating\AgentIsNotEligibleForAdvancementException;
+use App\Exceptions\Rating\AgentIsNotEligibleForPromotionException;
 use App\Exceptions\Rating\CantUpdateValidatedRatingException;
 use App\Exceptions\Rating\PromotionAlreadyExistException;
 use App\Exceptions\UnauthorizedActionException;
@@ -37,7 +39,7 @@ class RatingPromotionController extends Controller
         try {
             $this->promotionService->create($request->validated(), $rating_id);
             alert_success('Promotion enregistré avec succès.');
-        } catch (UnauthorizedActionException|PromotionAlreadyExistException|CantUpdateValidatedRatingException $e) {
+        } catch (UnauthorizedActionException|PromotionAlreadyExistException|CantUpdateValidatedRatingException|AgentIsNotEligibleForPromotionException|AgentIsNotEligibleForAdvancementException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();
@@ -49,7 +51,7 @@ class RatingPromotionController extends Controller
         try {
             $this->promotionService->update($request->validated(), $rating_promotion_id);
             alert_success('Promotion enregistré avec succès.');
-        } catch (ModelNotFoundException|UnauthorizedActionException|PromotionAlreadyExistException|CantUpdateValidatedRatingException $e) {
+        } catch (ModelNotFoundException|UnauthorizedActionException|PromotionAlreadyExistException|CantUpdateValidatedRatingException|AgentIsNotEligibleForPromotionException|AgentIsNotEligibleForAdvancementException $e) {
             alert_error($e->getMessage());
         } finally {
             return redirect()->back();

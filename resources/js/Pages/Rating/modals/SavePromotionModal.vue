@@ -29,15 +29,18 @@ const setupForm = (promotion) => {
         evaluated_is_eligible: 0,
         is_proposed: 0,
         rating_promotion_comment: '',
+        user_nr_prom_date: props.agent.user_nr_prom_date,
+        user_gf_prom_date: props.agent.user_gf_prom_date,
         promotion_type_id: hasData(props.types) ? props.types[0].promotion_type_id : null
     } : {
         rating_promotion_id: promotion.rating_promotion_id,
         evaluated_is_eligible: promotion.evaluated_is_eligible,
         is_proposed: promotion.is_proposed,
         rating_promotion_comment: promotion.rating_promotion_comment || '',
+        user_nr_prom_date: props.agent.user_nr_prom_date,
+        user_gf_prom_date: props.agent.user_gf_prom_date,
         promotion_type_id: promotion.promotion_type_id
     })
-
 }
 
 const submit = () => {

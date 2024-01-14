@@ -13,6 +13,8 @@ class SaveRatingPromotionRequest extends FormRequest
             'is_proposed' => ['sometimes'],
             'promotion_type_id' => ['required'],
             'rating_promotion_comment' => ['sometimes'],
+            'user_nr_prom_date' => ['sometimes'],
+            'user_gf_prom_date' => ['sometimes'],
             'updated_by' => ['sometimes']
         ];
     }

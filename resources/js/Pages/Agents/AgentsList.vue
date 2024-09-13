@@ -24,7 +24,7 @@ const props = defineProps({
     }
 });
 
-const pages = [{name: 'Mes Agents', href: '#', current: true}];
+const pages = [{name: 'Mes Collaborateurs', href: '#', current: true}];
 const others = props.others;
 const pagination = computed(() => getPagination(props.agents));
 const form = useForm({
@@ -89,23 +89,23 @@ watch(() => props.agents, function (next) {
 
 <template>
     <AuthenticatedLayout>
-        <Head title="Mes Agents"/>
+        <Head title="Mes Collaborateurs"/>
         <div class="px-4 sm:px-6 lg:px-8">
             <Breadcrumbs :pages="pages"/>
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Mes Agents</h1>
+                    <h1 class="text-2xl font-semibold leading-6 text-gray-900 dark:text-white">Mes Collaborateurs</h1>
                     <p class="mt-2 text-sm text-gray-700 dark:text-white">
-                        La liste de mes agents à évaluer.
+                        La liste de mes collaborateurs à évaluer.
                     </p>
                 </div>
-            </div>
-            <Separator title="Trouver mes agents"/>
+            </div> 
+            <Separator title="Trouver mes collaborateurs"/>
             <div class="bg-white dark:bg-grayish shadow sm:rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Trouver vos agents</h3>
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Trouver vos collaborateurs</h3>
                     <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
-                        <p>Rechercher les agents que vous devrez évaluer en utilisant leur matricule, nom ou prénom. </p>
+                        <p>Rechercher les collaborateurs que vous devrez évaluer en utilisant leur matricule, nom ou prénom. </p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center" @submit.prevent="addAgent">
                         <div class="w-full sm:max-w-xl">
@@ -116,7 +116,7 @@ watch(() => props.agents, function (next) {
                                         :display-value="(id) => { let selected = filteredN1.filter(n1 => n1.user_id === id)[0];
                                                             return selected ? selected.user_matricule + ' ' + selected.user_display_name : ''}"
                                         class="w-full rounded-md border-0 bg-white dark:bg-grayish py-1.5 pl-3 pr-12 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-cyan-700 sm:text-sm sm:leading-6"
-                                        placeholder="Chercher un agent..."
+                                        placeholder="Chercher un collaborateur..."
                                         @change="searchAgent.keyword = query = $event.target.value; "/>
                                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                         <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
@@ -144,7 +144,7 @@ watch(() => props.agents, function (next) {
                     </form>
                 </div>
             </div>
-            <Separator title="Mes agents"/>
+            <Separator title="Mes collaborateurs"/>
             <Datatable v-if="hasData(agents.data)" v-model="search.keyword" :pagination="pagination">
                 <table v-if="displayedData.length > 0" class="min-w-full divide-y divide-gray-300 dark:divide-black">
                     <thead class="bg-gray-50 dark:bg-grayish">
@@ -186,7 +186,7 @@ watch(() => props.agents, function (next) {
                 </table>
                 <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4"> Aucun élément trouvé.</div>
             </Datatable>
-            <EmptyState v-else message="Trouver vos agents à l'aide de la barre de recherche plus haut" title="Vous n'avez aucun agent a évaluer."/>
+            <EmptyState v-else message="Trouver vos collaborateurs à l'aide de la barre de recherche plus haut" title="Vous n'avez aucun collaborateur a évaluer."/>
             <RemoveAgentModal :id="idToDelete" :opened="open" @close-modal="open = false"/>
         </div>
     </AuthenticatedLayout>

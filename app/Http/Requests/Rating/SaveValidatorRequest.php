@@ -14,6 +14,7 @@ class SaveValidatorRequest extends FormRequest
             'rating_validator_comment' => ['sometimes', 'required'],
             'has_validated' => ['sometimes'],
             'new_validator' => ['sometimes'],
+            'has_talk' => ['sometimes'],
         ];
     }
 

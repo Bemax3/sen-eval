@@ -7,11 +7,13 @@ use App\Exceptions\Rating\DefaultSkillNeedsANameException;
 use App\Exceptions\Rating\SkillAlreadyExistException;
 use App\Exceptions\Rating\SkillsExceedsMarkingException;
 use App\Exceptions\UnauthorizedActionException;
+use App\Models\Phase\PhaseSkill;
 use App\Models\Rating\Rating;
 use App\Models\Rating\RatingSkill;
+use App\Models\Settings\Skill;
 use App\Models\Settings\SkillType;
 
-readonly class RatingSkillService
+ class RatingSkillService
 {
     public function __construct(private RatingService $ratingService = new RatingService())
     {
@@ -40,10 +42,13 @@ readonly class RatingSkillService
      */
     public function create(mixed $validated): void
     {
+        $phase_skill = PhaseSkill::where('phase_skill_id', $validated['phase_skill_id'] )->first();
+        $skill = Skill::where('skill_id', $phase_skill->skill_id)->first();
+        // dd($skill);
         if ((new ValidatorService())->checkForAllValidation(Rating::findOrFail($validated['rating_id']))) throw new CantUpdateValidatedRatingException();
         if (!$this->ratingService->checkMarking($validated['rating_id'])) throw new SkillsExceedsMarkingException();
-        if ($validated['phase_skill_id'] !== 1) {
-            $validated['rating_skill_name'] = '';
+        if ($validated['phase_skill_id'] !== 1 && $skill->skill_name !== 'Autre' ) {
+            // $validated['rating_skill_name'] = '';
             if (RatingSkill::where('rating_id', '=', $validated['rating_id'])->where('phase_skill_id', '=', $validated['phase_skill_id'])->exists()) throw new SkillAlreadyExistException();
         } else {
             if (!isset($validated['rating_skill_name'])) throw new DefaultSkillNeedsANameException();

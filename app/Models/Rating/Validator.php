@@ -10,7 +10,7 @@ class Validator extends Model
 {
     protected $table = 'rating_validators';
     protected $primaryKey = 'rating_validator_id';
-    protected $fillable = ['rating_validator_comment', 'has_validated', 'validator_id', 'rating_id', 'validated_at'];
+    protected $fillable = ['rating_validator_comment', 'has_validated', 'validator_id', 'rating_id', 'validated_at', 'has_talk'];
 
     protected $casts = [
         'validated_at' => 'datetime'

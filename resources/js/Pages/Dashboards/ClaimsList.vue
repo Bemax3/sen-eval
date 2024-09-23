@@ -67,8 +67,8 @@ const search = ''
                     <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="claim in displayedData" :key="claim.rating_claim_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ claim.type.claim_type_name }}</TableData>
-                        <TableData>{{ claim.rating.evaluated.user_display_name }}</TableData>
-                        <TableData>{{ claim.rating.evaluator.user_display_name }}</TableData>
+                        <TableData>{{ claim.rating.evaluated.user_display_name }} ({{ claim.rating.evaluated.user_matricule }})</TableData>
+                        <TableData>{{ claim.rating.evaluator.user_display_name }} ({{ claim.rating.evaluator.user_matricule }})</TableData>
                         <TableData class="whitespace-pre-line">
                             L'évalué
                         </TableData>

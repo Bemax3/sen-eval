@@ -67,8 +67,8 @@ const search = ''
                     <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="mobility in displayedData" :key="mobility.rating_mobility_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ type.mobility_type_name }}</TableData>
-                        <TableData>{{ mobility.rating.evaluated.user_display_name }}</TableData>
-                        <TableData>{{ mobility.rating.evaluator.user_display_name }}</TableData>
+                        <TableData>{{ mobility.rating.evaluated.user_display_name }} ({{ mobility.rating.evaluated.user_matricule }})</TableData>
+                        <TableData>{{ mobility.rating.evaluator.user_display_name }} ({{ mobility.rating.evaluator.user_matricule }})</TableData>
                         <TableData class="whitespace-pre-line">
                             {{ mobility.asked_by.user_id === mobility.rating.evaluated.user_id ? 'L\'évalué' : 'L\'évaluateur' }}
                         </TableData>

@@ -49,8 +49,8 @@ class TrainingsDetailsExport implements FromCollection, WithHeadings, WithMappin
     {
         return [
             $this->type->training_type_name,
-            $row->rating->evaluated->user_display_name . '('.$row->rating->evaluated->user_matricule.')',
-            $row->rating->evaluator->user_display_name . '('.$row->rating->evaluator->user_matricule.')',
+            $row->rating->evaluated->user_display_name . ' ('.$row->rating->evaluated->user_matricule.')',
+            $row->rating->evaluator->user_display_name . ' ('.$row->rating->evaluator->user_matricule.')',
             match (true) {
                 $row->asked_by_evaluated == 1 && $row->asked_by_evaluator == NULL => 'L\'évalué',
                 $row->asked_by_evaluated == NULL && $row->asked_by_evaluator == 1 => 'L\'évaluateur',

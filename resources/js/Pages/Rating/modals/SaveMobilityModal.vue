@@ -94,7 +94,7 @@ const emit = defineEmits(['closeModal'])
                                 <div class="px-4 py-6 sm:p-8">
                                     <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                         <div class="col-span-full">
-                                            <InputLabel for="" required>Poste</InputLabel>
+                                            <InputLabel for="" required>Poste / Localité</InputLabel>
                                             <div class="mt-2">
                                                 <TextInput ref="input" v-model="form.rating_mobility_title" :invalid="form.errors.rating_mobility_title !== undefined"/>
                                             </div>

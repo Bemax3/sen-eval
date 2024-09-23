@@ -49,6 +49,7 @@ class ValidatorService
      */
     public function update(string $validation, mixed $validated): void
     {
+        // dd($validated['rating_validator_comment']);
         $validator = Validator::findOrFail($validation);
 
         $rating = Rating::findOrFail($validator->rating_id);
@@ -58,11 +59,19 @@ class ValidatorService
         if ($this->checkForAllValidation($rating)) throw new CantUpdateValidatedRatingException();
 
         if (isset($validated['remember']) && $validated['remember']) User::findOrFail(\Auth::id())->update(['n1_id' => $validated['new_validator']]);
-
+        
         if (isset($validated['rating_validator_comment']))
             $validator->update([
                 'rating_validator_comment' => $validated['rating_validator_comment']
             ]);
+
+        //Code Cheikh -> Gestion entretien effectif
+        if (isset($validated['has_talk']))
+            $validator->update([
+                'has_talk' => $validated['has_talk']
+            ]);
+
+        //End code Cheikh
 
         if (isset($validated['new_validator']) && $validated['new_validator'] !== -1) {
             if (Validator::where('rating_id', '=', $validator->rating_id)->where('validator_id', '=', $validated['new_validator'])->exists()) throw new ValidatorAlreadyExistException();

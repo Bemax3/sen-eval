@@ -58,6 +58,7 @@ const search = ''
                     <thead class="bg-gray-50 dark:bg-grayish">
                     <tr>
                         <TableHeading :first="true">Formation</TableHeading>
+                        <TableHeading>Matricule</TableHeading>
                         <TableHeading>Évalué</TableHeading>
                         <TableHeading>Évaluateur</TableHeading>
                         <TableHeading>Demandée par</TableHeading>
@@ -66,6 +67,7 @@ const search = ''
                     <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
                     <tr v-for="training in displayedData" :key="training.rating_training_id">
                         <TableData :first="true" class="whitespace-pre-line">{{ type.training_type_name }}</TableData>
+                        <TableData>{{ training.rating.evaluated.user_matricule }}</TableData>
                         <TableData>{{ training.rating.evaluated.user_display_name }}</TableData>
                         <TableData>{{ training.rating.evaluator.user_display_name }}</TableData>
                         <TableData class="whitespace-pre-line">

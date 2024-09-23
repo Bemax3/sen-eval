@@ -22,12 +22,12 @@ const submit = () => {
     <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-dark-gray">
         <div class="flex-1 h-full max-w-xl mx-auto overflow-hidden bg-white dark:bg-grayish rounded-2xl shadow-xl">
             <div class="flex flex-col items-center justify-center bg-cyan-600 ">
-                <div class="h-20 md:h-auto md:w-1/3 flex items-center justify-center md:p-2 p-20">
-                    <img alt="" aria-hidden="true" class="object-cover sm:w-30 sm:h-30 alt=Office" src="../../assets/logo1637145113.png">
+                <div class="h-20 md:h-auto md:w-1/3 flex items-center justify-center md:p-6 p-20">
+                    <img alt="Logo Senelec" width="150" aria-hidden="true" class="object-cover sm:w-30 sm:h-30 alt=Office" src="../../assets/logo1637145113.png">
                 </div>
                 <div class="flex items-center justify-center flex-col p-10 md:p-8 w-full rounded-b-2xl bg-white dark:bg-grayish">
-                    <h1 class="mb-4 font-bold text-3xl text-cyan-700">
-                        Système d'Évaluation
+                    <h1 class="mb-4 font-bold text-3xl text-cyan-700 text-center">
+                        Système d'Évaluation des Performances du Personnel 
                     </h1>
                     <!--                    <h1 class="mb-2 font-semibold text-xl text-gray-700 dark:text-white">-->
                     <!--                        Se connecter-->

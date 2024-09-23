@@ -39,10 +39,10 @@ const color = computed(() => {
                 </div>
                 <span class="flex-shrink-0">
                     <span
-                        :class="color === 'red' ? 'border-red-600' : (color === 'amber' ? 'border-amber-600' : (color === 'green' ? 'border-green-600' : 'border-cyan-600'))"
+                        :class="color === 'red' ? 'border-red-600 bg-red-600' : (color === 'amber' ? 'border-amber-600 bg-amber-600 text-white' : (color === 'green' ? 'border-green-600 bg-green-600 text-white' : 'border-cyan-600'))"
                         class="flex h-20 w-20 items-center justify-center rounded-full border-4">
                         <span
-                            :class="color === 'red' ? 'text-red-600' : (color === 'amber' ? 'text-amber-600' : (color === 'green' ? 'text-green-600' : 'text-cyan-600'))"
+                            :class="color === 'red' ? 'text-white' : (color === 'amber' ? 'text-white' : (color === 'green' ? 'text-white' : 'text-cyan-600'))"
                             class="text-2xl font-bold">
 	                        {{ rating.rating_mark }}
                         </span>

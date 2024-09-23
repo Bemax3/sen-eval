@@ -20,6 +20,7 @@ import InputError from "@/Components/Forms/InputError.vue";
 import ValidatorsList from "@/Components/Rating/ValidatorsList.vue";
 import TextInput from "@/Components/Forms/TextInput.vue";
 import ValidationWarning from "@/Components/Rating/ValidationWarning.vue";
+import Switch from "@/Components/Forms/Switch.vue";
 
 const props = defineProps({
     rating: {type: Object},
@@ -31,7 +32,7 @@ const props = defineProps({
     goals: {type: Object},
     n1: {type: Object},
     others: {},
-    validators: {}
+    validators: {type: Object},
 })
 
 const user = usePage().props.auth.user;
@@ -53,12 +54,23 @@ const searchAgent = reactive({keyword: '', fields: ['user_matricule', 'user_disp
 // const evaluatedValidation = computed(() => props.validators.filter(v => v.validator_id === props.rating.evaluated_id)[0]);
 
 const validation = computed(() => props.validators.filter(v => v.validator_id === user.user_id)[0]);
-const commentForm = useForm({
-    remember: false,
-    validator_id: validation.value?.validator_id,
-    rating_validator_comment: validation.value?.rating_validator_comment || '',
-    new_validator: props.n1 ? props.n1.user_id : props.others[0].user_id
-})
+const commentForm = useForm(
+    props.validators.has_talk == null ?
+    {
+        has_talk: 1,
+        remember: false,
+        validator_id: validation.value?.validator_id,
+        rating_validator_comment: validation.value?.rating_validator_comment || '',
+        new_validator: props.n1 ? props.n1.user_id : props.others[0].user_id
+    }:
+    {
+        remember: false,
+        validator_id: validation.value?.validator_id,
+        rating_validator_comment: validation.value?.rating_validator_comment || '',
+        has_talk: props.validators.has_talk,
+        new_validator: props.n1 ? props.n1.user_id : props.others[0].user_id
+    }
+)
 
 const others = props.others;
 const query = ref('')
@@ -74,6 +86,7 @@ const goalsTotal = computed(() => {
 })
 
 const save = () => {
+    // alert('dsadsa');
     commentForm.put(route('validations.update', {
         validation: validation.value.rating_validator_id
     }), {
@@ -138,6 +151,7 @@ const updateGoal = (id, marking) => {
 }
 
 const addSpecificSkill = () => {
+    
     form.post(route('rating-skills.store'), {
         onError: err => {
             setupEdits();
@@ -145,7 +159,10 @@ const addSpecificSkill = () => {
         },
         onSuccess: () => setupEdits(),
         preserveScroll: true
-    })
+    });
+    form.rating_skill_name = '';
+    // form.phase_skill_id = '';
+    
 }
 
 setupEdits();
@@ -200,7 +217,7 @@ watch(() => query.value, function (next) {
                                                 <ListboxOption v-for="type in specific_skill_types" :key="type.skill_id" v-slot="{ active, selected }"
                                                                :value="type.pivot.phase_skill_id" as="template">
                                                     <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
-                                                        <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.skill_name }}</span>
+                                                        <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{type.pivot.phase_skill_id}} - {{ type.skill_name }}</span>
                                                         <span v-if="selected"
                                                               :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
                                                             <CheckIcon aria-hidden="true" class="h-5 w-5"/>
@@ -234,6 +251,9 @@ watch(() => query.value, function (next) {
                                 <div class="flex items-start gap-x-3">
                                     <p class="text-base font-bold leading-6 text-gray-900 dark:text-white">{{ skill.rating_skill_name ||
                                     skill.phase_skill.skill.skill_name }}</p>
+
+                                    
+
                                     <p v-if="skill.rating_skill_mark_is_claimed"
                                        class="text-red-700 bg-red-50 ring-red-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset">
                                         Contesté</p>
@@ -422,7 +442,19 @@ watch(() => query.value, function (next) {
                 <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
                     <form @submit.prevent="save">
                         <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+
+
                             <div class="px-4 py-5 sm:p-6">
+                                <div v-if="isEvaluated">
+                                    <div class="mt-2">
+                                    <!-- {{ Code Cheikh }} -->
+                                    <Switch v-model="commentForm.has_talk"
+                                            desc="L'entretien effectif ?"
+                                            label="Entretien"/>
+                                    </div>
+                                    <br />
+                                </div>
+                               
                                 <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Commentaire</h3>
                                 <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
                                     <p>Ajouter un commentaire. </p>

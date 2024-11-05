@@ -18,6 +18,7 @@ import InputLabel from "@/Components/Forms/InputLabel.vue";
 import InputError from "@/Components/Forms/InputError.vue";
 import ValidatorsList from "@/Components/Rating/ValidatorsList.vue";
 import ValidationWarning from "@/Components/Rating/ValidationWarning.vue";
+import Switch from "@/Components/Forms/Switch.vue";
 
 const props = defineProps({
     rating: {type: Object},
@@ -28,7 +29,7 @@ const props = defineProps({
     agent_n2: {type: Object},
     others: {},
     goals: {type: Object},
-    validators: {}
+    validators: {type: Object},
 })
 
 const user = usePage().props.auth.user;
@@ -48,11 +49,22 @@ const searchAgent = reactive({keyword: '', fields: ['user_matricule', 'user_disp
 const evaluatorValidation = computed(() => props.validators.filter(v => v.validator_id === props.rating.evaluator_id)[0]);
 const validation = computed(() => props.validators.filter(v => v.validator_id === user.user_id)[0]);
 
-const commentForm = useForm({
-    validator_id: validation.value?.validator_id,
-    rating_validator_comment: validation.value?.rating_validator_comment || '',
+const commentForm = useForm(
+    props.validators.has_talk == null ?
+    {
+        has_talk: 1,
+        validator_id: validation.value?.validator_id,
+        rating_validator_comment: validation.value?.rating_validator_comment || '',
+    }:
+    {
+        validator_id: validation.value?.validator_id,
+        rating_validator_comment: validation.value?.rating_validator_comment || '',
+        has_talk: props.validators.has_talk,
+    }
+
+    
     // new_validator: props.agent_n2?.user_id || props.others[0].user_id
-})
+)
 
 const others = props.others;
 const query = ref('')
@@ -205,6 +217,16 @@ watch(() => query.value, function (next) {
                     <form @submit.prevent="save">
                         <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                             <div class="px-4 py-5 sm:p-6">
+                                <div>
+                                    <div class="mt-2">
+                                    <!-- {{ Code Cheikh }} -->
+                                    <Switch v-model="commentForm.has_talk"
+                                            :disabled="rating.rating_is_validated || validation.has_validated || !evaluatorValidation.has_validated"
+                                            desc="L'entretien effectif ?"
+                                            label="Entretien"/>
+                                    </div>
+                                    <br />
+                                </div>
                                 <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Commentaire</h3>
                                 <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
                                     <p>Ajouter un commentaire. </p>
@@ -215,6 +237,7 @@ watch(() => query.value, function (next) {
                                             <InputLabel for="start_date"></InputLabel>
                                             <div class=" mt-2">
 												<TextArea v-model="commentForm.rating_validator_comment"
+                                                          :disabled="rating.rating_is_validated || validation.has_validated || !evaluatorValidation.has_validated"
                                                           :invalid="commentForm.errors.rating_validator_comment !== undefined"/>
                                             </div>
                                             <InputError :message="commentForm.errors.rating_validator_comment"/>

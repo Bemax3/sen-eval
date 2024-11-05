@@ -16,15 +16,15 @@ class PhaseSeeder extends Seeder
     {
         $phases = [
             [
-                'phase_name' => 'Évaluation de l\'année 2023',
-                'phase_year' => 2023,
-                'period_type_id' => PeriodType::SEMIYEARLY,
+                'phase_name' => 'Évaluation de l\'année 2024',
+                'phase_year' => 2024,
+                'period_type_id' => PeriodType::YEARLY,
                 'phase_is_active' => 1
 
             ], [
-                'phase_name' => 'Évaluation de l\'année 2024',
-                'phase_year' => 2024,
-                'period_type_id' => PeriodType::SEMIYEARLY
+                'phase_name' => 'Évaluation de l\'année 2025',
+                'phase_year' => 2025,
+                'period_type_id' => PeriodType::YEARLY
 
             ],
 //            [

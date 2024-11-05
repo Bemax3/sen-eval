@@ -20,7 +20,7 @@ import InputError from "@/Components/Forms/InputError.vue";
 import ValidatorsList from "@/Components/Rating/ValidatorsList.vue";
 import TextInput from "@/Components/Forms/TextInput.vue";
 import ValidationWarning from "@/Components/Rating/ValidationWarning.vue";
-import Switch from "@/Components/Forms/Switch.vue";
+
 
 const props = defineProps({
     rating: {type: Object},
@@ -55,19 +55,19 @@ const searchAgent = reactive({keyword: '', fields: ['user_matricule', 'user_disp
 
 const validation = computed(() => props.validators.filter(v => v.validator_id === user.user_id)[0]);
 const commentForm = useForm(
-    props.validators.has_talk == null ?
+    // props.validators.has_talk == null ?
+    // {
+    //     // has_talk: 1,
+    //     remember: false,
+    //     validator_id: validation.value?.validator_id,
+    //     rating_validator_comment: validation.value?.rating_validator_comment || '',
+    //     new_validator: props.n1 ? props.n1.user_id : props.others[0].user_id
+    // }:
     {
-        has_talk: 1,
         remember: false,
         validator_id: validation.value?.validator_id,
         rating_validator_comment: validation.value?.rating_validator_comment || '',
-        new_validator: props.n1 ? props.n1.user_id : props.others[0].user_id
-    }:
-    {
-        remember: false,
-        validator_id: validation.value?.validator_id,
-        rating_validator_comment: validation.value?.rating_validator_comment || '',
-        has_talk: props.validators.has_talk,
+        // has_talk: props.validators.has_talk,
         new_validator: props.n1 ? props.n1.user_id : props.others[0].user_id
     }
 )
@@ -86,7 +86,7 @@ const goalsTotal = computed(() => {
 })
 
 const save = () => {
-    // alert('dsadsa');
+    // alert('Click')
     commentForm.put(route('validations.update', {
         validation: validation.value.rating_validator_id
     }), {
@@ -430,6 +430,7 @@ watch(() => query.value, function (next) {
                 </div>
             </div>
             <div class="px-4 py-4 sm:px-0">
+                <!-- {{validator.rating_validator_comment}}  -->
                 <SectionMark title="Commentaires"/>
                 <div v-if="validators">
                     <ValidatorsList :rating="rating" :validators="validators"/>
@@ -445,15 +446,7 @@ watch(() => query.value, function (next) {
 
 
                             <div class="px-4 py-5 sm:p-6">
-                                <div v-if="isEvaluated">
-                                    <div class="mt-2">
-                                    <!-- {{ Code Cheikh }} -->
-                                    <Switch v-model="commentForm.has_talk"
-                                            desc="L'entretien effectif ?"
-                                            label="Entretien"/>
-                                    </div>
-                                    <br />
-                                </div>
+                                
                                
                                 <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Commentaire</h3>
                                 <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
@@ -526,12 +519,12 @@ watch(() => query.value, function (next) {
                                     Transmettre
                                 </SubmitButton>
                                 <button
-                                    :class="rating.rating_is_validated || validation.has_validated ? 'bg-gray-600' : 'bg-cyan-600  focus-visible:outline-cyan-600 hover:bg-cyan-700    '"
-                                    :disabled="rating.rating_is_validated || validation.has_validated"
+                                    :class="rating.rating_is_validated || validation.has_validated || commentForm.rating_validator_comment == '' ? 'bg-gray-600' : 'bg-cyan-600  focus-visible:outline-cyan-600 hover:bg-cyan-700    '"
+                                    :disabled="rating.rating_is_validated || validation.has_validated || commentForm.rating_validator_comment == '' "
                                     class="inline-flex gap-x-1.5 disabled:opacity-70 rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  mt-3 sm:ml-3 sm:mt-0 sm:w-auto"
                                     @click.prevent="open = true">Valider
                                     <CheckIcon class="text-white -mr-0.5 h-5 w-5"/>
-                                </button>
+                                </button> 
                             </div>
                         </div>
                     </form>

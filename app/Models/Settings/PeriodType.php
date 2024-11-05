@@ -10,9 +10,10 @@ use Spatie\Searchable\SearchResult;
 
 class PeriodType extends Model implements Searchable
 {
-    public const SEMIYEARLY = 1;
-    public const TRIMONTHLY = 2;
-    public const MONTHLY = 3;
+    public const YEARLY = 1;
+    public const SEMIYEARLY = 2;
+    public const TRIMONTHLY = 3;
+    public const MONTHLY = 4;
 
     protected $table = 'period_types';
 

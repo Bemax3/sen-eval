@@ -46,7 +46,9 @@ const setForm = () => {
             ? {
                 goal_name: '',
                 goal_means_available: 1,
-                goal_expected_date: new Date(),
+                // goal_expected_date: new Date(),
+                //Cheikh
+                goal_expected_date: new Date(new Date().getFullYear(), 11, 31), 
                 goal_expected_result: '',
                 goal_marking: 5,
                 phase_id: hasData(props.phases) ? props.phases[0].phase_id : null,
@@ -55,7 +57,8 @@ const setForm = () => {
             : {
                 goal_name: props.goal.goal_name,
                 goal_means_available: props.goal.goal_means_available,
-                goal_expected_date: new Date(props.goal.goal_expected_date),
+                // goal_expected_date: new Date(props.goal.goal_expected_date),
+                goal_expected_date: new Date(new Date().getFullYear(), 11, 31),
                 goal_expected_result: props.goal.goal_expected_result,
                 goal_marking: props.goal.goal_marking,
                 phase_id: props.goal.phase_id,
@@ -159,7 +162,7 @@ watch(() => form.phase_id, function (next) {
                             <div class="sm:col-span-3">
                                 <InputLabel for="start_date" required>Échéance</InputLabel>
                                 <div class="mt-2">
-                                    <DatePicker v-model="form.goal_expected_date" :invalid="form.errors.goal_expected_date !== undefined"/>
+                                    <DatePicker :disabled="true" v-model="form.goal_expected_date" :invalid="form.errors.goal_expected_date !== undefined"/>
                                 </div>
                                 <div class="flex flex-col space-y-2">
                                     <InputError :message="form.errors.goal_expected_date"/>
@@ -212,40 +215,10 @@ watch(() => form.phase_id, function (next) {
                                     </Listbox>
                                 </div>
                             </div>
-                            <div class="mt-8 sm:col-span-3">
-                                <InputLabel required>Période</InputLabel>
-                                <div class="mt-2">
-                                    <Listbox v-model="form.evaluation_period_id" as="div">
-                                        <div class="relative mt-2">
-                                            <ListboxButton
-                                                class="relative w-full cursor-default rounded-md bg-white dark:bg-grayish py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-2 dark:ring-gray-600 focus:dark:ring-2 focus:outline-none focus:ring-2 focus:ring-cyan-700 sm:text-sm sm:leading-6">
-                                                <span
-                                                    class="block truncate">{{ periods.filter(p => p.evaluation_period_id === form.evaluation_period_id)[0].evaluation_period_name
-                                                    }}</span>
-                                                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                                <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5 text-gray-400"/>
-                                            </span>
-                                            </ListboxButton>
-                                            <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                                                <ListboxOptions
-                                                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-grayish py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                                    <ListboxOption v-for="type in periods" :key="type.evaluation_period_id" v-slot="{ active, selected }"
-                                                                   :value="type.evaluation_period_id" as="template">
-                                                        <li :class="[active ? 'bg-cyan-600  text-white' : 'text-gray-900 dark:text-white', 'relative cursor-default select-none py-2 pl-3 pr-9']">
-                                                            <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ type.evaluation_period_name
-                                                                }}</span>
-                                                            <span v-if="selected"
-                                                                  :class="[active ? 'text-white' : 'text-cyan-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
-                                                            <CheckIcon aria-hidden="true" class="h-5 w-5"/>
-                                                        </span>
-                                                        </li>
-                                                    </ListboxOption>
-                                                </ListboxOptions>
-                                            </transition>
-                                        </div>
-                                    </Listbox>
-                                </div>
-                            </div>
+
+                            <!-- <h1>Code Periode (Semestre)</h1> -->
+
+                            
                             <div class="mt-8 col-span-full">
                                 <InputLabel for="start_date" required>Barème</InputLabel>
                                 <div class="mt-2">

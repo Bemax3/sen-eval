@@ -58,8 +58,8 @@ class ValidationController extends Controller
 
     public function update(SaveValidatorRequest $request, string $validation)
     {
+        // dd($request->validated());
         try {
-            // dd($request->validated());
             $this->validatorService->update($validation, $request->validated());
             alert_success('Évaluation enregistrée.');
         } catch (

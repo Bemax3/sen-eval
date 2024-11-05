@@ -16,16 +16,22 @@ class PeriodTypeSeeder extends Seeder
         $periods = [
             [
                 'period_type_id' => 1,
+                'period_type_name' => 'Annuel',
+                'period_type_code' => 'YEARLY',
+
+            ],
+            [
+                'period_type_id' => 2,
                 'period_type_name' => 'Semestriel',
                 'period_type_code' => 'SEMIYEARLY',
 
             ],[
-                'period_type_id' => 2,
+                'period_type_id' => 3,
                 'period_type_name' => 'Trimestriel',
                 'period_type_code' => 'TRIMONTHLY',
 
             ],[
-                'period_type_id' => 3,
+                'period_type_id' => 4,
                 'period_type_name' => 'Mensuel',
                 'period_type_code' => 'MONTHLY',
             ],

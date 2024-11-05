@@ -24,6 +24,19 @@ class PhaseService
     public function generatePeriods(Phase $phase): void
     {
         switch ($phase->period_type_id) {
+
+            //Code cheikh
+            case PeriodType::YEARLY:
+                $start_date = Carbon::createFromDate($phase->phase_year, 1)->startOfYear()->toDateTimeString();
+                $end_date = Carbon::createFromDate($phase->phase_year, 12)->endOfYear()->addDays(5)->toDateTimeString();
+                $phase->periods()->create([
+                    'evaluation_period_name' => 'Année ' . $phase->phase_year,
+                    'evaluation_period_start' => $start_date,
+                    'evaluation_period_end' => $end_date
+                ]);
+                break;
+            //End code cheikh
+
             case PeriodType::SEMIYEARLY:
                 for ($i = (12 / 2); $i <= 12; $i = $i + (12 / 2)) {
                     $start_date = Carbon::createFromDate($phase->phase_year, $i)->startOfMonth()->toDateTimeString();
@@ -87,6 +100,7 @@ class PhaseService
     public function update(string $id, mixed $validated): void
     {
         $phase = Phase::findOrFail($id);
+        // dd($phase);
         if ($validated['phase_year'] != $phase->phase_year && Phase::where('phase_year', '=', $validated['phase_year'])->exists())
             throw new PhaseAlreadyExistException();
         $phase->update($validated);
@@ -96,5 +110,8 @@ class PhaseService
             }
             $this->generatePeriods($phase);
         }
+
+        //Cheikh
+        $this->generatePeriods($phase);
     }
 }

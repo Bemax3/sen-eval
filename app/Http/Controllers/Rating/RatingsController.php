@@ -39,7 +39,9 @@ class RatingsController extends Controller
     {
         try {
             $rating = Rating::with('phase', 'evaluator')->withSum('specific_skills', 'rating_skill_mark')->withSum('general_skills', 'rating_skill_mark')->findOrFail($rating_id);
-            if ($rating->evaluated_id !== \Auth::id() && $rating->validator_id !== \Auth::id()) throw new UnauthorizedActionException();
+            // dd($rating); 
+            // dd('Eval : '. $rating->evaluator_id .' user :'. \Auth::id() );
+            if ($rating->evaluated_id !== \Auth::id() && $rating->evaluator_id !== \Auth::id()) throw new UnauthorizedActionException();
             $evaluator = $rating->evaluator;
             return Inertia::render('Rating/RatingSkills', [
                 'rating' => $rating,

@@ -49,7 +49,7 @@ class ValidatorService
      */
     public function update(string $validation, mixed $validated): void
     {
-        // dd($validated['rating_validator_comment']);
+        // dd($validated);
         $validator = Validator::findOrFail($validation);
 
         $rating = Rating::findOrFail($validator->rating_id);

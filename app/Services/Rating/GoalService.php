@@ -87,7 +87,7 @@ class GoalService
 
         if (!$this->checkPeriodGoalsCount($validated['evaluation_period_id'], $agent_id)) throw new PeriodGoalsCountLimitReachedException();
 
-        if (!$this->checkDateAndPeriod($validated['evaluation_period_id'], $validated['goal_expected_date'])) throw new ExpectedDateCantBeAfterTheEvaluationException();
+        // if (!$this->checkDateAndPeriod($validated['evaluation_period_id'], $validated['goal_expected_date'])) throw new ExpectedDateCantBeAfterTheEvaluationException();
 
         $goal = Goal::create([
             'goal_name' => $validated['goal_name'],
@@ -112,7 +112,9 @@ class GoalService
 
     public function checkPeriodGoalsCount($period_id, $agent_id): bool
     {
-        return Goal::where('evaluation_period_id', '=', $period_id)->where('evaluated_id', '=', $agent_id)->count() <= 3;
+        // return Goal::where('evaluation_period_id', '=', $period_id)->where('evaluated_id', '=', $agent_id)->count() <= 3;
+        //Code Cheikh
+        return Goal::where('evaluation_period_id', '=', $period_id)->where('evaluated_id', '=', $agent_id)->count() <= 7;
     }
 
     public function checkDateAndPeriod($period_id, $date): bool
@@ -142,6 +144,7 @@ class GoalService
 
     public function checkGoals($rating, $offset = 0): bool
     {
+        // dd($rating->goals()->sum('goal_marking'));
         return ($rating->goals()
                     ->count() - $offset) >= $rating->phase->phase_min_goals && $rating->goals()->sum('goal_marking') == SkillType::GOALS_MARKING;
     }

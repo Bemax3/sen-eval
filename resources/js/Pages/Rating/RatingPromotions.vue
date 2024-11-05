@@ -63,7 +63,7 @@ watch(() => props.promotions,
         if (!displayedData.value.length > 0) {
             if (next.prev_page_url) router.get(next.prev_page_url)
             else router.get(next.first_page_url);
-        }
+        } 
     }
 );
 

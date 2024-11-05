@@ -448,9 +448,9 @@ watch(() => query.value, function (next) {
                             <div class="px-4 py-5 sm:p-6">
                                 
                                
-                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Commentaire</h3>
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Commentaire / Suggestion</h3>
                                 <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">
-                                    <p>Ajouter un commentaire. </p>
+                                    <p>Ajouter un commentaire ou une suggestion. </p>
                                 </div>
                                 <div class="mt-5 sm:flex sm:items-center">
                                     <div class="w-full sm:max-w-xl">

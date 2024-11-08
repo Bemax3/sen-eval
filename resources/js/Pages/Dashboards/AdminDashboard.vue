@@ -26,6 +26,8 @@ const props = defineProps({
     users: {},
     orgs: {},
     rated: {},
+    ratings: {},
+    ratedAll: {},
     not_rated: {},
     not_validated: {},
     average: {},
@@ -63,6 +65,7 @@ const tabs = [
     {id: 3, name: 'Mobilités', current: false},
     {id: 4, name: 'Sanctions', current: false},
     {id: 5, name: 'Promotions & Avancements', current: false},
+    {id: 6, name: 'Commentaires & Suggestions', current: false},
 ]
 
 const selectedTab = ref(tabs.filter(t => t.id === (parseInt(props.selected) || 1))[0])
@@ -208,7 +211,23 @@ const total_promotions = computed(() => {
     };
 })
 
-console.log(total_promotions.value)
+const allComments = computed(() => {
+        // Accède aux évaluations dans `ratings.top`
+        return props.ratings.top.flatMap(rating => 
+            rating.validators
+                .filter(validator => validator.rating_validator_comment) // Filtrer les commentaires non vides
+                .map(validator => ({
+                    id: validator.rating_validator_id,
+                    comment: validator.rating_validator_comment,
+                    user_first_name : validator.user.user_first_name,
+                    user_last_name : validator.user.user_last_name,
+                    user_matricule : validator.user.user_matricule
+                }))
+        );
+    });
+
+
+console.log(props.ratings)   
 
 
 const top_trainings = props.trainings.sort((a, b) => a.trainings_count > b.trainings_count ? -1 : 1);
@@ -234,7 +253,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                     </p>
                 </div>
             </div>
-            <div class="mt-8 bg-white dark:bg-grayish shadow sm:rounded-lg">
+            <div class="mt-8 dark:bg-grayish shadow sm:rounded-lg bg-global-filtre" style="background: #0e7490;">
                 <div class="px-4 py-5 sm:p-6">
                     <!--                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Filtres</h3>-->
                     <!--                    <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-100">-->
@@ -242,7 +261,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                     <!--                    </div>-->
                     <form class="sm:flex sm:items-center gap-10" @submit.prevent="filterDashboard">
                         <div class="w-full sm:max-w-xl">
-                            <InputLabel>Direction</InputLabel>
+                            <InputLabel style="color: #fff;">Direction</InputLabel>
                             <div class="mt-2">
                                 <Listbox v-model="form.org_id" as="div">
                                     <div class="relative mt-2">
@@ -284,7 +303,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                             </div>
                         </div>
                         <div class="w-full sm:max-w-xl">
-                            <InputLabel>Année d'évaluation</InputLabel>
+                            <InputLabel style="color: #fff;">Année d'évaluation</InputLabel>
                             <div class="mt-2">
                                 <Listbox v-model="form.phase_id" as="div">
                                     <div class="relative mt-2">
@@ -416,7 +435,7 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                                     <ChevronRightIcon class="-mr-0.5 h-8 w-8 text-cyan-500"/>
                                     Formations les plus demandées
                                 </h3>
-                                <SmallList :data="top_trainings" name="training"/>
+                                
                             </div>
                         </div>
                     </div>
@@ -778,6 +797,34 @@ const top_sanctions = props.sanctions.sort((a, b) => a.sanctions_count > b.sanct
                     </SimpleTable>
                 </template>
                 <EmptyState v-else title="Aucune promotion demandée."/>
+            </template>
+
+            <template v-if="selectedTab.id === 6">
+                <template v-if="allComments.length > 0">
+                    <Datatable v-model="search" :pagination="pagination" :search="false">
+                        <table class="min-w-full divide-y divide-gray-300 dark:divide-black">
+                            <thead class="bg-gray-50 dark:bg-grayish">
+                                <tr>
+                                    <TableHeading :first="true">ID</TableHeading>
+                                    <TableHeading>Commentaire</TableHeading>
+                                    <TableHeading>Auteur</TableHeading>
+                                    <TableHeading>Matricule</TableHeading>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-black bg-white dark:bg-grayish">
+                                <tr v-for="comment in allComments" :key="comment.id">
+                                    <TableData :first="true" class="whitespace-pre-line">{{ comment.id }}</TableData>
+                                    <TableData>{{ comment.comment }}</TableData>
+                                    <TableData>{{ comment.user_first_name }} {{ comment.user_last_name }}</TableData>
+                                    <TableData>{{ comment.user_matricule }}</TableData>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </Datatable>
+                </template>
+                <div v-else class="text-center bg-white dark:bg-grayish text-lg text-gray-600 py-4">Aucun commentaire trouvé.</div>
+
+
             </template>
         </div>
     </AuthenticatedLayout>

@@ -48,9 +48,15 @@ class AdminDashboardController extends Controller
         $promotionsPieChart = getPromotionsPieChartByType($promotions, 1);
         $advancementsPieChart = getPromotionsPieChartByType($promotions, 2);
 
+        // Get Comments Data
+
+        // $comments = getAllComments($phase_id, $org_id);
+        // dd($ratings);
+
         return Inertia::render('Dashboards/AdminDashboard', [
             'users' => $ratings->users_count,
             'rated' => $ratings->rated,
+            'ratings' => $ratings,
             'not_validated' => $ratings->not_validated,
             'not_rated' => $ratings->users_count - $ratings->rated - $ratings->not_validated,
             'average' => getAverageChart($ratings->average),

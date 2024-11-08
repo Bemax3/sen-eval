@@ -1,18 +1,19 @@
 <?php
 
-use App\Models\Phase\PhaseSkill;
+use App\Models\User;
 use App\Models\Rating\Claim;
 use App\Models\Rating\Mobility;
-use App\Models\Rating\Promotion;
 use App\Models\Rating\Sanction;
 use App\Models\Rating\Training;
+use App\Models\Phase\PhaseSkill;
+use App\Models\Rating\Promotion;
+use App\Models\Rating\Validator;
 use App\Models\Settings\ClaimType;
+use App\Services\Dashboard\Helper;
 use App\Models\Settings\MobilityType;
-use App\Models\Settings\PromotionType;
 use App\Models\Settings\SanctionType;
 use App\Models\Settings\TrainingType;
-use App\Models\User;
-use App\Services\Dashboard\Helper;
+use App\Models\Settings\PromotionType;
 
 if (!function_exists('getRatingsData')) {
     function getRatingsData($phase_id, $org_id): object
@@ -23,7 +24,7 @@ if (!function_exists('getRatingsData')) {
             $rated = Helper::getRatingsByPhaseAndStatus($phase_id, 1)->count();
             $not_validated = Helper::getRatingsByPhaseAndStatus($phase_id, 0)->count();
             $average = Helper::getRatingsByPhase($phase_id)->where('rating_is_validated', '=', 1)->avg('rating_mark');
-            $top = Helper::getRatingsByPhase($phase_id)->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
+            $top = Helper::getRatingsByPhase($phase_id)->orderBy('rating_mark', 'desc')->with(['evaluated', 'validators.user'])->limit(8)->get();
         } else {
             $users_count = User::where('role_id', '!=', 1)->whereHas('org', function ($query) use ($org_id) {
                 $query->where('organisations.org_id', '=', $org_id)
@@ -32,8 +33,9 @@ if (!function_exists('getRatingsData')) {
             $rated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 1)->count();
             $not_validated = Helper::getRatingsByPhaseAndOrgAndStatus($phase_id, $org_id, 0)->count();
             $average = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->where('rating_is_validated', '=', 1)->avg('rating_mark');
-            $top = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->orderBy('rating_mark', 'desc')->with('evaluated')->limit(8)->get();
+            $top = Helper::getRatingsByPhaseAndOrg($phase_id, $org_id)->orderBy('rating_mark', 'desc')->with(['evaluated', 'validators.user'])->limit(8)->get();
         }
+        
         $data->average = $average;
         $data->users_count = $users_count;
         $data->rated = $rated;
@@ -401,6 +403,8 @@ if (!function_exists('getSanctionsData')) {
     }
 }
 
+
+
 if (!function_exists('getSanctionsDetails')) {
     function getSanctionsDetails($phase_id, $org_id, $type): object
     {
@@ -416,6 +420,8 @@ if (!function_exists('getSanctionsDetails')) {
         return $sanctions;
     }
 }
+
+
 
 if (!function_exists('getAllSanctions')) {
     function getAllSanctions($phase_id, $org_id): object
